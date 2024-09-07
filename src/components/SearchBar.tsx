@@ -99,7 +99,7 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
           {data?.data?.findFirstEnsName ? (
             <div className="p-2">
               <p 
-                className="text-sm cursor-pointer hover:text-blue-500"
+                className="text-sm cursor-pointer text-primary hover:text-blue-500"
                 onClick={() => setSelectedName(data.data.findFirstEnsName.name)}
               >
                 {data.data.findFirstEnsName.name}
