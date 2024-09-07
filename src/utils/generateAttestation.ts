@@ -1,4 +1,4 @@
-async function generateAttestation(token: string, platform: string, recipient: string, attester: string, signature: string, encodedData: string) {
+async function generateAttestation(token: string, platform: string, recipient: string, attester: string, signature: string, ) {
     const url = '/api/createAttestation';
 
 
@@ -6,8 +6,7 @@ async function generateAttestation(token: string, platform: string, recipient: s
         platform,
         recipient,
         attester,
-        signature,
-        encodedData
+        signature
     });
 
     const response = await fetch(url, {

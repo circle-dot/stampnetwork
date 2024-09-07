@@ -101,16 +101,11 @@ export const handleVouch = async (
             primaryType: 'Attest',
             message: value,
         };
-        console.log('typedData', typedData);
         const signature = await signTypedData(user, wallets, chainId, typedData);
-        console.log('signature', signature);
-        console.log('token:', token);
-        console.log('platform:', platform);
-        console.log('recipient:', recipient);
-        console.log('attester:', attester);
-        console.log('signature:', signature);
-        console.log('encodedData:', encodedData);
-        const resultAttestation = await generateAttestation(token, platform, recipient, attester, signature, encodedData);
+
+
+        //TO CONSIDER, we can pass encoded data instead of doing it server side as well, but should we?
+        const resultAttestation = await generateAttestation(token, platform, recipient, attester, signature);
         console.log('resultAttestation:', resultAttestation);
 
         showSuccessAlert('Vouch created successfully.', 'Go to vouch', `/vouch/${resultAttestation.newAttestationUID}`);
