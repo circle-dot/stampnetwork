@@ -5,38 +5,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Users, Globe, Twitter } from "lucide-react"
+import communityData from "@/data/communityData.json"
 
-// Mock data for communities
-const mockCommunitiesData = {
-  base: {
-    id: "base",
-    name: "Base",
-    description: "Base is a secure, low-cost, developer-friendly Ethereum L2 built to bring the next billion users onchain.",
-    members: 42069,
-    roles: [
-      { 
-        name: "Base Citizen", 
-        members: 41934, 
-        image: "/placeholder.svg",
-        rewards: ["Access to community forums", "Participation in community votes"]
-      },
-      { 
-        name: "Base OG", 
-        members: 135, 
-        image: "/placeholder.svg",
-        rewards: ["Exclusive NFT", "Priority access to new features", "Direct communication with core team"]
-      },
-    ],
-    links: [
-      { type: "website", url: "https://base.org" },
-      { type: "twitter", url: "https://twitter.com/BuildOnBase" },
-    ],
-  },
-  // Add more mock communities here if needed
-}
 
 function getCommunityData(id: string) {
-  return mockCommunitiesData[id as keyof typeof mockCommunitiesData] || null
+  return communityData[id as keyof typeof communityData] || null
 }
 
 export default function ProjectPage({ params }: { params: { project: string } }) {

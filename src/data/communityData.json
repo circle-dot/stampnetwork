@@ -1,0 +1,52 @@
+{
+    "base": {
+      "id": "base",
+      "name": "Base",
+      "description": "Base is a secure, low-cost, developer-friendly Ethereum L2 built to bring the next billion users onchain.",
+      "members": 42069,
+      "category": "Base",
+      "roles": [
+        {
+          "name": "Base Citizen",
+          "members": 41934,
+          "image": "/placeholder.svg",
+          "rewards": ["Access to community forums", "Participation in community votes"]
+        },
+        {
+          "name": "Base OG",
+          "members": 135,
+          "image": "/placeholder.svg",
+          "rewards": ["Exclusive NFT", "Priority access to new features", "Direct communication with core team"]
+        }
+      ],
+      "links": [
+        { "type": "website", "url": "https://base.org" },
+        { "type": "twitter", "url": "https://twitter.com/BuildOnBase" }
+      ]
+    },
+    "optimism": {
+      "id": "optimism",
+      "name": "Optimism",
+      "description": "Optimism is a low-cost and lightning-fast Ethereum L2 blockchain.",
+      "members": 35000,
+      "category": "L2",
+      "roles": [
+        {
+          "name": "Optimist",
+          "members": 34800,
+          "image": "/placeholder.svg",
+          "rewards": ["Access to community channels", "Participation in governance"]
+        },
+        {
+          "name": "Optimism Champion",
+          "members": 200,
+          "image": "/placeholder.svg",
+          "rewards": ["Exclusive Optimism NFT", "Early access to new features", "Direct line to core developers"]
+        }
+      ],
+      "links": [
+        { "type": "website", "url": "https://www.optimism.io" },
+        { "type": "twitter", "url": "https://twitter.com/optimismFND" }
+      ]
+    }
+  }

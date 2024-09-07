@@ -1,19 +1,67 @@
+"use client"
+import React, { useState, useMemo } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Search, Filter, Users, Star } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import communityData from "@/data/communityData.json"
+
 
 export default function CommunityExplorer() {
-  const communities = [
-    { name: "Crypto Enthusiasts", members: 1234, category: "Crypto", image: "/placeholder.svg", link: "/crypto-enthusiasts" },
-    { name: "NFT Collectors", members: 5678, category: "NFT", image: "/placeholder.svg", link: "/nft-collectors" },
-    { name: "DeFi Experts", members: 9012, category: "DeFi", image: "/placeholder.svg", link: "/defi-experts" },
-    { name: "Blockchain Devs", members: 3456, category: "Tech", image: "/placeholder.svg", link: "/blockchain-devs" },
-    { name: "Web3 Gamers", members: 7890, category: "Gaming", image: "/placeholder.svg", link: "/web3-gamers" },
-    { name: "DAO Governance", members: 2345, category: "DAO", image: "/placeholder.svg", link: "/dao-governance" },
-  ]
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(['All'])
+
+  const communities = useMemo(() => Object.values(communityData).map(community => ({
+    name: community.name,
+    members: community.members,
+    category: community.category,
+    image: community.roles[0].image,
+    link: `/${community.id}`
+  })), [])
+  const categories = useMemo(() => 
+    ['All', ...Array.from(new Set(communities.map(c => c.category)))],
+    [communities]
+  )
+
+  const filteredCommunities = useMemo(() => {
+    return communities.filter(community => {
+      const matchesSearch = community.name.toLowerCase().includes(searchTerm.toLowerCase())
+      const matchesCategory = selectedCategories.includes('All') || selectedCategories.includes(community.category)
+      return matchesSearch && matchesCategory
+    })
+  }, [communities, searchTerm, selectedCategories])
+
+  const handleCategoryToggle = (category: string) => {
+    setSelectedCategories(prev => {
+      if (category === 'All') {
+        // If 'All' is the only selected category, don't allow deselection
+        if (prev.length === 1 && prev.includes('All')) {
+          return prev;
+        }
+        // Otherwise, toggle 'All' and deselect others
+        return prev.includes('All') ? [] : ['All'];
+      }
+
+      if (prev.includes('All')) {
+        // If 'All' is currently selected, replace it with the clicked category
+        return [category];
+      }
+
+      let newCategories = [...prev];
+      if (prev.includes(category)) {
+        // Remove the category if it's already selected
+        newCategories = newCategories.filter(c => c !== category);
+      } else {
+        // Add the category if it's not selected
+        newCategories.push(category);
+      }
+
+      // If no categories are left, select 'All'
+      return newCategories.length === 0 ? ['All'] : newCategories;
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -28,7 +76,13 @@ export default function CommunityExplorer() {
           <div className="w-full md:w-64 space-y-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-              <Input type="search" placeholder="Search communities" className="pl-10 bg-input text-foreground" />
+              <Input 
+                type="search" 
+                placeholder="Search communities" 
+                className="pl-10 bg-input text-foreground"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
             <div className="bg-card shadow rounded-lg p-4 space-y-4">
               <h2 className="font-semibold text-lg flex items-center gap-2 text-primary">
@@ -37,9 +91,14 @@ export default function CommunityExplorer() {
               <div>
                 <h3 className="font-medium mb-2 text-secondary">Categories</h3>
                 <div className="space-y-2">
-                  {["All", "Crypto", "NFT", "DeFi", "Tech", "Gaming", "DAO"].map((category) => (
+                  {categories.map((category) => (
                     <label key={category} className="flex items-center">
-                      <input type="checkbox" className="rounded text-primary mr-2" />
+                      <input 
+                        type="checkbox" 
+                        className="rounded text-primary mr-2"
+                        checked={selectedCategories.includes(category)}
+                        onChange={() => handleCategoryToggle(category)}
+                      />
                       {category}
                     </label>
                   ))}
@@ -49,7 +108,7 @@ export default function CommunityExplorer() {
           </div>
           <div className="flex-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {communities.map((community) => (
+              {filteredCommunities.map((community) => (
                 <div key={community.name} className="bg-card shadow rounded-lg overflow-hidden">
                   <div className="p-4">
                     <Image

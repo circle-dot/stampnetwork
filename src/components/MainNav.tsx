@@ -25,7 +25,7 @@ export default function Navbar() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const sections = [
-    { name: "Explore", href: "/explore" },
+    { name: "Explore", href: "/explorer" },
     { name: "Create", href: "/create" },
     { name: "Learn", href: "/learn" },
   ]
@@ -60,7 +60,7 @@ export default function Navbar() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="bg-card text-card-foreground">
             {sections.map((section) => (
-              <DropdownMenuItem key={section.name} className="hover:bg-muted">
+              <DropdownMenuItem key={section.name} className="hover:bg-muted cursor-pointer" asChild>
                 <Link href={section.href}>{section.name}</Link>
               </DropdownMenuItem>
             ))}
@@ -177,7 +177,7 @@ export default function Navbar() {
             <Link
               key={section.name}
               href={section.href}
-              className="block px-4 py-2 text-sm hover:bg-muted"
+              className="block px-4 py-2 text-sm hover:bg-muted w-full"
               onClick={() => setIsOpen(false)}
             >
               {section.name}
