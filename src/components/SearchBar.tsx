@@ -114,7 +114,6 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
                     chain={chain}
                     platform={platform}
                     verifyingContract={verifyingContract}
-                    onOpenDialog={() => setIsDialogOpen(true)}
                   />
                   {isDialogOpen && (
                     <UserProfileCard
@@ -135,7 +134,6 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
                 className="mt-2"
                 graphqlEndpoint={graphql}
                 schema={schema}
-                onOpenDialog={() => setIsDialogOpen(true)}
                 chain={chain}
                 platform={platform}
                 verifyingContract={verifyingContract}

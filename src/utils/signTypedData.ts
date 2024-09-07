@@ -30,7 +30,7 @@ export const signTypedData = async (user: { wallet: { walletClientType: string; 
         });
 
         signature = await walletClient.signTypedData({
-            //@ts-ignore !TO DO check how to fix this
+            //@ts-expect-error !TO DO check how to fix this
             address,
             domain: typedData.domain,
             types: typedData.types,
