@@ -48,7 +48,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
               <Tabs defaultValue="roles">
                 <TabsList className="w-full">
                   <TabsTrigger value="roles" className="flex-1">Roles</TabsTrigger>
-                  <TabsTrigger value="requirements" className="flex-1">Requirements</TabsTrigger>
+                  <TabsTrigger value="interact" className="flex-1">Interact</TabsTrigger>
                 </TabsList>
                 <TabsContent value="roles">
                   <div className="grid gap-4">
@@ -62,19 +62,33 @@ export default function ProjectPage({ params }: { params: { project: string } })
                           </div>
                         </CardHeader>
                         <CardContent>
-                          <h4 className="font-semibold mb-2">Rewards:</h4>
-                          <ul className="list-disc pl-5">
-                            {role.rewards.map((reward, index) => (
-                              <li key={index} className="text-sm text-muted-foreground">{reward}</li>
-                            ))}
-                          </ul>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <h4 className="font-semibold mb-2">Requirements:</h4>
+                              <ul className="list-disc pl-5">
+                                {role.requirements.map((requirement, index) => (
+                                  <li key={index} className="text-sm text-muted-foreground">{requirement}</li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold mb-2">Rewards:</h4>
+                              <ul className="list-disc pl-5">
+                                {role.rewards.map((reward, index) => (
+                                  <li key={index} className="text-sm text-muted-foreground">{reward}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
                         </CardContent>
                       </Card>
                     ))}
                   </div>
                 </TabsContent>
-                <TabsContent value="requirements">
-                  <p>Requirements information would go here.</p>
+                <TabsContent value="interact">
+                  <div>
+                    {/* Interact content will go here */}
+                  </div>
                 </TabsContent>
               </Tabs>
             </CardContent>

@@ -1,27 +1,31 @@
 {
-    "base": {
-      "id": "base",
-      "name": "Base",
-      "description": "Base is a secure, low-cost, developer-friendly Ethereum L2 built to bring the next billion users onchain.",
+    "agora": {
+      "id": "agora",
+      "name": "AgoraPass",
+      "schema": "0x5ee00c7a6606190e090ea17749ec77fe23338387c23c0643c4251380f37eebc3",
+      "chainId": 84532,
+      "description": "Join the solution to decentralize invitations into communities, such as Zuzalu and decrease the dependency on trust in centralized authorities in our community",
       "members": 42069,
-      "category": "Base",
+      "category": "Zuzalu",
       "roles": [
         {
-          "name": "Base Citizen",
+          "name": "Agora Citizen",
           "members": 41934,
           "image": "/placeholder.svg",
-          "rewards": ["Access to community forums", "Participation in community votes"]
+          "rewards": ["Be part of the Web of Trust"],
+          "requirements": ["Vouch for someone"]
         },
         {
-          "name": "Base OG",
+          "name": "Trusted Citizen",
           "members": 135,
           "image": "/placeholder.svg",
-          "rewards": ["Exclusive NFT", "Priority access to new features", "Direct communication with core team"]
+          "rewards": [ "Access to community forums", "Participation in community votes"],
+          "requirements": ["Connect your Zupass", "Have the necessary rank score"]
         }
       ],
       "links": [
-        { "type": "website", "url": "https://base.org" },
-        { "type": "twitter", "url": "https://twitter.com/BuildOnBase" }
+        { "type": "website", "url": "https://pass.agora.city/" },
+        { "type": "twitter", "url": "https://t.co/LDTNJrccMW" }
       ]
     },
     "optimism": {
@@ -35,13 +39,15 @@
           "name": "Optimist",
           "members": 34800,
           "image": "/placeholder.svg",
-          "rewards": ["Access to community channels", "Participation in governance"]
+          "rewards": ["Access to community channels", "Participation in governance"],
+          "requirements": ["Hold at least 100 OP tokens", "Complete community onboarding"]
         },
         {
           "name": "Optimism Champion",
           "members": 200,
           "image": "/placeholder.svg",
-          "rewards": ["Exclusive Optimism NFT", "Early access to new features", "Direct line to core developers"]
+          "rewards": ["Exclusive Optimism NFT", "Early access to new features", "Direct line to core developers"],
+          "requirements": ["Hold at least 1000 OP tokens", "Actively participate in governance for 6 months"]
         }
       ],
       "links": [
