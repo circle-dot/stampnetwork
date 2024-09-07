@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Users, Globe, Twitter } from "lucide-react"
 import communityData from "@/data/communityData.json"
+import { EnsNameSearch } from "@/components/SearchBar"
 
 
 function getCommunityData(id: string) {
@@ -87,7 +88,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
                 </TabsContent>
                 <TabsContent value="interact">
                   <div>
-                    {/* Interact content will go here */}
+                  <EnsNameSearch graphql={communityData.graphql}/>
                   </div>
                 </TabsContent>
               </Tabs>

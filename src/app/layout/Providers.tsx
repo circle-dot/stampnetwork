@@ -7,9 +7,12 @@ import { siteName } from '../../../config/siteConfig';
 /* import { ApolloWrapper } from './layout/ApolloWrapper';
 import QueryProvider from './layout/QueryProvider';
  */
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
     // Get the chainId from environment variables and parse it as a number
+    const queryClient = new QueryClient()
+    
     const chainId = isNaN(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID ?? '', 10))
         ? 84532
         : parseInt(process.env.NEXT_PUBLIC_CHAIN_ID ?? '84532', 10);
@@ -39,7 +42,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         >
 {/*             <ApolloWrapper>
                 <QueryProvider > */}
+                    <QueryClientProvider client={queryClient}>
                     {children}
+                    </QueryClientProvider>
 {/*                 </QueryProvider>
             </ApolloWrapper> */}
         </PrivyProvider>
