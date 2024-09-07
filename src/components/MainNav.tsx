@@ -11,7 +11,7 @@ import {
 import { Menu, LogOut, Twitter, Hash } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
-import { siteName } from '../../config/siteConfig'
+import { siteName, navSections } from '../../config/siteConfig'
 import {
   Dialog,
   DialogContent,
@@ -23,12 +23,6 @@ export default function Navbar() {
   const { ready, authenticated, login, user, logout, linkFarcaster, linkTwitter } = usePrivy()
   const [isOpen, setIsOpen] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-
-  const sections = [
-    { name: "Explore", href: "/explorer" },
-    { name: "Create", href: "/create" },
-    { name: "Learn", href: "/learn" },
-  ]
 
   const truncateAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
@@ -59,9 +53,9 @@ export default function Navbar() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="bg-card text-card-foreground">
-            {sections.map((section) => (
-              <DropdownMenuItem key={section.name} className="hover:bg-muted cursor-pointer" asChild>
-                <Link href={section.href}>{section.name}</Link>
+            {navSections.map((section) => (
+              <DropdownMenuItem key={section.label} className="hover:bg-muted cursor-pointer" asChild>
+                <Link href={section.href}>{section.label}</Link>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -173,14 +167,14 @@ export default function Navbar() {
       </div>
       {isOpen && (
         <div className="absolute top-16 left-0 right-0 bg-card text-card-foreground shadow-md md:hidden">
-          {sections.map((section) => (
+          {navSections.map((section) => (
             <Link
-              key={section.name}
+              key={section.label}
               href={section.href}
-              className="block px-4 py-2 text-sm hover:bg-muted w-full"
+              className={`block px-4 py-2 text-sm hover:bg-muted w-full ${section.className}`}
               onClick={() => setIsOpen(false)}
             >
-              {section.name}
+              {section.label}
             </Link>
           ))}
         </div>
