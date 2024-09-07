@@ -6,7 +6,9 @@ import debounce from 'lodash/debounce';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import VouchButtonCustom from './VouchButtonWithDialog';
-
+import { ethers } from 'ethers';
+import { Dialog } from "@/components/ui/dialog"; // Add this import
+import { UserProfileCard } from './UserProfileCard';
 interface EnsNameSearchProps {
   graphql: string;
   schema: string;
@@ -19,6 +21,8 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [selectedName, setSelectedName] = useState<string | null>(null);
+  const [isEthAddress, setIsEthAddress] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Debounce function
   const debouncedSetSearch = useCallback((value: string) => {
@@ -31,6 +35,7 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
+    setIsEthAddress(ethers.isAddress(value));
     debouncedSetSearch(value);
   };
 
@@ -62,6 +67,11 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
     enabled: !!debouncedSearchTerm // Only run the query if there's a search term
   });
 
+  const handleVouch = () => {
+    // Handle vouch action here if needed
+    setIsDialogOpen(false);
+  };
+
   return (
     <div className="relative">
       <div className="relative">
@@ -84,9 +94,9 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
           <p className="p-2 text-sm text-red-500">Error: {error.message}</p>
         </div>
       )}
-      {data && (
+      {(data || isEthAddress) && (
         <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
-          {data.data && data.data.findFirstEnsName ? (
+          {data?.data?.findFirstEnsName ? (
             <div className="p-2">
               <p 
                 className="text-sm cursor-pointer hover:text-blue-500"
@@ -95,19 +105,52 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
                 {data.data.findFirstEnsName.name}
               </p>
               {selectedName && (
-                <VouchButtonCustom
-                  recipient={data.data.findFirstEnsName.id}
-                  className="mt-2"
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <VouchButtonCustom
+                    recipient={data.data.findFirstEnsName.id}
+                    className="mt-2"
+                    graphqlEndpoint={graphql}
+                    schema={schema}
+                    chain={chain}
+                    platform={platform}
+                    verifyingContract={verifyingContract}
+                    onOpenDialog={() => setIsDialogOpen(true)}
+                  />
+                  {isDialogOpen && (
+                    <UserProfileCard
+                      recipient={data.data.findFirstEnsName.id}
+                      onVouch={handleVouch}
+                      onCancel={() => setIsDialogOpen(false)}
+                      graphqlEndpoint={graphql}
+                    />
+                  )}
+                </Dialog>
+              )}
+            </div>
+          ) : isEthAddress ? (
+            <div className="p-2">
+              <p className="text-sm">Valid Ethereum address</p>
+              <VouchButtonCustom
+                recipient={searchTerm}
+                className="mt-2"
+                graphqlEndpoint={graphql}
+                schema={schema}
+                onOpenDialog={() => setIsDialogOpen(true)}
+                chain={chain}
+                platform={platform}
+                verifyingContract={verifyingContract}
+              />
+              {isDialogOpen && (
+                <UserProfileCard
+                  recipient={searchTerm}
+                  onVouch={handleVouch}
+                  onCancel={() => setIsDialogOpen(false)}
                   graphqlEndpoint={graphql}
-                  schema={schema}
-                  chain={chain}
-                  platform={platform}
-                  verifyingContract={verifyingContract}
                 />
               )}
             </div>
           ) : (
-            <p className="p-2 text-sm text-gray-500">No result found, try using a full address instead</p>
+            <p className="p-2 text-sm text-gray-500">No result found</p>
           )}
         </div>
       )}

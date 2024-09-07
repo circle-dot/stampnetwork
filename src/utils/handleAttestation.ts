@@ -108,7 +108,11 @@ export const handleVouch = async (
         const resultAttestation = await generateAttestation(token, platform, recipient, attester, signature);
         console.log('resultAttestation:', resultAttestation);
 
-        showSuccessAlert('Vouch created successfully.', 'Go to vouch', `/vouch/${resultAttestation.newAttestationUID}`);
+        // Construct the attestation view URL
+        const baseUrl = communityInfo.graphql.replace('/graphql', '');
+        const attestationViewUrl = `${baseUrl}/attestation/view/${resultAttestation.newAttestationUID}`;
+
+        showSuccessAlert('Vouch created successfully.', 'Go to vouch', attestationViewUrl);
 
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';

@@ -7,6 +7,7 @@ import { FIND_FIRST_ENS_NAME } from '@/graphql/queries/getWalletByName';
 import COUNT_ATTESTATIONS_RECEIVED from '@/graphql/queries/AttestationsReceivedCount';
 import COUNT_ATTESTATIONS_MADE from '@/graphql/queries/AttestationsMadeCount';
 import { ethers } from 'ethers';
+import { Skeleton } from "@/components/ui/skeleton"; // Add this import
 
 interface UserProfileCardProps {
   recipient: string;
@@ -17,9 +18,9 @@ interface UserProfileCardProps {
 
 export function UserProfileCard({ recipient, onVouch, onCancel, graphqlEndpoint }: UserProfileCardProps) {
   const [ensName, setEnsName] = useState<string | null>(null);
-console.log('re', recipient)
-const formattedRecipient = ethers.getAddress(recipient);
-  const { data: ensData } = useQuery({
+  const formattedRecipient = ethers.getAddress(recipient);
+
+  const { data: ensData, isLoading: isEnsLoading } = useQuery({
     queryKey: ['ensName', formattedRecipient],
     queryFn: async () => {
       const response = await fetch(graphqlEndpoint, {
@@ -31,7 +32,7 @@ const formattedRecipient = ethers.getAddress(recipient);
           query: FIND_FIRST_ENS_NAME,
           variables: { 
             where: { 
-              id: { contains: recipient } 
+              id: { contains: formattedRecipient.toLowerCase() } 
             } 
           },
         }),
@@ -43,9 +44,7 @@ const formattedRecipient = ethers.getAddress(recipient);
     },
   });
 
-
-
-  const { data: vouchesReceived } = useQuery({
+  const { data: vouchesReceived, isLoading: isVouchesReceivedLoading } = useQuery({
     queryKey: ['vouchesReceived', formattedRecipient],
     queryFn: async () => {
       const response = await fetch(graphqlEndpoint, {
@@ -69,7 +68,7 @@ const formattedRecipient = ethers.getAddress(recipient);
     },
   });
 
-  const { data: vouchesMade } = useQuery({
+  const { data: vouchesMade, isLoading: isVouchesMadeLoading } = useQuery({
     queryKey: ['vouchesMade', formattedRecipient],
     queryFn: async () => {
       const response = await fetch(graphqlEndpoint, {
@@ -99,6 +98,7 @@ const formattedRecipient = ethers.getAddress(recipient);
     }
   }, [ensData]);
 
+  const isLoading = isEnsLoading || isVouchesReceivedLoading || isVouchesMadeLoading;
   const displayName = ensName || recipient;
   const receivedCount = vouchesReceived?.data?.aggregateAttestation?._count?.recipient || 0;
   const madeCount = vouchesMade?.data?.aggregateAttestation?._count?.attester || 0;
@@ -110,19 +110,31 @@ const formattedRecipient = ethers.getAddress(recipient);
       </DialogHeader>
       <div className="grid gap-4 py-4">
         <div className="grid grid-cols-4 items-center gap-4">
-          <span className="col-span-4 font-semibold text-lg">{displayName}</span>
+          {isLoading ? (
+            <Skeleton className="h-6 w-full col-span-4" />
+          ) : (
+            <span className="col-span-4 font-semibold text-lg">{displayName}</span>
+          )}
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <span className="col-span-2">Vouches Received:</span>
-          <span className="col-span-2">{receivedCount}</span>
+          {isLoading ? (
+            <Skeleton className="h-4 w-16 col-span-2" />
+          ) : (
+            <span className="col-span-2">{receivedCount}</span>
+          )}
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <span className="col-span-2">Vouches Made:</span>
-          <span className="col-span-2">{madeCount}</span>
+          {isLoading ? (
+            <Skeleton className="h-4 w-16 col-span-2" />
+          ) : (
+            <span className="col-span-2">{madeCount}</span>
+          )}
         </div>
         <div className="flex justify-end space-x-2">
           <Button onClick={onCancel} variant="outline">Cancel</Button>
-          <Button onClick={onVouch}>Vouch for this user</Button>
+          <Button onClick={onVouch} disabled={isLoading}>Vouch for this user</Button>
         </div>
       </div>
     </DialogContent>
