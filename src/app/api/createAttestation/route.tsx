@@ -4,19 +4,14 @@ import { EAS, SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 import { ethers } from 'ethers';
 import { toBigInt } from 'ethers';
 import { Utils } from 'alchemy-sdk';
-const easContractAddress = "0x4200000000000000000000000000000000000021";
-const schemaUID = process.env.SCHEMA_ID || "0x5ee00c7a6606190e090ea17749ec77fe23338387c23c0643c4251380f37eebc3";
 
-const eas = new EAS(easContractAddress);
-// Signer must be an ethers-like signer.
+import communityData from '@/data/communityData.json';
+
 const PRIVATE_KEY = process.env.PRIVATE_KEY!;
 const ALCHEMY_URL = process.env.ALCHEMY_URL!;
 
 const provider = new ethers.JsonRpcProvider(ALCHEMY_URL);
 const signer = new ethers.Wallet(PRIVATE_KEY, provider);
-await eas.connect(signer);
-
-import communityData from '@/data/communityData.json';
 
 export async function POST(request: NextRequest) {
     try {
@@ -40,16 +35,19 @@ export async function POST(request: NextRequest) {
         // Extract user data from request body
         const { platform, recipient, attester, signature } = await request.json();
 
-        // Fetch endorsementType and power from communityData
+        // Fetch community info from communityData
         const communityInfo = communityData[platform as keyof typeof communityData];
         if (!communityInfo) {
             return NextResponse.json({ error: "Invalid platform" }, { status: 400 });
         }
 
-        // Check if the recipient is the same as the attester
-        if (recipient === attester) {
-            return NextResponse.json({ error: "You can't vouch yourself." }, { status: 400 });
-        }
+        const easContractAddress = communityInfo.verifyingContract;
+        const schemaUID = communityInfo.schema;
+
+        // Initialize EAS with the platform-specific contract address
+        const eas = new EAS(easContractAddress);
+        await eas.connect(signer);
+
         // Encode the data using SchemaEncoder
         const schemaEncoder = new SchemaEncoder("uint8 power,string endorsementType,string platform");
         const encodedData = schemaEncoder.encodeData([
