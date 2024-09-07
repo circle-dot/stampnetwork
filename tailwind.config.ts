@@ -10,46 +10,39 @@ const config: Config = {
   theme: {
   	extend: {
   		colors: {
-  			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
+  			background: 'hsl(230, 20%, 10%)', // Dark blue-gray
+  			foreground: 'hsl(180, 100%, 75%)', // Cyan
   			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
+  				DEFAULT: 'hsl(250, 30%, 15%)', // Dark purple
+  				foreground: 'hsl(180, 100%, 75%)' // Cyan
   			},
   			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
-  				foreground: 'hsl(var(--popover-foreground))'
+  				DEFAULT: 'hsl(250, 30%, 15%)', // Dark purple
+  				foreground: 'hsl(180, 100%, 75%)' // Cyan
   			},
   			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
+  				DEFAULT: 'hsl(320, 100%, 50%)', // Neon pink
+  				foreground: 'hsl(230, 20%, 10%)' // Dark blue-gray
   			},
   			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
+  				DEFAULT: 'hsl(180, 100%, 50%)', // Neon cyan
+  				foreground: 'hsl(230, 20%, 10%)' // Dark blue-gray
   			},
   			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
+  				DEFAULT: 'hsl(250, 20%, 20%)', // Muted purple
+  				foreground: 'hsl(180, 60%, 70%)' // Muted cyan
   			},
   			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
+  				DEFAULT: 'hsl(60, 100%, 50%)', // Neon yellow
+  				foreground: 'hsl(230, 20%, 10%)' // Dark blue-gray
   			},
   			destructive: {
-  				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
+  				DEFAULT: 'hsl(0, 100%, 50%)', // Neon red
+  				foreground: 'hsl(230, 20%, 10%)' // Dark blue-gray
   			},
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			}
+  			border: 'hsl(180, 100%, 50%)', // Neon cyan
+  			input: 'hsl(250, 30%, 15%)', // Dark purple
+  			ring: 'hsl(320, 100%, 50%)' // Neon pink
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

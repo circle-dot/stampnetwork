@@ -3,6 +3,7 @@
 import { PrivyProvider } from '@privy-io/react-auth';
 import React from 'react';
 import { base, baseSepolia } from 'viem/chains';
+import { siteName } from '../../../config/siteConfig';
 /* import { ApolloWrapper } from './layout/ApolloWrapper';
 import QueryProvider from './layout/QueryProvider';
  */
@@ -27,7 +28,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                     theme: 'light',
                     accentColor: '#19473f',
                     logo: '/placeholder.svg',
-                    landingHeader: 'Hop into Agora',
+                    landingHeader: `Hop into ${siteName}`,
                 },
                 // Create embedded wallets for users who don't have a wallet
                 embeddedWallets: {
