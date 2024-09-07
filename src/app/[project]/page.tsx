@@ -88,7 +88,13 @@ export default function ProjectPage({ params }: { params: { project: string } })
                 </TabsContent>
                 <TabsContent value="interact">
                   <div>
-                  <EnsNameSearch graphql={communityData.graphql}/>
+                    <EnsNameSearch 
+                      graphql={communityData.graphql}
+                      schema={communityData.schema}
+                      chain={communityData.chainId.toString()}
+                      platform={communityData.id}
+                      verifyingContract={communityData.verifyingContract}
+                    />
                   </div>
                 </TabsContent>
               </Tabs>
