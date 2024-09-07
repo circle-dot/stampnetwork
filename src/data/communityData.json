@@ -33,36 +33,36 @@
       ]
     },
     "optimism": {
-      "id": "optimism",
-      "name": "Optimism",
+      "id": "crecistamp",
+      "name": "CreciStamp",
       "schema": "0x5ee00c7a6606190e090ea17749ec77fe23338387c23c0643c4251380f37eebc3",
-      "chainId": 84532,
+      "chainId": 324,
       "endorsementType": "Social",
       "power": "1",
       "graphql": "https://base-sepolia.easscan.org/graphql",
       "verifyingContract": "0x4200000000000000000000000000000000000021",
-      "description": "Optimism is a low-cost and lightning-fast Ethereum L2 blockchain.",
+      "description": "Aleph is convening the worlds brightest minds in Buenos Aires this August to pioneer the first crypto nation.",
       "members": 35000,
-      "category": "L2",
+      "category": "Crecimiento",
       "roles": [
         {
-          "name": "Optimist",
+          "name": "Aleph attendee",
           "members": 34800,
           "image": "/placeholder.svg",
-          "rewards": ["Access to community channels", "Participation in governance"],
+          "rewards": ["Be part of the Web of Trust"],
           "requirements": ["Hold at least 100 OP tokens", "Complete community onboarding"]
         },
         {
-          "name": "Optimism Champion",
+          "name": "Aleph Citizen",
           "members": 200,
           "image": "/placeholder.svg",
-          "rewards": ["Exclusive Optimism NFT", "Early access to new features", "Direct line to core developers"],
-          "requirements": ["Hold at least 1000 OP tokens", "Actively participate in governance for 6 months"]
+          "rewards": ["Access to community channels", "Participation in governance"],
+          "requirements": ["Connect your QuarkId", "Have the necessary rank score"]
         }
       ],
       "links": [
-        { "type": "website", "url": "https://www.optimism.io" },
-        { "type": "twitter", "url": "https://twitter.com/optimismFND" }
+        { "type": "website", "url": "https://www.aleph.crecimiento.build/" },
+        { "type": "twitter", "url": "https://x.com/crecimientoar" }
       ]
     }
   }
