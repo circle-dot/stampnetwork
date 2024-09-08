@@ -10,6 +10,7 @@ import { ethers } from 'ethers';
 import { Skeleton } from "@/components/ui/skeleton";
 import { Copy } from 'lucide-react';
 import { showCopySuccessAlert } from '@/utils/alertUtils';
+import Avatar from 'boring-avatars';
 
 interface UserProfileCardProps {
   recipient: string;
@@ -119,30 +120,39 @@ export function UserProfileCard({ recipient, onVouch, onCancel, graphqlEndpoint 
         <DialogTitle>User Profile</DialogTitle>
       </DialogHeader>
       <div className="grid gap-4 py-4">
-        <div className="grid grid-cols-4 items-center gap-4">
+        <div className="flex items-center gap-4">
           {isLoading ? (
-            <Skeleton className="h-6 w-full col-span-4" />
+            <Skeleton className="h-16 w-16 rounded-full" />
           ) : (
-            <>
-              <span className="col-span-3 font-semibold text-lg truncate">
-                {ensName || truncateAddress(formattedRecipient)}
-              </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="col-span-1 justify-self-end"
-                onClick={() => copyToClipboard(formattedRecipient)}
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
-            </>
+            <Avatar
+              size={64}
+              name={ensName || formattedRecipient}
+              variant="beam"
+              className="rounded-full"
+            />
           )}
+          <div className="flex-grow">
+            {isLoading ? (
+              <Skeleton className="h-6 w-full" />
+            ) : (
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-lg truncate">
+                  {ensName || truncateAddress(formattedRecipient)}
+                </span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => copyToClipboard(formattedRecipient)}
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+            <span className="text-xs text-gray-500 break-all">{formattedRecipient}</span>
+          </div>
         </div>
 
-        {/* Full address display (visible on all devices for all users) */}
-        <div className="grid grid-cols-4 items-center gap-4">
-          <span className="col-span-4 text-xs text-gray-500 break-all">{formattedRecipient}</span>
-        </div>
+
         <div className="grid grid-cols-4 items-center gap-4">
           <span className="col-span-2">Vouches Received:</span>
           {isLoading ? (
