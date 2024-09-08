@@ -1,7 +1,11 @@
+"use client"
+import React, { useState, useEffect } from 'react';
+import { usePrivy } from '@privy-io/react-auth';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Users, Globe, Twitter } from "lucide-react"
@@ -9,13 +13,22 @@ import communityData from "@/data/communityData.json"
 import { EnsNameSearch } from "@/components/SearchBar"
 import { UserGrid } from '@/components/UserGrid'
 import { UserProfileDialog } from "@/components/UserProfileDialog"
-import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 
 function getCommunityData(id: string) {
   return communityData[id as keyof typeof communityData] || null
 }
 
 export default function ProjectPage({ params }: { params: { project: string } }) {
+  const { ready, authenticated, login } = usePrivy();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (ready) {
+      setIsAuthenticated(authenticated);
+    }
+  }, [ready, authenticated]);
+
   const communityData = getCommunityData(params.project)
 
   if (!communityData) {
@@ -47,11 +60,30 @@ export default function ProjectPage({ params }: { params: { project: string } })
               </div>
             </CardHeader>
             <CardContent>
-              <Dialog>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
                   <Button className="w-full mb-4">Check your profile</Button>
                 </DialogTrigger>
-                <UserProfileDialog graphqlEndpoint={communityData.graphql} />
+                <DialogContent>
+                  {isAuthenticated ? (
+                    <UserProfileDialog graphqlEndpoint={communityData.graphql} />
+                  ) : (
+                    <>
+                      <DialogTitle>Login Required</DialogTitle>
+                      <DialogDescription>
+                        You need to be logged in to view your profile.
+                      </DialogDescription>
+                      <DialogFooter>
+                        <Button onClick={() => { login(); setIsDialogOpen(false); }}>
+                          Log In
+                        </Button>
+                        <Button variant="secondary" onClick={() => setIsDialogOpen(false)}>
+                          Cancel
+                        </Button>
+                      </DialogFooter>
+                    </>
+                  )}
+                </DialogContent>
               </Dialog>
               <Tabs defaultValue="roles">
                 <TabsList className="w-full">
