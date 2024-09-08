@@ -15,14 +15,14 @@
         {
           "name": "Agora Citizen",
           "members": 41934,
-          "image": "/placeholder.svg",
+          "image": "/agorapass.webp",
           "rewards": ["Be part of the Web of Trust"],
           "requirements": ["Vouch for someone"]
         },
         {
           "name": "Trusted Citizen",
           "members": 135,
-          "image": "/placeholder.svg",
+          "image": "/agorapass.webp",
           "rewards": [ "Access to community forums", "Participation in community votes"],
           "requirements": ["Connect your Zupass", "Have the necessary rank score"]
         }
@@ -48,7 +48,7 @@
         {
           "name": "Aleph attendee",
           "members": 34800,
-          "image": "/placeholder.svg",
+          "image": "/crecistamp.webp",
           "rewards": ["Be part of the Web of Trust"],
           "requirements": ["Hold at least 100 OP tokens", "Complete community onboarding"]
         },
