@@ -50,7 +50,7 @@
           "members": 34800,
           "image": "/crecistamp.webp",
           "rewards": ["Be part of the Web of Trust"],
-          "requirements": ["Hold at least 100 OP tokens", "Complete community onboarding"]
+          "requirements": ["Vouch for someone"]
         },
         {
           "name": "Aleph Citizen",
