@@ -55,7 +55,7 @@
         {
           "name": "Aleph Citizen",
           "members": 200,
-          "image": "/placeholder.svg",
+          "image": "/crecistamp.webp",
           "rewards": ["Access to community channels", "Participation in governance"],
           "requirements": ["Connect your QuarkId", "Have the necessary rank score"]
         }

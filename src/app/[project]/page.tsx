@@ -28,7 +28,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
           <Card className="mb-8">
             <CardHeader className="flex flex-row items-center gap-4">
               <Image
-                src="/placeholder.svg"
+                src={communityData.roles[0].image}
                 alt={communityData.name}
                 width={80}
                 height={80}
