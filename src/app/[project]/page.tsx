@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Users, Globe, Twitter } from "lucide-react"
 import communityData from "@/data/communityData.json"
 import { EnsNameSearch } from "@/components/SearchBar"
+import { UserGrid } from '@/components/UserGrid'
 
 
 function getCommunityData(id: string) {
@@ -87,7 +88,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
                   </div>
                 </TabsContent>
                 <TabsContent value="interact">
-                  <div>
+                  <div className="space-y-4">
                     <EnsNameSearch 
                       graphql={communityData.graphql}
                       schema={communityData.schema}
@@ -95,6 +96,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
                       platform={communityData.id}
                       verifyingContract={communityData.verifyingContract}
                     />
+                    <UserGrid communityData={communityData} />
                   </div>
                 </TabsContent>
               </Tabs>

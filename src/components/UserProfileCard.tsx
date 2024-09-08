@@ -7,7 +7,9 @@ import { FIND_FIRST_ENS_NAME } from '@/graphql/queries/getWalletByName';
 import COUNT_ATTESTATIONS_RECEIVED from '@/graphql/queries/AttestationsReceivedCount';
 import COUNT_ATTESTATIONS_MADE from '@/graphql/queries/AttestationsMadeCount';
 import { ethers } from 'ethers';
-import { Skeleton } from "@/components/ui/skeleton"; // Add this import
+import { Skeleton } from "@/components/ui/skeleton";
+import { Copy } from 'lucide-react';
+import { showCopySuccessAlert } from '@/utils/alertUtils';
 
 interface UserProfileCardProps {
   recipient: string;
@@ -99,9 +101,17 @@ export function UserProfileCard({ recipient, onVouch, onCancel, graphqlEndpoint 
   }, [ensData]);
 
   const isLoading = isEnsLoading || isVouchesReceivedLoading || isVouchesMadeLoading;
-  const displayName = ensName || recipient;
   const receivedCount = vouchesReceived?.data?.aggregateAttestation?._count?.recipient || 0;
   const madeCount = vouchesMade?.data?.aggregateAttestation?._count?.attester || 0;
+
+  const truncateAddress = (address: string) => {
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    showCopySuccessAlert();
+  };
 
   return (
     <DialogContent className="sm:max-w-[425px]">
@@ -113,8 +123,25 @@ export function UserProfileCard({ recipient, onVouch, onCancel, graphqlEndpoint 
           {isLoading ? (
             <Skeleton className="h-6 w-full col-span-4" />
           ) : (
-            <span className="col-span-4 font-semibold text-lg">{displayName}</span>
+            <>
+              <span className="col-span-3 font-semibold text-lg truncate">
+                {ensName || truncateAddress(formattedRecipient)}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="col-span-1 justify-self-end"
+                onClick={() => copyToClipboard(formattedRecipient)}
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            </>
           )}
+        </div>
+
+        {/* Full address display (visible on all devices for all users) */}
+        <div className="grid grid-cols-4 items-center gap-4">
+          <span className="col-span-4 text-xs text-gray-500 break-all">{formattedRecipient}</span>
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
           <span className="col-span-2">Vouches Received:</span>
