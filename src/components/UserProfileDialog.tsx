@@ -11,22 +11,27 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Copy } from 'lucide-react';
 import { showCopySuccessAlert } from '@/utils/alertUtils';
 import Avatar from 'boring-avatars';
+import { usePrivy } from '@privy-io/react-auth';
 
-interface UserProfileCardProps {
-  recipient: string;
-  onVouch: () => void;
-  onCancel: () => void;
+interface UserProfileDialogProps {
   graphqlEndpoint: string;
-  platform:string;
 }
 
-export function UserProfileCard({ recipient, onVouch, onCancel, graphqlEndpoint,platform }: UserProfileCardProps) {
+export function UserProfileDialog({ graphqlEndpoint }: UserProfileDialogProps) {
+  const { ready, authenticated, user } = usePrivy();
   const [ensName, setEnsName] = useState<string | null>(null);
-  const formattedRecipient = ethers.getAddress(recipient);
-console.log('platform',platform)
+  const [formattedAddress, setFormattedAddress] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (ready && authenticated && user?.wallet?.address) {
+      setFormattedAddress(ethers.getAddress(user.wallet.address));
+    }
+  }, [ready, authenticated, user]);
+
   const { data: ensData, isLoading: isEnsLoading } = useQuery({
-    queryKey: ['ensName', formattedRecipient],
+    queryKey: ['ensName', formattedAddress],
     queryFn: async () => {
+      if (!formattedAddress) return null;
       const response = await fetch(graphqlEndpoint, {
         method: 'POST',
         headers: {
@@ -36,7 +41,7 @@ console.log('platform',platform)
           query: FIND_FIRST_ENS_NAME,
           variables: { 
             where: { 
-              id: { contains: formattedRecipient.toLowerCase() } 
+              id: { contains: formattedAddress.toLowerCase() } 
             } 
           },
         }),
@@ -46,11 +51,13 @@ console.log('platform',platform)
       }
       return response.json();
     },
+    enabled: !!formattedAddress,
   });
 
   const { data: vouchesReceived, isLoading: isVouchesReceivedLoading } = useQuery({
-    queryKey: ['vouchesReceived', formattedRecipient],
+    queryKey: ['vouchesReceived', formattedAddress],
     queryFn: async () => {
+      if (!formattedAddress) return null;
       const response = await fetch(graphqlEndpoint, {
         method: 'POST',
         headers: {
@@ -60,8 +67,7 @@ console.log('platform',platform)
           query: COUNT_ATTESTATIONS_RECEIVED,
           variables: { 
             where: { 
-              recipient: { equals: formattedRecipient },
-              decodedDataJson: { contains: platform }
+              recipient: { equals: formattedAddress } 
             } 
           },
         }),
@@ -71,11 +77,13 @@ console.log('platform',platform)
       }
       return response.json();
     },
+    enabled: !!formattedAddress,
   });
-console.log('platform',platform)
+
   const { data: vouchesMade, isLoading: isVouchesMadeLoading } = useQuery({
-    queryKey: ['vouchesMade', formattedRecipient],
+    queryKey: ['vouchesMade', formattedAddress],
     queryFn: async () => {
+      if (!formattedAddress) return null;
       const response = await fetch(graphqlEndpoint, {
         method: 'POST',
         headers: {
@@ -85,8 +93,7 @@ console.log('platform',platform)
           query: COUNT_ATTESTATIONS_MADE,
           variables: { 
             where: { 
-              attester: { equals: formattedRecipient },
-              decodedDataJson: { contains: platform }
+              attester: { equals: formattedAddress } 
             } 
           },
         }),
@@ -96,6 +103,7 @@ console.log('platform',platform)
       }
       return response.json();
     },
+    enabled: !!formattedAddress,
   });
 
   useEffect(() => {
@@ -117,10 +125,14 @@ console.log('platform',platform)
     showCopySuccessAlert();
   };
 
+  if (!ready || !authenticated || !formattedAddress) {
+    return <DialogContent>Loading...</DialogContent>;
+  }
+
   return (
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle>User Profile</DialogTitle>
+        <DialogTitle>Your Profile</DialogTitle>
       </DialogHeader>
       <div className="grid gap-4 py-4">
         <div className="flex items-center gap-4">
@@ -129,7 +141,7 @@ console.log('platform',platform)
           ) : (
             <Avatar
               size={64}
-              name={ensName || formattedRecipient}
+              name={ensName || formattedAddress}
               variant="beam"
               className="rounded-full"
             />
@@ -140,21 +152,20 @@ console.log('platform',platform)
             ) : (
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-lg truncate">
-                  {ensName || truncateAddress(formattedRecipient)}
+                  {ensName || truncateAddress(formattedAddress)}
                 </span>
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => copyToClipboard(formattedRecipient)}
+                  onClick={() => copyToClipboard(formattedAddress)}
                 >
                   <Copy className="h-4 w-4" />
                 </Button>
               </div>
             )}
-            <span className="text-xs text-gray-500 break-all">{formattedRecipient}</span>
+            <span className="text-xs text-gray-500 break-all">{formattedAddress}</span>
           </div>
         </div>
-
 
         <div className="grid grid-cols-4 items-center gap-4">
           <span className="col-span-2">Vouches Received:</span>
@@ -173,8 +184,7 @@ console.log('platform',platform)
           )}
         </div>
         <div className="flex justify-end space-x-2">
-          <Button onClick={onCancel} variant="outline">Cancel</Button>
-          <Button onClick={onVouch} disabled={isLoading}>Vouch for this user</Button>
+          {/* Add any actions specific to the user's own profile if needed */}
         </div>
       </div>
     </DialogContent>

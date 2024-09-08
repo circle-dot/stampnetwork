@@ -121,6 +121,7 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
                       onVouch={handleVouch}
                       onCancel={() => setIsDialogOpen(false)}
                       graphqlEndpoint={graphql}
+                      platform={platform}  
                     />
                   )}
                 </Dialog>
@@ -144,6 +145,7 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
                   onVouch={handleVouch}
                   onCancel={() => setIsDialogOpen(false)}
                   graphqlEndpoint={graphql}
+                  platform={platform}  
                 />
               )}
             </div>

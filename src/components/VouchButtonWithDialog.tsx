@@ -53,6 +53,7 @@ const VouchButtonCustom: React.FC<VouchButtonCustomProps> = ({ recipient, classN
                             onVouch={handleVouchConfirm}
                             onCancel={() => setIsDialogOpen(false)}
                             graphqlEndpoint={graphqlEndpoint}
+                            platform={platform}
                         />
                     </>
                 ) : (

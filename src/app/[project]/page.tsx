@@ -8,7 +8,8 @@ import { Users, Globe, Twitter } from "lucide-react"
 import communityData from "@/data/communityData.json"
 import { EnsNameSearch } from "@/components/SearchBar"
 import { UserGrid } from '@/components/UserGrid'
-
+import { UserProfileDialog } from "@/components/UserProfileDialog"
+import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 
 function getCommunityData(id: string) {
   return communityData[id as keyof typeof communityData] || null
@@ -46,7 +47,12 @@ export default function ProjectPage({ params }: { params: { project: string } })
               </div>
             </CardHeader>
             <CardContent>
-              <Button className="w-full mb-4">Join Community</Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="w-full mb-4">Check your profile</Button>
+                </DialogTrigger>
+                <UserProfileDialog graphqlEndpoint={communityData.graphql} />
+              </Dialog>
               <Tabs defaultValue="roles">
                 <TabsList className="w-full">
                   <TabsTrigger value="roles" className="flex-1">Roles</TabsTrigger>
