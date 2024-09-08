@@ -1,6 +1,6 @@
 {
-    "agora": {
-      "id": "agora",
+    "AgoraPass": {
+      "id": "AgoraPass",
       "name": "AgoraPass",
       "schema": "0x5ee00c7a6606190e090ea17749ec77fe23338387c23c0643c4251380f37eebc3",
       "chainId": 84532,
@@ -32,8 +32,8 @@
         { "type": "twitter", "url": "https://t.co/LDTNJrccMW" }
       ]
     },
-    "crecistamp": {
-      "id": "crecistamp",
+    "CreciStamp": {
+      "id": "CreciStamp",
       "name": "CreciStamp",
       "schema": "0x5ee00c7a6606190e090ea17749ec77fe23338387c23c0643c4251380f37eebc3",
       "chainId": 84532,
