@@ -36,7 +36,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="px-4 py-8 bg-cyberpunk-bg backdrop-blur-sm">
       <div className="flex flex-col md:flex-row gap-8">
         <div className="md:w-2/3">
           <Card className="mb-8">
@@ -51,10 +51,10 @@ export default function ProjectPage({ params }: { params: { project: string } })
               <div className="flex-grow">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-2xl">{communityData.name}</CardTitle>
-                  <Badge variant="secondary" className="text-sm">
+                  {/* <Badge variant="secondary" className="text-sm">
                     <Users className="h-4 w-4 mr-1" />
                     {communityData.members} members
-                  </Badge>
+                  </Badge> */}
                 </div>
                 <CardDescription>{communityData.description}</CardDescription>
               </div>
@@ -147,10 +147,10 @@ export default function ProjectPage({ params }: { params: { project: string } })
               <CardTitle>Community Info</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-muted-foreground" />
                 <span>{communityData.members} members</span>
-              </div>
+              </div> */}
               {communityData.links.map((link) => (
                 <div key={link.type} className="flex items-center gap-2">
                   {link.type === "website" ? (

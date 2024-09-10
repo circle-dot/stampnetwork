@@ -49,6 +49,9 @@ const config: Config = {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		}
+  	},
+  	colors: {
+        'cyberpunk-bg': 'hsl(220, 40%, 10%)', // Darker, more saturated blue
   	}
   },
   plugins: [require("tailwindcss-animate")],
