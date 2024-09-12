@@ -10,39 +10,39 @@ const config: Config = {
   theme: {
   	extend: {
   		colors: {
-  			background: 'hsl(230, 20%, 10%)', // Dark blue-gray
-  			foreground: 'hsl(180, 100%, 75%)', // Cyan
+  			background: 'hsl(0, 0%, 10%)', // Dark background
+  			foreground: 'hsl(0, 0%, 100%)', // White text
   			card: {
-  				DEFAULT: 'hsl(250, 30%, 15%)', // Dark purple
-  				foreground: 'hsl(180, 100%, 75%)' // Cyan
+  				DEFAULT: 'hsl(0, 0%, 10%)', // Dark card background
+  				foreground: 'hsl(0, 0%, 100%)' // White card text
   			},
   			popover: {
-  				DEFAULT: 'hsl(250, 30%, 15%)', // Dark purple
-  				foreground: 'hsl(180, 100%, 75%)' // Cyan
+  				DEFAULT: 'hsl(0, 0%, 10%)', // Dark popover background
+  				foreground: 'hsl(0, 0%, 100%)' // White popover text
   			},
   			primary: {
-  				DEFAULT: 'hsl(320, 100%, 50%)', // Neon pink
-  				foreground: 'hsl(230, 20%, 10%)' // Dark blue-gray
+  				DEFAULT: '#FDE884', // Accent color
+  				foreground: 'hsl(0, 0%, 10%)' // Dark background for primary
   			},
   			secondary: {
-  				DEFAULT: 'hsl(180, 100%, 50%)', // Neon cyan
-  				foreground: 'hsl(230, 20%, 10%)' // Dark blue-gray
+  				DEFAULT: '#FDE884', // Accent color for secondary
+  				foreground: 'hsl(0, 0%, 10%)' // Dark background for secondary
   			},
   			muted: {
-  				DEFAULT: 'hsl(250, 20%, 20%)', // Muted purple
-  				foreground: 'hsl(180, 60%, 70%)' // Muted cyan
+  				DEFAULT: 'hsl(0, 0%, 20%)', // Muted dark color
+  				foreground: 'hsl(0, 0%, 80%)' // Light muted text
   			},
   			accent: {
-  				DEFAULT: 'hsl(60, 100%, 50%)', // Neon yellow
-  				foreground: 'hsl(230, 20%, 10%)' // Dark blue-gray
+  				DEFAULT: '#FDE884', // Accent color
+  				foreground: 'hsl(0, 0%, 10%)' // Dark background for accent
   			},
   			destructive: {
-  				DEFAULT: 'hsl(0, 100%, 50%)', // Neon red
-  				foreground: 'hsl(230, 20%, 10%)' // Dark blue-gray
+  				DEFAULT: 'hsl(0, 100%, 50%)', // Red for destructive actions
+  				foreground: 'hsl(0, 0%, 10%)' // Dark background for destructive
   			},
-  			border: 'hsl(180, 100%, 50%)', // Neon cyan
-  			input: 'hsl(250, 30%, 15%)', // Dark purple
-  			ring: 'hsl(320, 100%, 50%)' // Neon pink
+  			border: 'hsl(0, 0%, 50%)', // Gray border
+  			input: 'hsl(0, 0%, 20%)', // Dark input background
+  			ring: '#FDE884' // Accent color for rings
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

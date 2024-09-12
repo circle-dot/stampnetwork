@@ -119,10 +119,10 @@ export default function CommunityExplorer() {
                       className="rounded-full mx-auto mb-4"
                     />
                     <h3 className="font-semibold text-lg text-center mb-2 text-primary">{community.name}</h3>
-                    <div className="flex justify-center items-center gap-2 text-sm text-muted-foreground mb-4">
+                    {/* <div className="flex justify-center items-center gap-2 text-sm text-muted-foreground mb-4">
                       <Users className="w-4 h-4" />
                       <span>{community.members.toLocaleString()} members</span>
-                    </div>
+                    </div> */}
                     <Badge variant="secondary" className="block text-center bg-secondary text-secondary-foreground">
                       {community.category}
                     </Badge>
