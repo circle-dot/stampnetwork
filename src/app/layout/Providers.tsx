@@ -30,7 +30,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 appearance: {
                     theme: 'light',
                     accentColor: '#19473f',
-                    logo: '/placeholder.svg',
+                    logo: '/stamp.svg',
                     landingHeader: `Hop into ${siteName}`,
                 },
                 // Create embedded wallets for users who don't have a wallet

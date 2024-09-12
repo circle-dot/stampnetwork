@@ -1,5 +1,5 @@
 // Site name
-export const siteName = "Coeus";
+export const siteName = "Stamp";
 
 // navConfig.js
 export const navSections = [
