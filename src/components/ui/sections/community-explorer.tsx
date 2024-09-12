@@ -129,7 +129,7 @@ export default function CommunityExplorer() {
                   </div>
                   <div className="bg-muted px-4 py-3 flex justify-between items-center">
                     <Link href={`${community.link}`}>
-                      <Button variant="ghost" size="sm" className="text-primary hover:text-primary/90">
+                      <Button variant="ghost" size="sm" className="text-primary hover:text-white	">
                         View Details
                       </Button>
                     </Link>
