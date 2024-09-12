@@ -7,11 +7,12 @@ import Image from "next/image"
 import { notFound } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {  Globe, Twitter } from "lucide-react"
+import { Globe, Twitter } from "lucide-react"
 import communityData from "@/data/communityData.json"
 import { EnsNameSearch } from "@/components/SearchBar"
 import { UserGrid } from '@/components/UserGrid'
 import { UserProfileDialog } from "@/components/UserProfileDialog"
+import Graph from '@/components/ui/sections/graph';
 
 function getCommunityData(id: string) {
   return communityData[id as keyof typeof communityData] || null
@@ -65,7 +66,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
                 </DialogTrigger>
                 <DialogContent>
                   {isAuthenticated ? (
-                    <UserProfileDialog graphqlEndpoint={communityData.graphql} />
+                    <Graph graphqlEndpoint={communityData.graphql} schemaId={communityData.schema} />
                   ) : (
                     <>
                       <DialogTitle>Login Required</DialogTitle>
@@ -88,6 +89,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
                 <TabsList className="w-full">
                   <TabsTrigger value="roles" className="flex-1">Roles</TabsTrigger>
                   <TabsTrigger value="interact" className="flex-1">Interact</TabsTrigger>
+                  <TabsTrigger value="graph" className="flex-1">Graph</TabsTrigger>
                 </TabsList>
                 <TabsContent value="roles">
                   <div className="grid gap-4">
@@ -126,7 +128,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
                 </TabsContent>
                 <TabsContent value="interact">
                   <div className="space-y-4">
-                    <EnsNameSearch 
+                    <EnsNameSearch
                       graphql={communityData.graphql}
                       schema={communityData.schema}
                       chain={communityData.chainId.toString()}
@@ -135,6 +137,9 @@ export default function ProjectPage({ params }: { params: { project: string } })
                     />
                     <UserGrid communityData={communityData} />
                   </div>
+                </TabsContent>
+                <TabsContent value="graph">
+                  <Graph graphqlEndpoint={communityData.graphql} schemaId={communityData.schema} />
                 </TabsContent>
               </Tabs>
             </CardContent>
