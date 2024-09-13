@@ -11,7 +11,7 @@ import { Globe, Twitter } from "lucide-react"
 import communityData from "@/data/communityData.json"
 import { EnsNameSearch } from "@/components/SearchBar"
 import { UserGrid } from '@/components/UserGrid'
-import { UserProfileDialog } from "@/components/UserProfileDialog"
+// import { UserProfileDialog } from "@/components/UserProfileDialog"
 import Graph from '@/components/ui/sections/graph';
 
 function getCommunityData(id: string) {

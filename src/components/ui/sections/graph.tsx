@@ -13,25 +13,25 @@ const ForceGraph3D = dynamic(() => import('react-force-graph').then(mod => mod.F
     loading: () => <p>Loading 3D Graph...</p>
 });
 
-const useWindowSize = () => {
-    const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+// const useWindowSize = () => {
+//     const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
 
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowSize({
-                width: window.innerWidth,
-                height: window.innerHeight,
-            });
-        };
+//     useEffect(() => {
+//         const handleResize = () => {
+//             setWindowSize({
+//                 width: window.innerWidth,
+//                 height: window.innerHeight,
+//             });
+//         };
 
-        window.addEventListener('resize', handleResize);
-        handleResize();
+//         window.addEventListener('resize', handleResize);
+//         handleResize();
 
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+//         return () => window.removeEventListener('resize', handleResize);
+//     }, []);
 
-    return windowSize;
-};
+//     return windowSize;
+// };
 
 interface Attestation {
     attester: string;
@@ -48,11 +48,11 @@ interface Link {
     target: string;
 }
 
-interface Coords {
-    x: number;
-    y: number;
-    z: number;
-}
+// interface Coords {
+//     x: number;
+//     y: number;
+//     z: number;
+// }
 
 interface RankingsGraphProps {
     graphqlEndpoint: string;

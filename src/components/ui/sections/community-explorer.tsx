@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Search, Filter, Users, Star } from "lucide-react"
+import { Search, Filter, Star } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import communityData from "@/data/communityData.json"
