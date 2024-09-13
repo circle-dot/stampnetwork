@@ -130,7 +130,7 @@ export function UserProfileDialog({ graphqlEndpoint }: UserProfileDialogProps) {
   }
 
   return (
-    <DialogContent className="sm:max-w-[425px]">
+    <DialogContent className="sm:max-w-[425px] ">
       <DialogHeader>
         <DialogTitle>Your Profile</DialogTitle>
       </DialogHeader>
