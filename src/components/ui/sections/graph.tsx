@@ -57,9 +57,10 @@ interface Coords {
 interface RankingsGraphProps {
     graphqlEndpoint: string;
     schemaId: string;
+    platform: string; 
 }
 
-const RankingsGraph: React.FC<RankingsGraphProps> = ({ graphqlEndpoint, schemaId }) => {
+const RankingsGraph: React.FC<RankingsGraphProps> = ({ graphqlEndpoint, schemaId, platform }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
     const router = useRouter();
@@ -75,14 +76,17 @@ const RankingsGraph: React.FC<RankingsGraphProps> = ({ graphqlEndpoint, schemaId
                 },
                 body: JSON.stringify({
                     query: GET_ATTESTATIONS,
-                    variables: { where: { id:schemaId }, skip: 0, take: 500 },
+                    variables: { 
+                        schemaId: schemaId, // Pass the schemaId
+                        jsonFilter: platform // Pass the platform as jsonFilter
+                    },
                 }),
             });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             const json = await response.json();
-            return json.data.schema.attestations; // Adjust based on your GraphQL response structure
+            return json.data.attestations; // Adjust based on your GraphQL response structure
         },
         placeholderData: [],
     });
@@ -196,12 +200,13 @@ const RankingsGraph: React.FC<RankingsGraphProps> = ({ graphqlEndpoint, schemaId
 interface GraphProps {
     graphqlEndpoint: string;
     schemaId: string;
+    platform:string;
 }
 
-const Graph: React.FC<GraphProps> = ({ graphqlEndpoint, schemaId }) => {
+const Graph: React.FC<GraphProps> = ({ graphqlEndpoint, schemaId, platform }) => {
     return (
         <div className="flex items-center justify-center bg-gray-100 w-full h-full">
-            <RankingsGraph graphqlEndpoint={graphqlEndpoint} schemaId={schemaId} />
+            <RankingsGraph graphqlEndpoint={graphqlEndpoint} schemaId={schemaId} platform={platform} />
         </div>
     );
 };

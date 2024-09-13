@@ -66,7 +66,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
                 </DialogTrigger>
                 <DialogContent>
                   {isAuthenticated ? (
-                    <Graph graphqlEndpoint={communityData.graphql} schemaId={communityData.schema} />
+                    <Graph graphqlEndpoint={communityData.graphql} schemaId={communityData.schema} platform={communityData.id} />
                   ) : (
                     <>
                       <DialogTitle>Login Required</DialogTitle>
@@ -139,8 +139,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
                   </div>
                 </TabsContent>
                 <TabsContent value="graph">
-                  <Graph graphqlEndpoint={communityData.graphql} schemaId={communityData.schema} />
-                </TabsContent>
+                <Graph graphqlEndpoint={communityData.graphql} schemaId={communityData.schema} platform={communityData.id} />                </TabsContent>
               </Tabs>
             </CardContent>
           </Card>

@@ -1,12 +1,14 @@
 const GET_ATTESTATIONS = `
-  query GetAttestations($where: SchemaWhereUniqueInput!, $skip: Int!, $take: Int!) {
-    schema(where: $where) {
-      attestations(skip: $skip, take: $take) {
-        recipient
-        attester
-        __typename
+  query GetAttestations($schemaId: String!, $jsonFilter: String) {
+    attestations(
+      where: {
+        schemaId: { equals: $schemaId },
+        decodedDataJson: { contains: $jsonFilter }
       }
-      __typename
+    ) {
+      id
+      recipient
+      attester
     }
   }
 `;
