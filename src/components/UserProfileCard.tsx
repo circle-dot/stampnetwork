@@ -23,7 +23,6 @@ interface UserProfileCardProps {
 export function UserProfileCard({ recipient, onVouch, onCancel, graphqlEndpoint,platform }: UserProfileCardProps) {
   const [ensName, setEnsName] = useState<string | null>(null);
   const formattedRecipient = ethers.getAddress(recipient);
-console.log('platform',platform)
   const { data: ensData, isLoading: isEnsLoading } = useQuery({
     queryKey: ['ensName', formattedRecipient],
     queryFn: async () => {
@@ -72,7 +71,6 @@ console.log('platform',platform)
       return response.json();
     },
   });
-console.log('platform',platform)
   const { data: vouchesMade, isLoading: isVouchesMadeLoading } = useQuery({
     queryKey: ['vouchesMade', formattedRecipient],
     queryFn: async () => {
