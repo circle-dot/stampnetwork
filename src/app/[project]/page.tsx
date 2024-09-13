@@ -11,7 +11,7 @@ import { Globe, Twitter } from "lucide-react"
 import communityData from "@/data/communityData.json"
 import { EnsNameSearch } from "@/components/SearchBar"
 import { UserGrid } from '@/components/UserGrid'
-// import { UserProfileDialog } from "@/components/UserProfileDialog"
+import { UserProfileDialog } from "@/components/UserProfileDialog"
 import Graph from '@/components/ui/sections/graph';
 
 function getCommunityData(id: string) {
@@ -66,7 +66,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
                 </DialogTrigger>
                 <DialogContent>
                   {isAuthenticated ? (
-                    <Graph graphqlEndpoint={communityData.graphql} schemaId={communityData.schema} platform={communityData.id} />
+                    <UserProfileDialog graphqlEndpoint={communityData.graphql} />
                   ) : (
                     <>
                       <DialogTitle>Login Required</DialogTitle>
@@ -139,7 +139,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
                   </div>
                 </TabsContent>
                 <TabsContent value="graph">
-                <Graph graphqlEndpoint={communityData.graphql} schemaId={communityData.schema} platform={communityData.id} />                </TabsContent>
+                  <Graph graphqlEndpoint={communityData.graphql} schemaId={communityData.schema} platform={communityData.id} />                </TabsContent>
               </Tabs>
             </CardContent>
           </Card>
