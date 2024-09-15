@@ -2,12 +2,6 @@
 
 import { usePrivy } from '@privy-io/react-auth'
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Menu, LogOut, Twitter, Hash } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
@@ -46,20 +40,6 @@ export default function Navbar() {
         <Link href="/" className="text-xl font-bold text-primary">
           {siteName}
         </Link>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="hidden md:flex border-secondary text-secondary">
-               <Menu className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="bg-card text-card-foreground">
-            {navSections.map((section) => (
-              <DropdownMenuItem key={section.label} className="hover:bg-muted cursor-pointer" asChild>
-                <Link href={section.href}>{section.label}</Link>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
       <div className="flex items-center space-x-4">
         {ready && authenticated && user ? (
