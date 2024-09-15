@@ -109,35 +109,29 @@ export default function CommunityExplorer() {
           <div className="flex-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredCommunities.map((community) => (
-                <div key={community.name} className="bg-card shadow rounded-lg overflow-hidden">
-                  <div className="p-4">
-                    <Image
-                      src={community.image}
-                      alt={community.name}
-                      width={64}
-                      height={64}
-                      className="rounded-full mx-auto mb-4"
-                    />
-                    <h3 className="font-semibold text-lg text-center mb-2 text-primary">{community.name}</h3>
-                    {/* <div className="flex justify-center items-center gap-2 text-sm text-muted-foreground mb-4">
-                      <Users className="w-4 h-4" />
-                      <span>{community.members.toLocaleString()} members</span>
-                    </div> */}
-                    <Badge variant="secondary" className="block text-center bg-secondary text-secondary-foreground">
-                      {community.category}
-                    </Badge>
+                <Link key={community.name} href={`${community.link}`} className="block">
+                  <div className="bg-card shadow rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105">
+                    <div className="p-4">
+                      <Image
+                        src={community.image}
+                        alt={community.name}
+                        width={64}
+                        height={64}
+                        className="rounded-full mx-auto mb-4"
+                      />
+                      <h3 className="font-semibold text-lg text-center mb-2 text-primary">{community.name}</h3>
+                      <Badge variant="secondary" className="block text-center bg-secondary text-secondary-foreground">
+                        {community.category}
+                      </Badge>
+                    </div>
+                    <div className="bg-muted px-4 py-3 flex justify-between items-center">
+                      <span className="text-primary">View Details</span>
+                      <Button variant="ghost" size="sm" className="text-accent hover:text-accent/90">
+                        <Star className="w-4 h-4" />
+                      </Button>   
+                    </div>
                   </div>
-                  <div className="bg-muted px-4 py-3 flex justify-between items-center">
-                    <Link href={`${community.link}`}>
-                      <Button variant="ghost" size="sm" className="text-primary hover:text-white	">
-                        View Details
-                      </Button>
-                    </Link>
-                    <Button variant="ghost" size="sm" className="text-accent hover:text-accent/90">
-                      <Star className="w-4 h-4" />
-                    </Button>   
-                  </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
