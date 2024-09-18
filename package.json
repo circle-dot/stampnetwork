@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "@ethereum-attestation-service/eas-sdk": "^2.5.0",
+    "@pcd/eddsa-pcd": "^0.6.5",
+    "@pcd/passport-interface": "^0.11.8",
+    "@pcd/zk-eddsa-event-ticket-pcd": "^0.6.6",
+    "@pcd/zuauth": "^1.4.5",
     "@privy-io/react-auth": "^1.82.0",
     "@privy-io/server-auth": "^1.12.0",
     "@radix-ui/react-dialog": "^1.1.1",

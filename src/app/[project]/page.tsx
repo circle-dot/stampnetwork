@@ -12,6 +12,7 @@ import communityData from "@/data/communityData.json"
 import { EnsNameSearch } from "@/components/SearchBar"
 import { UserGrid } from '@/components/UserGrid'
 import { UserProfileDialog } from "@/components/UserProfileDialog"
+import ZupassButton from "@/components/zupass/components/ZupassButton"
 import Graph from '@/components/ui/sections/graph';
 
 function getCommunityData(id: string) {
@@ -57,6 +58,9 @@ export default function ProjectPage({ params }: { params: { project: string } })
                   </Badge> */}
                 </div>
                 <CardDescription>{communityData.description}</CardDescription>
+              </div>
+              <div>
+                <ZupassButton community={communityData} />
               </div>
             </CardHeader>
             <CardContent>
