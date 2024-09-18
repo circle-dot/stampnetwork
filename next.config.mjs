@@ -9,6 +9,10 @@ const nextConfig = {
           },
         ]
       },
+      reactStrictMode: true,
+      experimental: {
+        serverComponentsExternalPackages: ["web-worker"]
+      }
 };
 
 export default nextConfig;
