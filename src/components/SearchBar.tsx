@@ -72,6 +72,11 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
     setIsDialogOpen(false);
   };
 
+  const handleNameClick = (name: string) => {
+    setSelectedName(name);
+    setIsDialogOpen(true);
+  };
+
   return (
     <div className="relative">
       <div className="relative">
@@ -100,46 +105,29 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
             <div className="p-2">
               <p 
                 className="text-sm cursor-pointer text-primary hover:text-blue-500"
-                onClick={() => setSelectedName(data.data.findFirstEnsName.name)}
+                onClick={() => handleNameClick(data.data.findFirstEnsName.name)}
               >
                 {data.data.findFirstEnsName.name}
               </p>
-              {selectedName && (
-                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                  <VouchButtonCustom
-                    recipient={data.data.findFirstEnsName.id}
-                    className="mt-2"
-                    graphqlEndpoint={graphql}
-                    schema={schema}
-                    chain={chain}
-                    platform={platform}
-                    verifyingContract={verifyingContract}
-                  />
-                  {isDialogOpen && (
-                    <UserProfileCard
-                      recipient={data.data.findFirstEnsName.id}
-                      onVouch={handleVouch}
-                      onCancel={() => setIsDialogOpen(false)}
-                      graphqlEndpoint={graphql}
-                      platform={platform}  
-                    />
-                  )}
-                </Dialog>
-              )}
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <UserProfileCard
+                  recipient={data.data.findFirstEnsName.id}
+                  onVouch={handleVouch}
+                  onCancel={() => setIsDialogOpen(false)}
+                  graphqlEndpoint={graphql}
+                  platform={platform}  
+                />
+              </Dialog>
             </div>
           ) : isEthAddress ? (
             <div className="p-2">
-              <p className="text-sm">Valid Ethereum address</p>
-              <VouchButtonCustom
-                recipient={searchTerm}
-                className="mt-2"
-                graphqlEndpoint={graphql}
-                schema={schema}
-                chain={chain}
-                platform={platform}
-                verifyingContract={verifyingContract}
-              />
-              {isDialogOpen && (
+              <p 
+                className="text-sm cursor-pointer text-primary hover:text-blue-500"
+                onClick={() => handleNameClick(searchTerm)}
+              >
+                {searchTerm} (Valid Ethereum address)
+              </p>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <UserProfileCard
                   recipient={searchTerm}
                   onVouch={handleVouch}
@@ -147,7 +135,7 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
                   graphqlEndpoint={graphql}
                   platform={platform}  
                 />
-              )}
+              </Dialog>
             </div>
           ) : (
             <p className="p-2 text-sm text-gray-500">No result found</p>
