@@ -2,34 +2,33 @@
 
 import { useState } from 'react';
 import { zuAuthPopup, ZuAuthArgs } from "@pcd/zuauth";
+import { whitelistedTickets } from "@/zupass/zupass-config";
+import { TicketTypeName } from "@/zupass/types";
 
 const watermark = "0";
-
-const config = [
-    {
-      pcdType: "eddsa-ticket-pcd",
-      publicKey: [
-        "1ebfb986fbac5113f8e2c72286fe9362f8e7d211dbc68227a468d7b919e75003",
-        "10ec38f11baacad5535525bbe8e343074a483c051aa1616266f3b1df3fb7d204"
-      ],
-      productId: "15ab7fc2-eaea-5c0c-87d5-6b233b030a9b",
-      eventId: "3dcdb35d-507c-57e8-8629-5a09239f7033",
-      eventName: "AgoraCity",
-      productName: "Founder"
-    },
-    {
-      pcdType: "eddsa-ticket-pcd",
-      publicKey: [
-        "1ebfb986fbac5113f8e2c72286fe9362f8e7d211dbc68227a468d7b919e75003",
-        "10ec38f11baacad5535525bbe8e343074a483c051aa1616266f3b1df3fb7d204"
-      ],
-      productId: "28155a86-913f-57dd-a65c-d16ae3149385",
-      eventId: "6900784f-b677-5885-b8fc-bc824cfd88d6",
-      eventName: "AgoraCity",
-      productName: "Contributor"
-    }
-  ];
-
+    // Ensure the tickets are formatted correctly
+    const config = Object.entries(whitelistedTickets).flatMap(
+        ([ticketType, tickets]) =>
+            tickets
+                .map((ticket) => {
+                    if (ticket.eventId && ticket.productId) {
+                        return {
+                            pcdType: ticket.pcdType,
+                            ticketType: ticketType as TicketTypeName,
+                            eventId: ticket.eventId,
+                            productId: ticket.productId,
+                            eventName: ticket.eventName || "",
+                            productName: ticket.productName || "",
+                            publicKey: ticket.publicKey
+                        };
+                    }
+                    console.error("Invalid ticket format:", ticket);
+                    return null;
+                })
+                .filter(
+                    (ticket): ticket is NonNullable<typeof ticket> => ticket !== null
+                )
+    );
 function Page() {
     const [result, setResult] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +49,6 @@ function Page() {
                 },
                 returnUrl: window.location.origin,
                 watermark,
-                // @ts-expect-error Check this out later
                 config,
                 proofTitle: "Connect with Zupass",
                 proofDescription: "**Connect your Zupass to Agora Pass**",
