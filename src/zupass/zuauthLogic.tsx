@@ -29,7 +29,7 @@ const config = Object.entries(whitelistedTickets).flatMap(
             )
 );
 
-export const useZuAuth = () => {
+export const useZuAuth = (community: any) => {
     const [result, setResult] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [apiResponse, setApiResponse] = useState<any>(null);
@@ -41,7 +41,6 @@ export const useZuAuth = () => {
             const args: ZuAuthArgs = {
                 fieldsToReveal: {
                     revealAttendeeEmail: true,
-                    // revealAttendeeName: true,
                     revealEventId: true,
                     revealProductId: true,
                     revealAttendeeSemaphoreId: true,
@@ -58,32 +57,37 @@ export const useZuAuth = () => {
             const result = await zuAuthPopup(args);
             console.log("Local result:", result);
             setResult(result);
-
-            if (result && result.type === "multi-pcd" && Array.isArray(result.pcds)) {
-                const response = await fetch('/api/test', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ pcds: result.pcds }),
-                });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setApiResponse(data);
-                console.log("API response:", data);
-            } else {
-                throw new Error("No PCDs returned from zuAuthPopup");
-            }
         } catch (error) {
             console.error("ZuAuth error:", error);
             setResult(null);
-            setApiResponse({ error: error instanceof Error ? error.message : String(error) });
         } finally {
             setIsLoading(false);
         }
     };
 
-    return { handleZuAuth, isLoading, result, apiResponse };
+    const handleSign = async (pcd: any) => {
+        try {
+            const response = await fetch('/api/zupass/validatePCD', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    pcds: pcd,
+                    community: community
+                }),
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setApiResponse(data);
+            console.log("API response:", data);
+        } catch (error) {
+            console.error("Sign error:", error);
+            setApiResponse({ error: error instanceof Error ? error.message : String(error) });
+        }
+    };
+
+    return { handleZuAuth, isLoading, result, apiResponse, handleSign };
 };

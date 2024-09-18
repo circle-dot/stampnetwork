@@ -13,6 +13,7 @@ import { EnsNameSearch } from "@/components/SearchBar"
 import { UserGrid } from '@/components/UserGrid'
 import { UserProfileDialog } from "@/components/UserProfileDialog"
 import Graph from '@/components/ui/sections/graph'
+import { ZuAuthButton } from '@/zupass/ZupassButton';
 
 function getCommunityData(id: string) {
   return communityData[id as keyof typeof communityData] || null
@@ -85,6 +86,12 @@ export default function ProjectPage({ params }: { params: { project: string } })
                     )}
                   </DialogContent>
                 </Dialog>
+                
+                {isAuthenticated && (
+                  <div className="flex justify-center">
+          <ZuAuthButton community={community} />
+          </div>
+                )}
                 
                 {/* Tab triggers in sidebar */}
                 <div className="flex flex-row md:flex-col w-full space-y-0 space-x-2 md:space-y-2 md:space-x-0 mt-4">
