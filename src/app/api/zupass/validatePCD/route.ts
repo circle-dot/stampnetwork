@@ -2,11 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { whitelistedTickets, matchTicketToType } from "@/zupass/zupass-config";
 import { TicketTypeName } from "@/zupass/types";
 import { isEqualEdDSAPublicKey } from "@pcd/eddsa-pcd";
+import handleAttest from "@/zupass/attestation/handleAttest";
+import { ethers } from "ethers";
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { pcds: inputPCD } = await req.json();
-    let response: { error?: string; status: number; nullifier?: string } = { status: 200 };
+    const { pcds: inputPCD, community, user } = await req.json();
+    let response: { error?: string; status: number; nullifier?: string; attestationUID?: string } = { status: 200 };
 
     try {
       console.log("Attempting to deserialize PCD:", inputPCD);
@@ -61,6 +63,40 @@ export const POST = async (req: NextRequest) => {
           response = { error: "PCD is not signed by Zupass", status: 401 };
         } else {
           response.nullifier = pcd.claim.nullifierHash;
+          
+          // Call handleAttest function
+          try {
+            const recipient = user.wallet.address 
+            const nullifier = ethers.hexlify(
+              ethers.keccak256(
+                ethers.concat([
+                  ethers.toUtf8Bytes(pcd.claim.partialTicket.attendeeSemaphoreId),
+                  ethers.keccak256(ethers.toUtf8Bytes(productId)) // Hash the productId
+                ])
+              ).slice(0, 66)
+            );
+            const category = community.category;
+            const subcategory = ticketType;
+            const issuer =  community.name;
+            const credentialType = ticketType;
+            const platform = "Zupass";
+
+            const attestationUID = await handleAttest(
+              recipient,
+              nullifier,
+              category,
+              subcategory,
+              issuer,
+              credentialType,
+              platform
+            );
+
+            response.attestationUID = attestationUID;
+            console.log("Attestation created successfully:", attestationUID);
+          } catch (attestError) {
+            console.error("Error creating attestation:", attestError);
+            response = { error: "Error creating attestation", status: 500 };
+          }
         }
       }
     } catch (error) {

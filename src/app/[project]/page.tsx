@@ -20,7 +20,7 @@ function getCommunityData(id: string) {
 }
 
 export default function ProjectPage({ params }: { params: { project: string } }) {
-  const { ready, authenticated, login } = usePrivy();
+  const { ready, authenticated, login, user } = usePrivy();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("roles");
@@ -89,7 +89,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
                 
                 {isAuthenticated && (
                   <div className="flex justify-center">
-          <ZuAuthButton community={community} />
+<ZuAuthButton community={community} user={user} />
           </div>
                 )}
                 

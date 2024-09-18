@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@ethereum-attestation-service/eas-sdk':
-        specifier: ^2.5.0
+        specifier: ^2.6.0
         version: 2.6.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
       '@pcd/eddsa-pcd':
         specifier: ^0.6.5
