@@ -1,115 +1,93 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd";
 import { whitelistedTickets, supportedEvents, matchTicketToType } from "@/utils/zupass-config";
 import { TicketTypeName } from "@/utils/types";
 import { isEqualEdDSAPublicKey } from "@pcd/eddsa-pcd";
-export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    console.log("Received body:", body);
 
-    if (!body.pcds || !Array.isArray(body.pcds)) {
-      throw new Error("Invalid request structure");
-    }
+export const POST = async (req: NextRequest) => {
+	const nullifiers = new Set<string>();
 
-    const responses: { error?: string; status: number; nullifier?: string }[] = [];
-    const nullifiers = new Set<string>();
-    const validPcds: any[] = [];
+	try {
+		const { pcds } = await req.json();
+		const responses: { error?: string; status: number; nullifier?: string }[] = [];
+		const validPcds: any[] = [];
 
-    for (const { type, pcd: inputPCD } of body.pcds) {
-      if (type !== "zk-eddsa-event-ticket-pcd") {
-        responses.push({ error: `Invalid PCD type: ${type}`, status: 400 });
-        continue;
-      }
+		for (const { type, pcd: inputPCD } of pcds) {
+			try {
+				if (type !== "zk-eddsa-event-ticket-pcd") {
+					responses.push({ error: `Invalid PCD type: ${type}`, status: 400 });
+					continue;
+				}
 
-      const pcd = await ZKEdDSAEventTicketPCDPackage.deserialize(inputPCD);
+				console.log("Attempting to deserialize PCD:", inputPCD);
+				const pcd = await ZKEdDSAEventTicketPCDPackage.deserialize(inputPCD);
+				console.log('Deserialized PCD:', JSON.stringify(pcd, null, 2));
 
-      if (!pcd) {
-        responses.push({
-          error: "Invalid PCD format or deserialization error",
-          status: 400
-        });
-        continue;
-      }
+				const eventId = pcd.claim.partialTicket.eventId;
+				const productId = pcd.claim.partialTicket.productId;
 
-      if (!pcd.claim.nullifierHash) {
-        responses.push({
-          error: "PCD ticket nullifier has not been defined",
-          status: 401
-        });
-        continue;
-      }
-      const eventId = pcd.claim.partialTicket.eventId;
-      if (eventId && !supportedEvents.includes(eventId)) {
-        responses.push({
-          error: `PCD ticket is not for a supported event: ${eventId}`,
-          status: 400
-        });
-        continue;
-      }
+				console.log(`Matching ticket type for eventId: ${eventId}, productId: ${productId}`);
+				const ticketType = matchTicketToType(eventId, productId);
+				if (!ticketType) {
+					console.log('Failed to match ticket type');
+					throw new Error("Unable to determine ticket type.");
+				}
+				console.log(`Matched ticket type: ${ticketType}`);
 
-      if (!(await ZKEdDSAEventTicketPCDPackage.verify(pcd))) {
-        responses.push({ error: "ZK ticket PCD is not valid", status: 401 });
-        continue;
-      }
+				// ... rest of the processing logic ...
 
-      try {
-        const productId = pcd.claim.partialTicket.productId;
+				nullifiers.add(pcd.claim.nullifierHash);
+				validPcds.push(pcd);
+			} catch (error) {
+				console.error('Error processing PCD:', error);
+				responses.push({ error: "Error processing PCD", status: 500 });
+			}
+		}
 
-        if (!eventId || !productId) {
-          throw new Error("No product or event selected.");
-        }
+		if (validPcds.length > 0) {
+			for (let pcd of validPcds) {
+				let isValid = false;
 
-        const ticketType = matchTicketToType(eventId, productId);
-        if (!ticketType) {
-          throw new Error("Unable to determine ticket type.");
-        }
+				console.log('Verifying Zupass signature...');
+				console.log('PCD signer:', JSON.stringify(pcd.claim.signer));
 
-        nullifiers.add(pcd.claim.nullifierHash);
-        validPcds.push({ pcd, ticketType });
-      } catch (error) {
-        console.error('Error processing PCD:', error);
-        responses.push({ error: "Error processing PCD", status: 500 });
-      }
-    }
+				for (let type of Object.keys(whitelistedTickets) as TicketTypeName[]) {
+					const tickets = whitelistedTickets[type];
 
-    if (validPcds.length > 0) {
-      for (const { pcd, ticketType } of validPcds) {
-        let isValid = false;
+					if (tickets) {
+						for (let ticket of tickets) {
+							const publicKey = ticket.publicKey;
+							console.log('Checking against public key:', JSON.stringify(publicKey));
 
-        const tickets = whitelistedTickets[ticketType as TicketTypeName];
-        if (tickets) {
-          for (const ticket of tickets) {
-            const publicKey = ticket.publicKey;
+							if (isEqualEdDSAPublicKey(publicKey, pcd.claim.signer)) {
+								isValid = true;
+								console.log('Found matching public key');
+								break;
+							}
+						}
+					}
 
-            if (isEqualEdDSAPublicKey(publicKey, pcd.claim.signer)) {
-              isValid = true;
-              break;
-            }
-          }
-        }
+					if (isValid) break;
+				}
 
-        if (!isValid) {
-          console.error(`[ERROR] PCD is not signed by Zupass`);
-          responses.push({ error: "PCD is not signed by Zupass", status: 401 });
-        } else {
-          responses.push({ status: 200, nullifier: pcd.claim.nullifierHash });
-        }
-      }
-    }
+				if (!isValid) {
+					console.error(`[ERROR] PCD is not signed by Zupass`);
+					responses.push({ error: "PCD is not signed by Zupass", status: 401 });
+				}
+			}
 
-    if (responses.every(r => r.status === 200)) {
-      return Response.json({ nullifiers: Array.from(nullifiers) });
-    } else {
-      const firstError = responses.find(r => r.status !== 200);
-      return new Response(JSON.stringify({ error: firstError?.error }), { status: firstError?.status || 400 });
-    }
+			// ... rest of the code ...
+		}
 
-  } catch (e) {
-    console.error("Authentication error:", e);
-    return new Response(
-      JSON.stringify({ error: e instanceof Error ? e.message : String(e) }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
-  }
-}
+		console.log("Responses:", responses);
+		console.log("Valid PCDs:", validPcds);
+		return new Response(JSON.stringify({ responses, validPcds }), {
+			status: 200,
+			headers: { 'Content-Type': 'application/json' }
+		});
+
+	} catch (error: any) {
+		console.error(`[ERROR] ${error.message}`);
+		return NextResponse.json(`Unknown error: ${error.message}`, { status: 500 });
+	}
+};
