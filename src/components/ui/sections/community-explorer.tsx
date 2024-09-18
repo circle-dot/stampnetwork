@@ -1,25 +1,18 @@
-"use client"
+'use client'
+
 import React, { useState, useMemo } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Search, Filter, Star } from "lucide-react"
-import Link from "next/link"
+import { Search } from "lucide-react"
 import Image from "next/image"
-import communityData from "@/data/communityData.json"
-
+import communityData from '@/data/communityData.json'
+import Link from 'next/link'
 
 export default function CommunityExplorer() {
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(['All'])
+  const [selectedCategory, setSelectedCategory] = useState('All')
 
-  const communities = useMemo(() => Object.values(communityData).map(community => ({
-    name: community.name,
-    members: community.members,
-    category: community.category,
-    image: community.roles[0].image,
-    link: `/${community.id}`
-  })), [])
+  const communities = useMemo(() => Object.values(communityData), [])
   const categories = useMemo(() => 
     ['All', ...Array.from(new Set(communities.map(c => c.category)))],
     [communities]
@@ -28,115 +21,68 @@ export default function CommunityExplorer() {
   const filteredCommunities = useMemo(() => {
     return communities.filter(community => {
       const matchesSearch = community.name.toLowerCase().includes(searchTerm.toLowerCase())
-      const matchesCategory = selectedCategories.includes('All') || selectedCategories.includes(community.category)
+      const matchesCategory = selectedCategory === 'All' || community.category === selectedCategory
       return matchesSearch && matchesCategory
     })
-  }, [communities, searchTerm, selectedCategories])
-
-  const handleCategoryToggle = (category: string) => {
-    setSelectedCategories(prev => {
-      if (category === 'All') {
-        // If 'All' is the only selected category, don't allow deselection
-        if (prev.length === 1 && prev.includes('All')) {
-          return prev;
-        }
-        // Otherwise, toggle 'All' and deselect others
-        return prev.includes('All') ? [] : ['All'];
-      }
-
-      if (prev.includes('All')) {
-        // If 'All' is currently selected, replace it with the clicked category
-        return [category];
-      }
-
-      let newCategories = [...prev];
-      if (prev.includes(category)) {
-        // Remove the category if it's already selected
-        newCategories = newCategories.filter(c => c !== category);
-      } else {
-        // Add the category if it's not selected
-        newCategories.push(category);
-      }
-
-      // If no categories are left, select 'All'
-      return newCategories.length === 0 ? ['All'] : newCategories;
-    });
-  };
+  }, [communities, searchTerm, selectedCategory])
 
   return (
-    <div className="min-h-screen bg-cyberpunk-bg text-foreground">
-      <header className="bg-card shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-primary">Explore Communities</h1>
-          <Button variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground">Propose a community</Button>
-        </div>
-      </header>
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="w-full md:w-64 space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-              <Input 
-                type="search" 
-                placeholder="Search communities" 
-                className="pl-10 bg-input text-foreground"
+    <div className="min-h-screen bg-white text-gray-900">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+          <div className="flex-1 min-w-0">
+            <div className="relative rounded-md shadow-sm max-w-lg border bg-background border-secondary">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-secondary" />
+              </div>
+              <Input
+                type="text"
+                className="pl-10 block w-full bg-background border border-secondary rounded-md focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <div className="bg-card shadow rounded-lg p-4 space-y-4">
-              <h2 className="font-semibold text-lg flex items-center gap-2 text-primary">
-                <Filter className="w-5 h-5" /> Filters
-              </h2>
-              <div>
-                <h3 className="font-medium mb-2 text-secondary">Categories</h3>
-                <div className="space-y-2">
-                  {categories.map((category) => (
-                    <label key={category} className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        className="rounded text-primary mr-2"
-                        checked={selectedCategories.includes(category)}
-                        onChange={() => handleCategoryToggle(category)}
-                      />
-                      {category}
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
           </div>
-          <div className="flex-1">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredCommunities.map((community) => (
-                <Link key={community.name} href={`${community.link}`} className="block">
-                  <div className="bg-card shadow rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105">
-                    <div className="p-4">
-                      <Image
-                        src={community.image}
-                        alt={community.name}
-                        width={64}
-                        height={64}
-                        className="rounded-full mx-auto mb-4"
-                      />
-                      <h3 className="font-semibold text-lg text-center mb-2 text-primary">{community.name}</h3>
-                      <Badge variant="secondary" className="block text-center bg-secondary text-secondary-foreground">
-                        {community.category}
-                      </Badge>
-                    </div>
-                    <div className="bg-muted px-4 py-3 flex justify-between items-center">
-                      <span className="text-primary">View Details</span>
-                      <Button variant="ghost" size="sm" className="text-accent hover:text-accent/90">
-                        <Star className="w-4 h-4" />
-                      </Button>   
-                    </div>
-                  </div>
-                </Link>
+          <div className="mt-4 md:mt-0 flex items-center space-x-4">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="bg-background border-secondary block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+            >
+              {categories.map((category) => (
+                <option key={category} value={category}>{category}</option>
               ))}
-            </div>
+            </select>
+            {/* <span className="text-gray-500">{filteredCommunities.length} space(s)</span> */}
           </div>
         </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {filteredCommunities.map((community) => (
+  <Link href={`/${community.id}`} key={community.id} className="block">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 flex flex-col items-center transition-all duration-300 hover:shadow-md hover:scale-[1.02]">
+      <Image
+        src={community.roles[0].image}
+        alt={community.name}
+        width={80}
+        height={80}
+        className="rounded-full mb-4"
+      />
+      <h3 className="text-lg font-semibold mb-1 flex items-center">
+        {community.name}
+        <span className="ml-1 text-yellow-400">✦</span>
+      </h3>
+      {/* <p className="text-sm text-gray-500 mb-4">{community.members} members</p> */}
+      <Button variant="outline" className="w-full">
+        Join
+      </Button>
+    </div>
+  </Link>
+))}
+        </div>
       </main>
+
     </div>
   )
 }
