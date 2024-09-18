@@ -80,22 +80,22 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
           value={searchTerm}
           onChange={handleSearchChange}
           placeholder="Search ENS or Address"
-          className="pl-10"
-        />
+          className="pl-10 block w-full bg-background border border-secondary rounded-md focus:ring-blue-500 focus:border-blue-500"
+          />
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
       </div>
       {isLoading && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
+        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg bg-background">
           <p className="p-2 text-sm text-gray-500">Loading...</p>
         </div>
       )}
       {error && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
+        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg bg-background">
           <p className="p-2 text-sm text-red-500">Error: {error.message}</p>
         </div>
       )}
       {(data || isEthAddress) && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
+        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg bg-background">
           {data?.data?.findFirstEnsName ? (
             <div className="p-2">
               <p 
