@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { usePrivy } from '@privy-io/react-auth'
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Twitter, Globe } from "lucide-react"
 import Image from "next/image"
 import { notFound } from "next/navigation"
@@ -174,10 +174,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
               <div className="space-y-4">
                 <EnsNameSearch
                   graphql={community.graphql}
-                  schema={community.schema}
-                  chain={community.chainId.toString()}
                   platform={community.id}
-                  verifyingContract={community.verifyingContract}
                 />
                 <UserGrid communityData={community} />
               </div>

@@ -5,25 +5,22 @@ import { FIND_FIRST_ENS_NAME } from '@/graphql/queries/getWalletByName';
 import debounce from 'lodash/debounce';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import VouchButtonCustom from './VouchButtonWithDialog';
 import { ethers } from 'ethers';
-import { Dialog } from "@/components/ui/dialog"; // Add this import
+import { Dialog } from "@/components/ui/dialog";
 import { UserProfileCard } from './UserProfileCard';
 interface EnsNameSearchProps {
   graphql: string;
-  schema: string;
-  chain: string;
   platform: string;
-  verifyingContract: string;
 }
 
-export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContract }: EnsNameSearchProps) {
+export function EnsNameSearch({ graphql, platform }: EnsNameSearchProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-  const [selectedName, setSelectedName] = useState<string | null>(null);
   const [isEthAddress, setIsEthAddress] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  console.log("GraphQL:", graphql);
+  
   // Debounce function
   const debouncedSetSearch = useCallback((value: string) => {
     const debouncedFunction = debounce((searchValue: string) => {
@@ -72,8 +69,7 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
     setIsDialogOpen(false);
   };
 
-  const handleNameClick = (name: string) => {
-    setSelectedName(name);
+  const handleNameClick = () => {
     setIsDialogOpen(true);
   };
 
@@ -105,7 +101,7 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
             <div className="p-2">
               <p 
                 className="text-sm cursor-pointer text-primary hover:text-blue-500"
-                onClick={() => handleNameClick(data.data.findFirstEnsName.name)}
+                onClick={() => handleNameClick()}
               >
                 {data.data.findFirstEnsName.name}
               </p>
@@ -123,7 +119,7 @@ export function EnsNameSearch({ graphql, schema, chain, platform, verifyingContr
             <div className="p-2">
               <p 
                 className="text-sm cursor-pointer text-primary hover:text-blue-500"
-                onClick={() => handleNameClick(searchTerm)}
+                onClick={() => handleNameClick()}
               >
                 {searchTerm} (Valid Ethereum address)
               </p>
