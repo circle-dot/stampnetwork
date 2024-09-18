@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd";
-import { whitelistedTickets, matchTicketToType } from "@/utils/zupass-config";
-import { TicketTypeName } from "@/utils/types";
+import { whitelistedTickets, matchTicketToType } from "@/zupass/zupass-config";
+import { TicketTypeName } from "@/zupass/types";
 import { isEqualEdDSAPublicKey } from "@pcd/eddsa-pcd";
 
 export const POST = async (req: NextRequest) => {
