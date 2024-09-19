@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import { useEnsName } from '../utils/hooks/useEnsName';
 import { ZuAuthButton } from '../zupass/ZupassButton';
+import Image from 'next/image'
 
 export default function Navbar() {
   const { ready, authenticated, login, user, logout, linkFarcaster, linkTwitter } = usePrivy()
@@ -46,13 +47,13 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="flex items-center justify-end p-4 bg-background text-foreground shadow-sm">
-      {/* <div className="flex items-center space-x-4">
-        <Link href="/" className="text-xl font-bold text-primary">
-          {siteName}
+    <nav className="flex items-center justify-between p-4 bg-background text-foreground shadow-sm">
+      <div className="hidden md:flex items-center space-x-4">
+        <Link href="/explorer" className="text-xl font-bold text-primary">
+          <Image src="/stamp.svg" alt="Stamp" width={32} height={32} />
         </Link>
-      </div> */}
-      <div className="flex items-center space-x-4">
+      </div>
+      <div className="flex items-center space-x-4 flex-1 justify-end">
         {ready && authenticated && user ? (
           <>
             <ZuAuthButton user={user} />
@@ -92,14 +93,6 @@ export default function Navbar() {
                         <Twitter className="w-4 h-4 mr-2" />
                         @{user.twitter.username}
                       </a>
-             {/*          <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        onClick={() => {console.log('disconnect twitter')}}
-                        className="text-secondary hover:text-secondary/90"
-                      >
-                        Disconnect
-                      </Button> */}
                     </div>
                   ) : (
                     <Button 
@@ -124,14 +117,6 @@ export default function Navbar() {
                         <Hash className="w-4 h-4 mr-2" />
                         @{user.farcaster.username}
                       </a>
-               {/*        <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        onClick={() => {console.log('disconnect farcaster')}}
-                        className="text-secondary hover:text-secondary/90"
-                      >
-                        Disconnect
-                      </Button> */}
                     </div>
                   ) : (
                     <Button 
