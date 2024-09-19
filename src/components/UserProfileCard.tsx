@@ -116,7 +116,7 @@ export function UserProfileCard({ recipient, onVouch, onCancel, graphqlEndpoint,
   };
 
   return (
-    <DialogContent className="sm:max-w-[425px]">
+    <>
       <DialogHeader>
         <DialogTitle>User Profile</DialogTitle>
       </DialogHeader>
@@ -175,6 +175,6 @@ export function UserProfileCard({ recipient, onVouch, onCancel, graphqlEndpoint,
           <Button onClick={onVouch} disabled={isLoading}>Vouch for this user</Button>
         </div>
       </div>
-    </DialogContent>
+    </>
   );
 }
