@@ -4,6 +4,7 @@ import fetchNonce from '@/utils/fetchNonce';
 import { showLoadingAlert, showErrorAlert, showSuccessAlert } from '@/utils/alertUtils';
 import { SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 import communityData from '@/data/communityData.json';
+import { encodeBytes32String, ethers } from 'ethers';
 
 export const handleVouch = async (
     recipient: string,
@@ -53,15 +54,18 @@ export const handleVouch = async (
          }
          // Use default values if endorsementType or power are not defined
          const endorsementType = 'endorsementType' in communityInfo ? communityInfo.endorsementType : "Default";
-         const power = 'power' in communityInfo ? communityInfo.power : "1";
+         const category = 'power' in communityInfo ? communityInfo.category : "Community";
          console.log('endorsementType', endorsementType)
-         console.log('power',power)
-         const schemaEncoder = new SchemaEncoder("uint8 power,string endorsementType,string platform");
-         const encodedData = schemaEncoder.encodeData([
-            { name: "power", value: power, type: "uint8" },
-            { name: "endorsementType", value: endorsementType, type: "string" },
-            { name: "platform", value: platform, type: "string" }
+         console.log('category',category)
+         const schemaEncoder = new SchemaEncoder("bytes32 endorsement,bytes32 platform,bytes32 category");
+         console.log('schemaEncoder', schemaEncoder)
+         // !TO DO, we need to encode the category/endorsement/platform as bytes32
+        const encodedData = schemaEncoder.encodeData([
+            { name: "endorsement", value: ethers.encodeBytes32String(endorsementType), type: "bytes32" },
+            { name: "platform", value: ethers.encodeBytes32String(platform), type: "bytes32" },
+            { name: "category", value: ethers.encodeBytes32String(category), type: "bytes32" }
         ]);
+        console.log('encodedData', encodedData);
         const domain = {
             name: 'EAS',
             version: '1.2.0',

@@ -49,12 +49,14 @@ export async function POST(request: NextRequest) {
         await eas.connect(signer);
 
         // Encode the data using SchemaEncoder
-        const schemaEncoder = new SchemaEncoder("uint8 power,string endorsementType,string platform");
+        // Encode the data using SchemaEncoder
+        const schemaEncoder = new SchemaEncoder("bytes32 endorsement,bytes32 platform,bytes32 category");
         const encodedData = schemaEncoder.encodeData([
-            { name: "power", value: communityInfo.power, type: "uint8" },
-            { name: "endorsementType", value: communityInfo.endorsementType, type: "string" },
-            { name: "platform", value: platform, type: "string" }
+            { name: "endorsement", value: ethers.encodeBytes32String(communityInfo.endorsementType), type: "bytes32" },
+            { name: "platform", value: ethers.encodeBytes32String(platform), type: "bytes32" },
+            { name: "category", value: ethers.encodeBytes32String(communityInfo.category), type: "bytes32" }
         ]);
+        // ... existing code ...
         //! TO DO maybe remove some hardcoded values?
    
         const flatSig = signature;
