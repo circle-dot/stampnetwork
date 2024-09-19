@@ -14,3 +14,7 @@ export const navSections = [
         className: "transition-colors hover:text-foreground"
     },
 ];
+export const EAS_CONFIG = {
+    EAS_CONTRACT_ADDRESS: "0x4200000000000000000000000000000000000021",
+    PRETRUST_SCHEMA: process.env.PRETRUST_SCHEMA || "0xe6428e26d2e2c1a92ac3f5b30014a228940017aa3e621e9f16f02f0ecb748de9",
+}

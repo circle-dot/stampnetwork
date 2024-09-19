@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { useState } from 'react';
 
-export function ZuAuthButton({ community }: { community: any }) {
-    const { handleZuAuth, isLoading, result, handleSign } = useZuAuth(community);
+export function ZuAuthButton({ community, user }: { community: any; user: any }) {
+    const { handleZuAuth, isLoading, result, handleSign } = useZuAuth(community, user);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const onZuAuth = async () => {
