@@ -29,7 +29,7 @@ const config = Object.entries(whitelistedTickets).flatMap(
             )
 );
 
-export const useZuAuth = (community: any, user: any) => {
+export const useZuAuth = (user: any) => {
     const [result, setResult] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [apiResponse, setApiResponse] = useState<any>(null);
@@ -74,7 +74,6 @@ export const useZuAuth = (community: any, user: any) => {
                 },
                 body: JSON.stringify({ 
                     pcds: pcd,
-                    community: community,
                     user: user
                 }),
             });

@@ -4,9 +4,10 @@ import { useZuAuth } from './zuauthLogic';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { useState } from 'react';
+import Image from 'next/image';
 
-export function ZuAuthButton({ community, user }: { community: any; user: any }) {
-    const { handleZuAuth, isLoading, result, handleSign } = useZuAuth(community, user);
+export function ZuAuthButton({ user }: { user: any }) {
+    const { handleZuAuth, isLoading, result, handleSign } = useZuAuth(user);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const onZuAuth = async () => {
@@ -46,9 +47,18 @@ export function ZuAuthButton({ community, user }: { community: any; user: any })
             <Button 
                 onClick={onZuAuth} 
                 disabled={isLoading} 
-                className="bg-[#f0b90b] hover:bg-[#d9a60b] text-[#19473f] font-semibold font-[Tahoma]"
+                className="bg-[#f0b90b] hover:bg-[#d9a60b] text-[#19473f] font-semibold font-[Tahoma] flex items-center justify-center px-3 py-2 text-sm sm:text-base"
             >
-                {isLoading ? 'Authenticating...' : 'Connect Zupass'}
+                <Image
+                    src="/zupass.webp"
+                    alt="Zupass"
+                    width={20}
+                    height={20}
+                    className="w-5 h-5 sm:w-6 sm:h-6 mr-2 rounded-full object-cover"
+                />
+                <span>
+                    {isLoading ? 'Auth...' : 'Zupass'}
+                </span>
             </Button>
 
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

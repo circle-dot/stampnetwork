@@ -4,10 +4,11 @@ import { TicketTypeName } from "@/zupass/types";
 import { isEqualEdDSAPublicKey } from "@pcd/eddsa-pcd";
 import handleAttest from "@/zupass/attestation/handleAttest";
 import { ethers } from "ethers";
+import { EAS_CONFIG } from "../../../../../config/siteConfig";
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { pcds: inputPCD, community, user } = await req.json();
+    const { pcds: inputPCD, user } = await req.json();
     let response: { error?: string; status: number; nullifier?: string; attestationUID?: string } = { status: 200 };
 
     try {
@@ -28,6 +29,17 @@ export const POST = async (req: NextRequest) => {
         throw new Error("Unable to determine ticket type.");
       }
       console.log(`Matched ticket type: ${ticketType}`);
+
+      // Find the event name for the matched ticket type
+      const eventName = whitelistedTickets[ticketType].find(
+        ticket => ticket.eventId === eventId && ticket.productId === productId
+      )?.eventName;
+
+      if (!eventName) {
+        console.log('Failed to find event name');
+        throw new Error("Unable to determine event name.");
+      }
+
       if (!pcd.claim.nullifierHash) {
         response = {
           error: "PCD ticket nullifier has not been defined",
@@ -71,15 +83,15 @@ export const POST = async (req: NextRequest) => {
               ethers.keccak256(
                 ethers.concat([
                   ethers.toUtf8Bytes(pcd.claim.partialTicket.attendeeSemaphoreId),
-                  ethers.keccak256(ethers.toUtf8Bytes(productId)) // Hash the productId
+                  ethers.keccak256(ethers.toUtf8Bytes(productId))
                 ])
               ).slice(0, 66)
             );
-            const category = community.category;
-            const subcategory = ticketType;
-            const issuer =  community.name;
-            const credentialType = ticketType;
-            const platform = "Zupass";
+            const category = EAS_CONFIG.CATEGORY;
+            const subcategory = eventName; // Use the event name as subcategory
+            const issuer = ticketType;
+            const credentialType = EAS_CONFIG.CREDENTIAL_TYPE;
+            const platform = EAS_CONFIG.PLATFORM;
 
             const attestationUID = await handleAttest(
               recipient,

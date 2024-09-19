@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Menu, LogOut, Twitter, Hash } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
-import { siteName, navSections } from '../../config/siteConfig'
+import { navSections } from '../../config/siteConfig'
 import {
   Dialog,
   DialogContent,
@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { useEnsName } from '../utils/hooks/useEnsName';
+import { ZuAuthButton } from '../zupass/ZupassButton';
 
 export default function Navbar() {
   const { ready, authenticated, login, user, logout, linkFarcaster, linkTwitter } = usePrivy()
@@ -40,15 +41,16 @@ export default function Navbar() {
   const displayName = ensName || (user?.wallet ? truncateAddress(user.wallet.address) : 'No wallet connected')
 
   return (
-    <nav className="flex items-center justify-between p-4 bg-background text-foreground shadow-sm">
-      <div className="flex items-center space-x-4">
+    <nav className="flex items-center justify-end p-4 bg-background text-foreground shadow-sm">
+      {/* <div className="flex items-center space-x-4">
         <Link href="/" className="text-xl font-bold text-primary">
           {siteName}
         </Link>
-      </div>
+      </div> */}
       <div className="flex items-center space-x-4">
         {ready && authenticated && user ? (
           <>
+            <ZuAuthButton user={user} />
             <Button 
               variant="outline" 
               className="border-secondary text-secondary"
