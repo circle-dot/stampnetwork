@@ -17,10 +17,11 @@ interface UserProfileCardProps {
   onVouch: () => void;
   onCancel: () => void;
   graphqlEndpoint: string;
-  platform:string;
+  platform: string;
+  isAuthenticated: boolean;
 }
 
-export function UserProfileCard({ recipient, onVouch, onCancel, graphqlEndpoint,platform }: UserProfileCardProps) {
+export function UserProfileCard({ recipient, onVouch, onCancel, graphqlEndpoint, platform, isAuthenticated }: UserProfileCardProps) {
   const [ensName, setEnsName] = useState<string | null>(null);
   const formattedRecipient = ethers.getAddress(recipient);
   const { data: ensData, isLoading: isEnsLoading } = useQuery({
@@ -153,7 +154,6 @@ export function UserProfileCard({ recipient, onVouch, onCancel, graphqlEndpoint,
           </div>
         </div>
 
-
         <div className="grid grid-cols-4 items-center gap-4">
           <span className="col-span-2">Vouches Received:</span>
           {isLoading ? (
@@ -171,8 +171,12 @@ export function UserProfileCard({ recipient, onVouch, onCancel, graphqlEndpoint,
           )}
         </div>
         <div className="flex justify-end space-x-2">
-          <Button onClick={onCancel} variant="outline">Cancel</Button>
-          <Button onClick={onVouch} disabled={isLoading}>Vouch for this user</Button>
+          <Button onClick={isAuthenticated ? onVouch : () => onVouch()} variant={isAuthenticated ? "default" : "outline"}>
+            {isAuthenticated ? "Vouch" : "Login to Vouch"}
+          </Button>
+          <Button variant="secondary" onClick={onCancel}>
+            Cancel
+          </Button>
         </div>
       </div>
     </DialogContent>

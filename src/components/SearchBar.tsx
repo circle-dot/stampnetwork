@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { FIND_FIRST_ENS_NAME } from '@/graphql/queries/getWalletByName';
 import debounce from 'lodash/debounce';
@@ -8,16 +8,34 @@ import { Search } from 'lucide-react';
 import { ethers } from 'ethers';
 import { Dialog } from "@/components/ui/dialog";
 import { UserProfileCard } from './UserProfileCard';
+import { usePrivy } from '@privy-io/react-auth';
+import { Button } from '@/components/ui/button';
+import { DialogContent, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { handleVouch } from '@/utils/handleAttestation';
+import { useWallets } from '@privy-io/react-auth';
+
 interface EnsNameSearchProps {
   graphql: string;
   platform: string;
+  schema: string;
+  chain: number;
+  verifyingContract: string;
 }
 
-export function EnsNameSearch({ graphql, platform }: EnsNameSearchProps) {
+export function EnsNameSearch({ graphql, platform, schema, chain, verifyingContract }: EnsNameSearchProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [isEthAddress, setIsEthAddress] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { login, authenticated, ready, user, getAccessToken } = usePrivy();
+  const [authStatus, setAuthStatus] = useState(false);
+  const { wallets } = useWallets();
+
+  useEffect(() => {
+    if (ready) {
+      setAuthStatus(authenticated);
+    }
+  }, [ready, authenticated]);
 
   // Debounce function
   const debouncedSetSearch = useCallback((value: string) => {
@@ -62,7 +80,30 @@ export function EnsNameSearch({ graphql, platform }: EnsNameSearchProps) {
     enabled: !!debouncedSearchTerm
   });
 
-  const handleVouch = () => {
+  const handleVouchConfirm = () => {
+    if (authStatus && data?.data?.findFirstEnsName) {
+      handleVouch(
+        data.data.findFirstEnsName.id,
+        user,
+        wallets,
+        getAccessToken,
+        schema,
+        chain,
+        platform,
+        verifyingContract
+      );
+    } else if (authStatus && isEthAddress) {
+      handleVouch(
+        searchTerm,
+        user,
+        wallets,
+        getAccessToken,
+        schema,
+        chain,
+        platform,
+        verifyingContract
+      );
+    }
     setIsDialogOpen(false);
   };
 
@@ -103,13 +144,33 @@ export function EnsNameSearch({ graphql, platform }: EnsNameSearchProps) {
                 {data.data.findFirstEnsName.name}
               </p>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <UserProfileCard
-                  recipient={data.data.findFirstEnsName.id}
-                  onVouch={handleVouch}
-                  onCancel={() => setIsDialogOpen(false)}
-                  graphqlEndpoint={graphql}
-                  platform={platform}  
-                />
+                <DialogContent>
+                  {authStatus ? (
+                    <UserProfileCard
+                      recipient={data.data.findFirstEnsName.id}
+                      onVouch={handleVouchConfirm}
+                      onCancel={() => setIsDialogOpen(false)}
+                      graphqlEndpoint={graphql}
+                      platform={platform}
+                      isAuthenticated={authStatus}
+                    />
+                  ) : (
+                    <>
+                      <DialogTitle>Login Required</DialogTitle>
+                      <DialogDescription>
+                        You need to be logged in to vouch for a user.
+                      </DialogDescription>
+                      <DialogFooter>
+                        <Button onClick={() => { login(); setIsDialogOpen(false); }}>
+                          Log In
+                        </Button>
+                        <Button variant="secondary" onClick={() => setIsDialogOpen(false)}>
+                          Cancel
+                        </Button>
+                      </DialogFooter>
+                    </>
+                  )}
+                </DialogContent>
               </Dialog>
             </div>
           ) : isEthAddress ? (
@@ -121,13 +182,33 @@ export function EnsNameSearch({ graphql, platform }: EnsNameSearchProps) {
                 {searchTerm} (Valid Ethereum address)
               </p>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <UserProfileCard
-                  recipient={searchTerm}
-                  onVouch={handleVouch}
-                  onCancel={() => setIsDialogOpen(false)}
-                  graphqlEndpoint={graphql}
-                  platform={platform}  
-                />
+                <DialogContent>
+                  {authStatus ? (
+                    <UserProfileCard
+                      recipient={searchTerm}
+                      onVouch={handleVouchConfirm}
+                      onCancel={() => setIsDialogOpen(false)}
+                      graphqlEndpoint={graphql}
+                      platform={platform}
+                      isAuthenticated={authStatus}
+                    />
+                  ) : (
+                    <>
+                      <DialogTitle>Login Required</DialogTitle>
+                      <DialogDescription>
+                        You need to be logged in to vouch for a user.
+                      </DialogDescription>
+                      <DialogFooter>
+                        <Button onClick={() => { login(); setIsDialogOpen(false); }}>
+                          Log In
+                        </Button>
+                        <Button variant="secondary" onClick={() => setIsDialogOpen(false)}>
+                          Cancel
+                        </Button>
+                      </DialogFooter>
+                    </>
+                  )}
+                </DialogContent>
               </Dialog>
             </div>
           ) : (

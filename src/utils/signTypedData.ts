@@ -22,13 +22,12 @@ export const signTypedData = async (user: { wallet: { walletClientType: string; 
         const provider = await wallet.getEthereumProvider();
         const address = wallet.address;
         const defaultChain = chainId === 8453 ? base : baseSepolia;
-
         const walletClient = createWalletClient({
             account: address as `0x${string}`,
             chain: defaultChain,
             transport: custom(provider),
         });
-
+        
         signature = await walletClient.signTypedData({
             //@ts-expect-error !TO DO check how to fix this
             address,
@@ -39,5 +38,6 @@ export const signTypedData = async (user: { wallet: { walletClientType: string; 
         });
     }
 
+    console.log('signature', signature)
     return signature;
 };

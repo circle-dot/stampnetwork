@@ -180,6 +180,9 @@ export default function ProjectPage({ params }: { params: { project: string } })
                 <EnsNameSearch
                   graphql={community.graphql}
                   platform={community.id}
+                  schema={community.schema}
+                  chain={community.chainId}
+                  verifyingContract={community.verifyingContract}
                 />
                 <UserGrid communityData={community} />
               </div>

@@ -12,7 +12,7 @@ export const handleVouch = async (
     wallets: any,
     getAccessToken: any,
     schema: string,
-    chain: string,
+    chain: number | string,
     platform: string,
     verifyingContract: string
 ) => {
@@ -42,7 +42,7 @@ export const handleVouch = async (
             return;
         }
 
-        const chainId = parseInt(chain);
+        const chainId = typeof chain === 'string' ? parseInt(chain) : chain;
         const schemaUID = schema;
         const attester = user?.wallet.address;
         console.log('attester', attester);
@@ -105,6 +105,8 @@ export const handleVouch = async (
             primaryType: 'Attest',
             message: value,
         };
+        
+        console.log('wallets', wallets)
         const signature = await signTypedData(user, wallets, chainId, typedData);
 
 
