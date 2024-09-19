@@ -5,14 +5,26 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { useState } from 'react';
 import Image from 'next/image';
+import { Loader2 } from 'lucide-react'; // Import the spinner icon
+import { matchTicketToType, whitelistedTickets } from './zupass-config';
 
 export function ZuAuthButton({ user }: { user: any }) {
     const { handleZuAuth, isLoading, result, handleSign } = useZuAuth(user);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [signingStates, setSigningStates] = useState<{ [key: string]: boolean }>({});
 
     const onZuAuth = async () => {
         await handleZuAuth();
         setIsDialogOpen(true);
+    };
+
+    const handleSignWithLoading = async (pcdData: any, index: number) => {
+        setSigningStates(prev => ({ ...prev, [index]: true }));
+        try {
+            await handleSign(pcdData);
+        } finally {
+            setSigningStates(prev => ({ ...prev, [index]: false }));
+        }
     };
 
     const renderPcdInfo = (pcdWrapper: any, index: number) => {
@@ -22,14 +34,33 @@ export function ZuAuthButton({ user }: { user: any }) {
             const pcdData = JSON.parse(pcdWrapper.pcd);
             console.log("Parsed PCD data:", pcdData);
 
-            const ticketType = pcdData.claim?.partialTicket?.ticketCategory || "Not specified";
             const eventId = pcdData.claim?.partialTicket?.eventId || "Not specified";
+            const productId = pcdData.claim?.partialTicket?.productId || "Not specified";
+
+            const ticketType = matchTicketToType(eventId, productId);
+            const ticketInfo = ticketType ? whitelistedTickets[ticketType].find(t => t.eventId === eventId && t.productId === productId) : null;
+
+            const displayTicketType = ticketInfo ? ticketInfo.productName : "Unknown";
+            const displayEventName = ticketInfo ? ticketInfo.eventName : "Unknown Event";
 
             return (
                 <div key={index} className="mb-4 p-4 border rounded">
-                    <p>Ticket Type: {ticketType}</p>
-                    <p>Event ID: {eventId}</p>
-                    <Button onClick={() => handleSign(pcdData)} className="mt-2">Sign</Button>
+                    <p>Ticket Type: {displayTicketType}</p>
+                    <p>Event Name: {displayEventName}</p>
+                    <Button 
+                        onClick={() => handleSignWithLoading(pcdData, index)} 
+                        disabled={signingStates[index]}
+                        className="mt-2"
+                    >
+                        {signingStates[index] ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Signing...
+                            </>
+                        ) : (
+                            'Sign'
+                        )}
+                    </Button>
                 </div>
             );
         } catch (error) {
