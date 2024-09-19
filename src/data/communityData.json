@@ -2,7 +2,7 @@
     "AgoraPass": {
       "id": "AgoraPass",
       "name": "AgoraPass",
-      "schema": "0x5ee00c7a6606190e090ea17749ec77fe23338387c23c0643c4251380f37eebc3",
+      "schema": "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
       "chainId": 84532,
       "endorsementType": "Social",
       "power": "1",
@@ -35,7 +35,7 @@
     "CreciStamp": {
       "id": "CreciStamp",
       "name": "CreciStamp",
-      "schema": "0x5ee00c7a6606190e090ea17749ec77fe23338387c23c0643c4251380f37eebc3",
+      "schema": "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
       "chainId": 84532,
       "endorsementType": "Social",
       "power": "1",
@@ -68,7 +68,7 @@
     "EdgeCity": {
       "id": "EdgeCity",
       "name": "Edge City",
-      "schema": "0x5ee00c7a6606190e090ea17749ec77fe23338387c23c0643c4251380f37eebc3",
+      "schema": "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
       "chainId": 84532,
       "endorsementType": "Social",
       "power": "1",
@@ -96,6 +96,39 @@
       "links": [
         { "type": "website", "url": "https://www.edgecity.live" },
         { "type": "twitter", "url": "https://x.com/JoinEdgeCity" }
+      ]
+    },
+    "BuilderMonastery": {
+      "id": "BuilderMonastery",
+      "name": "Builder Monastery",
+      "schema": "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
+      "chainId": 84532,
+      "endorsementType": "Social",
+      "power": "1",
+      "graphql": "https://base-sepolia.easscan.org/graphql",
+      "verifyingContract": "0x4200000000000000000000000000000000000021",
+      "description": "Builder Monastery offers a focused environment where individuals can work on difficult problems. This space fosters collaboration, curiosity, and craftsmanship. Builder Monastery is designed to ensure everyone can engage fully, without fear of missing out on key experiences. ",
+      "members": 42069,
+      "category": "Zuzalu",
+      "roles": [
+        {
+          "name": "Citizen",
+          "members": 41934,
+          "image": "/BuilderMonasteryLogo.png",
+          "rewards": ["Be part of the Web of Trust"],
+          "requirements": ["Vouch for someone"]
+        },
+        {
+          "name": "Trusted Citizen",
+          "members": 135,
+          "image": "/BuilderMonasteryLogo.png",
+          "rewards": [ "Access to community forums", "Participation in community votes"],
+          "requirements": ["Connect your Zupass", "Have the necessary rank score"]
+        }
+      ],
+      "links": [
+        { "type": "website", "url": "https://www.buildermonastery.com" },
+        { "type": "twitter", "url": "https://x.com/b_monastery" }
       ]
     }
   }
