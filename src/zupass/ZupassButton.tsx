@@ -88,7 +88,7 @@ export function ZuAuthButton({ user }: { user: any }) {
                     className="w-5 h-5 sm:w-6 sm:h-6 mr-2 rounded-full object-cover"
                 />
                 <span>
-                    {isLoading ? 'Auth...' : 'Zupass'}
+                    {isLoading ? 'Auth...' : 'Link Zupass'}
                 </span>
             </Button>
 

@@ -40,6 +40,11 @@ export default function Navbar() {
 
   const displayName = ensName || (user?.wallet ? truncateAddress(user.wallet.address) : 'No wallet connected')
 
+  const handleLogout = () => {
+    logout();
+    setIsDialogOpen(false);
+  };
+
   return (
     <nav className="flex items-center justify-end p-4 bg-background text-foreground shadow-sm">
       {/* <div className="flex items-center space-x-4">
@@ -69,7 +74,7 @@ export default function Navbar() {
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      onClick={logout}
+                      onClick={handleLogout}
                       className="text-destructive hover:text-destructive/90"
                     >
                       <LogOut className="w-4 h-4 mr-2" />

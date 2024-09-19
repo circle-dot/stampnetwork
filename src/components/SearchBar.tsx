@@ -19,8 +19,6 @@ export function EnsNameSearch({ graphql, platform }: EnsNameSearchProps) {
   const [isEthAddress, setIsEthAddress] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  console.log("GraphQL:", graphql);
-  
   // Debounce function
   const debouncedSetSearch = useCallback((value: string) => {
     const debouncedFunction = debounce((searchValue: string) => {
