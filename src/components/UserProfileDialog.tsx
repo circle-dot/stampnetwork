@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useQuery } from '@tanstack/react-query';
-import { FIND_FIRST_ENS_NAME } from '@/graphql/queries/getWalletByName';
 import COUNT_ATTESTATIONS_RECEIVED from '@/graphql/queries/AttestationsReceivedCount';
 import COUNT_ATTESTATIONS_MADE from '@/graphql/queries/AttestationsMadeCount';
 import { ethers } from 'ethers';
@@ -12,6 +11,7 @@ import { Copy } from 'lucide-react';
 import { showCopySuccessAlert } from '@/utils/alertUtils';
 import Avatar from 'boring-avatars';
 import { usePrivy } from '@privy-io/react-auth';
+import { useEnsName } from '@/utils/hooks/useEnsName';
 
 interface UserProfileDialogProps {
   graphqlEndpoint: string;
@@ -19,40 +19,17 @@ interface UserProfileDialogProps {
 
 export function UserProfileDialog({ graphqlEndpoint }: UserProfileDialogProps) {
   const { ready, authenticated, user } = usePrivy();
-  const [ensName, setEnsName] = useState<string | null>(null);
-  const [formattedAddress, setFormattedAddress] = useState<string | null>(null);
+  const [formattedAddress, setFormattedAddress] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (ready && authenticated && user?.wallet?.address) {
       setFormattedAddress(ethers.getAddress(user.wallet.address));
+    } else {
+      setFormattedAddress(undefined);
     }
   }, [ready, authenticated, user]);
 
-  const { data: ensData, isLoading: isEnsLoading } = useQuery({
-    queryKey: ['ensName', formattedAddress],
-    queryFn: async () => {
-      if (!formattedAddress) return null;
-      const response = await fetch(graphqlEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: FIND_FIRST_ENS_NAME,
-          variables: { 
-            where: { 
-              id: { contains: formattedAddress.toLowerCase() } 
-            } 
-          },
-        }),
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    },
-    enabled: !!formattedAddress,
-  });
+  const { data: ensName, isLoading: isEnsLoading } = useEnsName(formattedAddress);
 
   const { data: vouchesReceived, isLoading: isVouchesReceivedLoading } = useQuery({
     queryKey: ['vouchesReceived', formattedAddress],
@@ -106,12 +83,6 @@ export function UserProfileDialog({ graphqlEndpoint }: UserProfileDialogProps) {
     enabled: !!formattedAddress,
   });
 
-  useEffect(() => {
-    if (ensData?.data?.findFirstEnsName) {
-      setEnsName(ensData.data.findFirstEnsName.name);
-    }
-  }, [ensData]);
-
   const isLoading = isEnsLoading || isVouchesReceivedLoading || isVouchesMadeLoading;
   const receivedCount = vouchesReceived?.data?.aggregateAttestation?._count?.recipient || 0;
   const madeCount = vouchesMade?.data?.aggregateAttestation?._count?.attester || 0;
@@ -152,7 +123,7 @@ export function UserProfileDialog({ graphqlEndpoint }: UserProfileDialogProps) {
             ) : (
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-lg truncate">
-                  {ensName || truncateAddress(formattedAddress)}
+                  {ensName || (formattedAddress ? truncateAddress(formattedAddress) : 'No address')}
                 </span>
                 <Button
                   variant="ghost"

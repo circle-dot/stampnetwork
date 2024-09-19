@@ -12,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { useEnsName } from '../utils/hooks/useEnsName';
 
 export default function Navbar() {
   const { ready, authenticated, login, user, logout, linkFarcaster, linkTwitter } = usePrivy()
@@ -34,6 +35,10 @@ export default function Navbar() {
     }
   }
 
+  const { data: ensName } = useEnsName(user?.wallet?.address);
+
+  const displayName = ensName || (user?.wallet ? truncateAddress(user.wallet.address) : 'No wallet connected')
+
   return (
     <nav className="flex items-center justify-between p-4 bg-background text-foreground shadow-sm">
       <div className="flex items-center space-x-4">
@@ -49,7 +54,7 @@ export default function Navbar() {
               className="border-secondary text-secondary"
               onClick={() => setIsDialogOpen(true)}
             >
-              {user.wallet ? truncateAddress(user.wallet.address) : 'No wallet connected'}
+              {displayName}
             </Button>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogContent className="bg-card text-card-foreground">
@@ -58,7 +63,7 @@ export default function Navbar() {
                 </DialogHeader>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center p-2 bg-muted rounded-lg">
-                    <span>{user.wallet ? truncateAddress(user.wallet.address) : 'No wallet connected'}</span>
+                    <span>{displayName}</span>
                     <Button 
                       variant="ghost" 
                       size="sm" 

@@ -38,16 +38,12 @@ const VouchButtonCustom: React.FC<VouchButtonCustomProps> = ({ recipient, classN
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
                 <Button className={buttonStyles}>
-                    Vouch
+                    View
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 {authStatus ? (
                     <>
-                        <DialogTitle className='hidden'>User profile</DialogTitle>
-                        <DialogDescription className='hidden'>
-                            This card displays the information of the user profile
-                        </DialogDescription>
                         <UserProfileCard
                             recipient={recipient}
                             onVouch={handleVouchConfirm}
