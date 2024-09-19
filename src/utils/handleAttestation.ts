@@ -4,7 +4,7 @@ import fetchNonce from '@/utils/fetchNonce';
 import { showLoadingAlert, showErrorAlert, showSuccessAlert } from '@/utils/alertUtils';
 import { SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 import communityData from '@/data/communityData.json';
-import { encodeBytes32String, ethers } from 'ethers';
+import { ethers } from 'ethers';
 
 export const handleVouch = async (
     recipient: string,
