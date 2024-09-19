@@ -59,11 +59,10 @@ export function EnsNameSearch({ graphql, platform }: EnsNameSearchProps) {
       }
       return response.json();
     },
-    enabled: !!debouncedSearchTerm // Only run the query if there's a search term
+    enabled: !!debouncedSearchTerm
   });
 
   const handleVouch = () => {
-    // Handle vouch action here if needed
     setIsDialogOpen(false);
   };
 
