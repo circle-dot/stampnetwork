@@ -23,7 +23,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
   const { ready, authenticated, login, user } = usePrivy();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("roles");
+  const [activeTab, setActiveTab] = useState("interact"); 
 
   useEffect(() => {
     if (ready) {
@@ -86,13 +86,13 @@ export default function ProjectPage({ params }: { params: { project: string } })
                     )}
                   </DialogContent>
                 </Dialog>
-                
+
                 {isAuthenticated && (
                   <div className="flex justify-center">
-<ZuAuthButton community={community} user={user} />
-          </div>
+                    <ZuAuthButton community={community} user={user} />
+                  </div>
                 )}
-                
+
                 {/* Tab triggers in sidebar */}
                 <div className="flex flex-row md:flex-col w-full space-y-0 space-x-2 md:space-y-2 md:space-x-0 mt-4">
                   <Button
@@ -172,6 +172,9 @@ export default function ProjectPage({ params }: { params: { project: string } })
             )}
             {activeTab === "interact" && (
               <div className="space-y-4">
+                <div>
+                  {community.description}
+                </div>
                 <EnsNameSearch
                   graphql={community.graphql}
                   platform={community.id}
