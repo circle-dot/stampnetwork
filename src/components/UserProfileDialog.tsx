@@ -130,7 +130,7 @@ export function UserProfileDialog({ graphqlEndpoint }: UserProfileDialogProps) {
   }
 
   return (
-    <DialogContent className="sm:max-w-[425px] ">
+    <>
       <DialogHeader>
         <DialogTitle>Your Profile</DialogTitle>
       </DialogHeader>
@@ -183,10 +183,7 @@ export function UserProfileDialog({ graphqlEndpoint }: UserProfileDialogProps) {
             <span className="col-span-2">{madeCount}</span>
           )}
         </div>
-        <div className="flex justify-end space-x-2">
-          {/* Add any actions specific to the user's own profile if needed */}
-        </div>
       </div>
-    </DialogContent>
+    </>
   );
 }
