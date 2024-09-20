@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
         let verifiedClaims;
         try {
             verifiedClaims = await privy.verifyAuthToken(authorization);
-             console.log('verifiedClaims', verifiedClaims);
+            console.log('Verified claims:', verifiedClaims);
         } catch (error) {
             console.error('Token verification failed:', error);
             return NextResponse.json({ error: 'Token verification failed' }, { status: 401 });
@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
 
         // Extract user data from request body
         const { platform, recipient, attester, signature } = await request.json();
+        console.log('Request data:', { platform, recipient, attester });
 
         // Fetch community info from communityData
         const communityInfo = communityData[platform as keyof typeof communityData];
@@ -49,20 +50,16 @@ export async function POST(request: NextRequest) {
         await eas.connect(signer);
 
         // Encode the data using SchemaEncoder
-        // Encode the data using SchemaEncoder
         const schemaEncoder = new SchemaEncoder("bytes32 endorsement,bytes32 platform,bytes32 category");
         const encodedData = schemaEncoder.encodeData([
             { name: "endorsement", value: ethers.encodeBytes32String(communityInfo.endorsementType), type: "bytes32" },
             { name: "platform", value: ethers.encodeBytes32String(platform), type: "bytes32" },
             { name: "category", value: ethers.encodeBytes32String(communityInfo.category), type: "bytes32" }
         ]);
-        // ... existing code ...
-        //! TO DO maybe remove some hardcoded values?
-   
+
         const flatSig = signature;
-        // console.log('Signature', flatSig);
         const expandedSig = Utils.splitSignature(flatSig);
-        console.log('expandedSig', expandedSig);
+        console.log('Expanded signature:', expandedSig);
 
         // Create the delegated attestation
         const transaction = await eas.attestByDelegation({
@@ -80,16 +77,8 @@ export async function POST(request: NextRequest) {
         });
 
         const newAttestationUID = await transaction.wait();
+        console.log('New attestation UID:', newAttestationUID);
 
-        // console.log('New attestation UID:', newAttestationUID);
-        // console.log('Transaction receipt:', transaction.receipt);
-/*         try {
-            const result = await updateEigenScore();
-            console.log('Data updated successfully:', result);
-            // Handle result if needed
-        } catch (error) {
-            console.error('Error updating eigenScore:', error);
-        } */
         // Return success response with the newly created attestation UID
         return NextResponse.json({ newAttestationUID });
     } catch (error) {
