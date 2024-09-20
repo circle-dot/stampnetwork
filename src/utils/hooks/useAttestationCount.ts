@@ -3,7 +3,6 @@ import COUNT_ATTESTATIONS_RECEIVED from '@/graphql/queries/AttestationsReceivedC
 import COUNT_ATTESTATIONS_MADE from '@/graphql/queries/AttestationsMadeCount';
 
 export const useAttestationCounts = (graphqlEndpoint: string, formattedAddress: string | undefined, community: string) => {
-  console.log('community!!', community);
   const { data: vouchesReceived, isLoading: isVouchesReceivedLoading } = useQuery({
     queryKey: ['vouchesReceived', formattedAddress],
     queryFn: async () => {

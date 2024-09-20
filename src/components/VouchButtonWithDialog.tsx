@@ -14,9 +14,19 @@ interface VouchButtonCustomProps {
     chain: string;
     platform: string;
     verifyingContract: string;
+    buttonText?: string; 
 }
 
-const VouchButtonCustom: React.FC<VouchButtonCustomProps> = ({ recipient, className, graphqlEndpoint, schema, chain, platform, verifyingContract }) => {
+const VouchButtonCustom: React.FC<VouchButtonCustomProps> = ({ 
+    recipient, 
+    className, 
+    graphqlEndpoint, 
+    schema, 
+    chain, 
+    platform, 
+    verifyingContract,
+    buttonText = 'View' // Default text if not provided
+}) => {
     
     const { getAccessToken, user, login, authenticated, ready } = usePrivy();
     const [authStatus, setAuthStatus] = useState(false);
@@ -38,7 +48,7 @@ const VouchButtonCustom: React.FC<VouchButtonCustomProps> = ({ recipient, classN
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
                 <Button className={buttonStyles}>
-                    View
+                    {buttonText}
                 </Button>
             </DialogTrigger>
             <DialogContent>
