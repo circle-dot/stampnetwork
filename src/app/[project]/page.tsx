@@ -7,11 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Twitter, Globe } from "lucide-react"
 import Image from "next/image"
 import { notFound } from "next/navigation"
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import communityData from "@/data/communityData.json"
 import { EnsNameSearch } from "@/components/SearchBar"
 import { UserGrid } from '@/components/UserGrid'
-import { UserProfileDialog } from "@/components/UserProfileDialog"
+import { UserProfile } from "@/components/UserProfile"
 import Graph from '@/components/ui/sections/graph'
 // import { ZuAuthButton } from '@/zupass/ZupassButton';
 
@@ -21,7 +21,7 @@ function getCommunityData(id: string) {
 
 export default function ProjectPage({ params }: { params: { project: string } }) {
   // const { ready, authenticated, login, user } = usePrivy();
-   const { ready, authenticated, login } = usePrivy();
+   const { ready, authenticated } = usePrivy();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -67,33 +67,13 @@ export default function ProjectPage({ params }: { params: { project: string } })
                       Check your profile
                     </Button>
                   </DialogTrigger>
-                  <DialogContent>
-                    {isAuthenticated ? (
-                      <UserProfileDialog graphqlEndpoint={community.graphql} />
-                    ) : (
-                      <>
-                        <DialogTitle>Login Required</DialogTitle>
-                        <DialogDescription>
-                          You need to be logged in to view your profile.
-                        </DialogDescription>
-                        <DialogFooter>
-                          <Button onClick={() => { login(); setIsDialogOpen(false); }}>
-                            Log In
-                          </Button>
-                          <Button variant="secondary" onClick={() => setIsDialogOpen(false)}>
-                            Cancel
-                          </Button>
-                        </DialogFooter>
-                      </>
-                    )}
-                  </DialogContent>
+                  <UserProfile
+                    isOwnProfile={true}
+                    graphqlEndpoint={community.graphql}
+                    platform={community.id}
+                    isAuthenticated={isAuthenticated}
+                  />
                 </Dialog>
-
-                {/* {isAuthenticated && (
-                  <div className="flex justify-center">
-                    <ZuAuthButton community={community} user={user} />
-                  </div>
-                )} */}
 
                 {/* Tab triggers in sidebar */}
                 <div className="flex flex-row md:flex-col w-full space-y-0 space-x-2 md:space-y-2 md:space-x-0 mt-4">

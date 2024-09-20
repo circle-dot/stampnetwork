@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { ethers } from 'ethers';
 import { Dialog } from "@/components/ui/dialog";
-import { UserProfileCard } from './UserProfileCard';
+import { UserProfile } from './UserProfile'; 
 import { usePrivy } from '@privy-io/react-auth';
 import { Button } from '@/components/ui/button';
 import { DialogContent, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -146,7 +146,8 @@ export function EnsNameSearch({ graphql, platform, schema, chain, verifyingContr
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent>
                   {authStatus ? (
-                    <UserProfileCard
+                    <UserProfile
+                      isOwnProfile={false}
                       recipient={data.data.findFirstEnsName.id}
                       onVouch={handleVouchConfirm}
                       onCancel={() => setIsDialogOpen(false)}
@@ -184,7 +185,8 @@ export function EnsNameSearch({ graphql, platform, schema, chain, verifyingContr
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent>
                   {authStatus ? (
-                    <UserProfileCard
+                    <UserProfile
+                      isOwnProfile={false}
                       recipient={searchTerm}
                       onVouch={handleVouchConfirm}
                       onCancel={() => setIsDialogOpen(false)}

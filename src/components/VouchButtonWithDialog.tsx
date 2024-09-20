@@ -4,7 +4,7 @@ import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { Button } from '@/components/ui/button';
 import { handleVouch } from '@/utils/handleAttestation';
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { UserProfileCard } from './UserProfileCard';
+import { UserProfile } from './UserProfile';
 
 interface VouchButtonCustomProps {
     recipient: string;
@@ -43,16 +43,15 @@ const VouchButtonCustom: React.FC<VouchButtonCustomProps> = ({ recipient, classN
             </DialogTrigger>
             <DialogContent>
                 {authStatus ? (
-                    <>
-                        <UserProfileCard
-                            recipient={recipient}
-                            onVouch={handleVouchConfirm}
-                            onCancel={() => setIsDialogOpen(false)}
-                            graphqlEndpoint={graphqlEndpoint}
-                            platform={platform}
-                            isAuthenticated={authStatus}
-                        />
-                    </>
+                    <UserProfile
+                        isOwnProfile={false}
+                        recipient={recipient}
+                        onVouch={handleVouchConfirm}
+                        onCancel={() => setIsDialogOpen(false)}
+                        graphqlEndpoint={graphqlEndpoint}
+                        platform={platform}
+                        isAuthenticated={authStatus}
+                    />
                 ) : (
                     <>
                         <DialogTitle>Login Required</DialogTitle>
