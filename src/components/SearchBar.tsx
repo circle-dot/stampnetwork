@@ -119,7 +119,7 @@ export function EnsNameSearch({ graphql, platform, schema, chain, verifyingContr
           value={searchTerm}
           onChange={handleSearchChange}
           placeholder="Search ENS or Address"
-          className="pl-10 block w-full bg-background border border-secondary rounded-md focus:ring-blue-500 focus:border-blue-500"
+          className="pl-10 block w-full bg-background border border-secondary rounded-xl focus:ring-blue-500 focus:border-blue-500"
           />
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
       </div>

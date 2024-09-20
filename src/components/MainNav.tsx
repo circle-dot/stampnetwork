@@ -59,7 +59,7 @@ export default function Navbar() {
             <ZuAuthButton user={user} />
             <Button 
               variant="outline" 
-              className="border-secondary text-secondary"
+              className="border-secondary text-secondary rounded-xl"
               onClick={() => setIsDialogOpen(true)}
             >
               {displayName}
@@ -70,7 +70,7 @@ export default function Navbar() {
                   <DialogTitle className="text-primary">Your Account</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center p-2 bg-muted rounded-lg">
+                  <div className="flex justify-between items-center p-2 bg-muted  rounded-xl">
                     <span>{displayName}</span>
                     <Button 
                       variant="ghost" 

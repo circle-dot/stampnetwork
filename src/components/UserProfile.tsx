@@ -66,7 +66,7 @@ export function UserProfile({
   }
 
   return (
-    <DialogContent>
+    <DialogContent className='rounded-xl'>
       <DialogHeader>
         <DialogTitle>{isOwnProfile ? "Your Profile" : "User Profile"}</DialogTitle>
       </DialogHeader>
@@ -121,10 +121,10 @@ export function UserProfile({
         </div>
         {!isOwnProfile && (
           <div className="flex justify-end space-x-2">
-            <Button onClick={isAuthenticated ? onVouch : () => onVouch?.()} variant={isAuthenticated ? "default" : "outline"}>
+            <Button onClick={isAuthenticated ? onVouch : () => onVouch?.()} variant={isAuthenticated ? "default" : "outline"} className='rounded-xl'>
               {isAuthenticated ? "Vouch" : "Login to Vouch"}
             </Button>
-            <Button variant="secondary" onClick={onCancel}>
+            <Button variant="secondary" onClick={onCancel} className='rounded-xl'>
               Cancel
             </Button>
           </div>

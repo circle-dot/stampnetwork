@@ -63,7 +63,7 @@ export default function ProjectPage({ params }: { params: { project: string } })
                 </div>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button variant="default" className="w-full mb-4">
+                    <Button variant="default" className="w-full mb-4 rounded-xl">
                       Check your profile
                     </Button>
                   </DialogTrigger>
@@ -77,23 +77,23 @@ export default function ProjectPage({ params }: { params: { project: string } })
 
                 {/* Tab triggers in sidebar */}
                 <div className="flex flex-row md:flex-col w-full space-y-0 space-x-2 md:space-y-2 md:space-x-0 mt-4">
+                <Button
+                    variant={activeTab === "interact" ? "default" : "outline"}
+                    className="flex-1 md:w-full justify-center md:justify-start rounded-xl"
+                    onClick={() => setActiveTab("interact")}
+                  >
+                    Vouch
+                  </Button>
                   <Button
                     variant={activeTab === "roles" ? "default" : "outline"}
-                    className="flex-1 md:w-full justify-center md:justify-start"
+                    className="flex-1 md:w-full justify-center md:justify-start rounded-xl"
                     onClick={() => setActiveTab("roles")}
                   >
                     Roles
                   </Button>
                   <Button
-                    variant={activeTab === "interact" ? "default" : "outline"}
-                    className="flex-1 md:w-full justify-center md:justify-start"
-                    onClick={() => setActiveTab("interact")}
-                  >
-                    Interact
-                  </Button>
-                  <Button
                     variant={activeTab === "graph" ? "default" : "outline"}
-                    className="flex-1 md:w-full justify-center md:justify-start"
+                    className="flex-1 md:w-full justify-center md:justify-start rounded-xl"
                     onClick={() => setActiveTab("graph")}
                   >
                     Graph

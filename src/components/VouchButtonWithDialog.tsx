@@ -32,7 +32,7 @@ const VouchButtonCustom: React.FC<VouchButtonCustomProps> = ({ recipient, classN
         setIsDialogOpen(false);
     };
 
-    const buttonStyles = `inline-flex w-full items-center justify-center rounded-md bg-primary text-primary-foreground hover:bg-primary/90 px-6 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-50 ${className}`;
+    const buttonStyles = `inline-flex w-full items-center justify-center rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-6 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-50 ${className}`;
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
