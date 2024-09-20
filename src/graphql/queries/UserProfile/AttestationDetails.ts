@@ -5,6 +5,7 @@ const ATTESTATION_DETAILS = `
       attester
       recipient
       decodedDataJson
+      timeCreated
     }
   }
 `;

@@ -12,9 +12,10 @@ import { showCopySuccessAlert } from '@/utils/alertUtils';
 import { ethers } from 'ethers';
 import Image from 'next/image';
 import communityData from "@/data/communityData.json";
-import VouchButtonCustom from '@/components/VouchButtonWithDialog';
+import VouchButton from '@/components/VouchButton';
 import Link from 'next/link';
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import Loading from '@/app/loading';
 
 export default function AddressPage({ params }: { params: { project: string, address: string } }) {
   const { project, address: rawAddress } = params;
@@ -34,7 +35,7 @@ export default function AddressPage({ params }: { params: { project: string, add
     showCopySuccessAlert();
   };
 
-  if (isAttestationsLoading || isCountsLoading || ensLoading) return <div>Loading...</div>;
+  if (isAttestationsLoading || isCountsLoading || ensLoading) return <Loading />;
   if (attestationsError) return <div>Error: {attestationsError.message}</div>;
 
   const receivedCount = vouchesReceived?.data?.aggregateAttestation?._count?.recipient ?? 0;
@@ -44,7 +45,7 @@ export default function AddressPage({ params }: { params: { project: string, add
     <div className="min-h-screen bg-white text-gray-900">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Community header */}
-        <Link href={`/${community.name}`}>
+        <Link href={`/${project}`}>
           <div className="flex items-center justify-center mb-8">
             <Image
               src={community.roles[0].image}
@@ -92,7 +93,7 @@ export default function AddressPage({ params }: { params: { project: string, add
                   <p>Vouches Made: {madeCount}</p>
                 </div>
 
-                <VouchButtonCustom
+                <VouchButton
                   recipient={address}
                   className="mb-4"
                   graphqlEndpoint={community.graphql}
@@ -100,7 +101,7 @@ export default function AddressPage({ params }: { params: { project: string, add
                   chain={community.chainId.toString()}
                   platform={community.id}
                   verifyingContract={community.verifyingContract}
-                  buttonText='Vouch this user'
+                  buttonText='Vouch for this user'
                 />
               </CardContent>
             </Card>
@@ -109,28 +110,29 @@ export default function AddressPage({ params }: { params: { project: string, add
           {/* Main content */}
           <div className="w-full md:w-3/4">
             <Card>
-              <CardHeader>
-                <CardTitle>About</CardTitle>
-              </CardHeader>
               <CardContent>
                 <h3 className="text-lg font-semibold mt-4 mb-2">Latest Vouches in {project}</h3>
                 {attestations && attestations.length > 0 ? (
-                  attestations.map((attestation: any) => (
-                    <div key={attestation.id} className="mb-2 p-2 border-b">
-                      <p className="font-semibold">Vouched for:</p>
-                      <p className="text-sm text-gray-600">{truncateAddress(attestation.recipient)}</p>
-                      <p className="text-xs text-gray-400">
-                        {new Date(attestation.time * 1000).toLocaleString()}
-                      </p>
+                  <ScrollArea className="h-[120px] w-full rounded-xl border">
+                    <div className="p-4">
+                      {attestations.map((attestation: any) => (
+                        <div key={attestation.id} className="mb-4 pb-4 border-b last:mb-0 last:pb-0 last:border-b-0">
+                          <p className="font-semibold">Vouched for:</p>
+                          <Link href={`/${project}/${attestation.recipient}`}><p className="text-sm text-primary">{truncateAddress(attestation.recipient)}</p></Link>
+                          <p className="text-xs text-gray-400">
+                            {new Date(attestation.timeCreated * 1000).toLocaleString()}
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                  ))
+                  </ScrollArea>
                 ) : (
                   <p>No recent vouches in this community.</p>
                 )}
 
                 {/* Other Communities Section */}
                 <h3 className="text-lg font-semibold mt-6 mb-2">This user in other communities</h3>
-                <ScrollArea className="w-full whitespace-nowrap rounded-md border">
+                <ScrollArea className="w-full whitespace-nowrap rounded-xl border">
                   <div className="flex w-max space-x-4 p-4">
                     {Object.entries(communityData).map(([key, community]) => {
                       if (key !== project) {

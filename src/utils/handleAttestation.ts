@@ -25,6 +25,7 @@ export const handleVouch = async (
         showErrorAlert("You can't vouch yourself.");
         return;
     }
+    showLoadingAlert();
 
     const nonce = await fetchNonce(user.wallet.address);
 
@@ -33,7 +34,6 @@ export const handleVouch = async (
         return;
     }
 
-    showLoadingAlert();
 
     try {
         const token = await getAccessToken();
