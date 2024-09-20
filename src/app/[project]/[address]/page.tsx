@@ -4,7 +4,7 @@ import { useAttestationDetails } from '@/utils/hooks/useAttestationDetails';
 import { useAttestationCounts } from '@/utils/hooks/useAttestationCount';
 import { useEnsName } from '@/utils/hooks/useEnsName';
 import { EAS_CONFIG } from '../../../../config/siteConfig';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Avatar from 'boring-avatars';
 import { Copy } from 'lucide-react';
@@ -96,7 +96,6 @@ export default function AddressPage({ params }: { params: { project: string, add
                 <VouchButton
                   recipient={address}
                   className="mb-4"
-                  graphqlEndpoint={community.graphql}
                   schema={community.schema}
                   chain={community.chainId.toString()}
                   platform={community.id}

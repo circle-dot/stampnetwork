@@ -7,7 +7,6 @@ import { handleVouch } from '@/utils/handleAttestation';
 interface VouchButtonProps {
     recipient: string;
     className?: string;
-    graphqlEndpoint: string;
     schema: string;
     chain: string;
     platform: string;
@@ -18,7 +17,6 @@ interface VouchButtonProps {
 const VouchButton: React.FC<VouchButtonProps> = ({
     recipient,
     className,
-    graphqlEndpoint,
     schema,
     chain,
     platform,
