@@ -1,5 +1,5 @@
 async function generateAttestation(token: string, platform: string, recipient: string, attester: string, signature: string, ) {
-    const url = '/api/createAttestation';
+    const url = process.env.NEXT_PUBLIC_STAMP_API_URL + '/attestation';
 
 
     const body = JSON.stringify({
@@ -14,6 +14,7 @@ async function generateAttestation(token: string, platform: string, recipient: s
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token,
+            'x-privy-app-id': 'stamp',
         },
         body: body
     });

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { zuAuthPopup, ZuAuthArgs } from "@pcd/zuauth";
 import { whitelistedTickets } from "@/zupass/zupass-config";
 import { TicketTypeName } from "@/zupass/types";
+import { usePrivy } from '@privy-io/react-auth';
 
 const watermark = "0";
 
@@ -30,6 +31,7 @@ const config = Object.entries(whitelistedTickets).flatMap(
 );
 
 export const useZuAuth = (user: any) => {
+    const { getAccessToken } = usePrivy(); // Add this line
     const [result, setResult] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [apiResponse, setApiResponse] = useState<any>(null);
@@ -67,10 +69,13 @@ export const useZuAuth = (user: any) => {
 
     const handleSign = async (pcd: any) => {
         try {
-            const response = await fetch('/api/zupass/validatePCD', {
+            const token = await getAccessToken(); // Get the Privy token
+            const response = await fetch(process.env.NEXT_PUBLIC_STAMP_API_URL + '/pcds', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                    'x-privy-app-id': 'stamp',
                 },
                 body: JSON.stringify({ 
                     pcds: pcd,
