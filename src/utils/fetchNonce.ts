@@ -1,9 +1,10 @@
-const fetchNonce = async (wallet: string) => {
-    // console.log('wallet!', wallet);
-    const response = await fetch(`/api/getNonce?attester=${wallet}`, {
+const fetchNonce = async (wallet: string, accessToken: string) => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_STAMP_API_URL}/attestation/nonce?attester=${wallet}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'x-privy-app-id': process.env.NEXT_PUBLIC_PRIVY_APP_ID || '',
         },
     });
 
@@ -12,7 +13,7 @@ const fetchNonce = async (wallet: string) => {
     }
 
     const data = await response.json();
-    // console.log('Fetched nonce data:', data);
     return data.easNonce;
 };
-export default fetchNonce
+
+export default fetchNonce;

@@ -27,7 +27,13 @@ export const handleVouch = async (
     }
     showLoadingAlert();
 
-    const nonce = await fetchNonce(user.wallet.address);
+    const token = await getAccessToken();
+    if (!token) {
+        showErrorAlert('Something went wrong. Try reloading the page.');
+        return;
+    }
+
+    const nonce = await fetchNonce(user.wallet.address, token);
 
     if (nonce === undefined) {
         showErrorAlert('Failed to fetch nonce.');
@@ -36,12 +42,6 @@ export const handleVouch = async (
 
 
     try {
-        const token = await getAccessToken();
-        if (!token) {
-            showErrorAlert('Something went wrong. Try reloading the page.');
-            return;
-        }
-
         const chainId = typeof chain === 'string' ? parseInt(chain) : chain;
         const schemaUID = schema;
         const attester = user?.wallet.address;
