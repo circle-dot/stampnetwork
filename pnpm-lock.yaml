@@ -11,36 +11,9 @@ importers:
       '@ethereum-attestation-service/eas-sdk':
         specifier: ^2.6.0
         version: 2.6.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
-      '@pcd/eddsa-pcd':
-        specifier: ^0.6.5
-        version: 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      '@pcd/eddsa-ticket-pcd':
-        specifier: ^0.6.5
-        version: 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      '@pcd/passport-interface':
-        specifier: ^0.11.9
-        version: 0.11.9(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@5.0.10)
-      '@pcd/pcd-types':
-        specifier: 0.11.2
-        version: 0.11.2
-      '@pcd/pod':
-        specifier: 0.1.5
-        version: 0.1.5
-      '@pcd/pod-pcd':
-        specifier: 0.1.5
-        version: 0.1.5
-      '@pcd/util':
-        specifier: 0.5.4
-        version: 0.5.4
-      '@pcd/zk-eddsa-event-ticket-pcd':
-        specifier: ^0.6.6
-        version: 0.6.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@pcd/zuauth':
-        specifier: 1.4.2
-        version: 1.4.2(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@5.0.10)
-      '@pcd/zupass-client':
-        specifier: 0.0.4
-        version: 0.0.4
+        specifier: ^1.4.5
+        version: 1.4.5(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@5.0.10)
       '@privy-io/react-auth':
         specifier: ^1.82.0
         version: 1.82.0(@babel/core@7.25.2)(@types/react@18.3.5)(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react-is@16.13.1)(react@18.3.1)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
@@ -71,9 +44,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.55.0
         version: 5.55.0(react@18.3.1)
-      alchemy-sdk:
-        specifier: ^3.4.1
-        version: 3.4.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       boring-avatars:
         specifier: ^1.11.1
         version: 1.11.1
@@ -845,15 +815,6 @@ packages:
   '@pcd/emitter@0.5.4':
     resolution: {integrity: sha512-bxfJcSzcCI0kGmxaiVT/vtEo2YDmQsg0JEn3zvPeSCYBckvvT3D9ozaISPhp/5+P5jTeSruTNw0YTP4DwQkxxA==}
 
-  '@pcd/gpc-pcd@0.0.6':
-    resolution: {integrity: sha512-9DE+SQ0SSkvgxIskS0yOA9siZvAMhyvM+XkKK/suJiOky/Yb6oNonlVp35G4jh7q5BSOHAS/v7oOvgfuZDthlA==}
-
-  '@pcd/gpc@0.0.6':
-    resolution: {integrity: sha512-qlN1895ZBsY7cjikNbgxMG2V+2PsnHgvaew2f1tEB6HmJaEiYdPi/cP+fJgKrLqPmDA37p8aOx4CUq+k/do6aA==}
-
-  '@pcd/gpcircuits@0.1.5':
-    resolution: {integrity: sha512-Ivlzyu8+flgOUmq/N+mWw1y6bvzY58HLjI1KAFPxOsGI3evVStrgg5j91z80rRJJK50ohG6aL5lX59zG4sV3YA==}
-
   '@pcd/passport-crypto@0.11.4':
     resolution: {integrity: sha512-7nPrBldG4713CSA63NFAR6Ti8BBMwn26IuoHkiTyExFmFy5a0PCMssd3eg1amLMqG5o3KIMgxOfXSf9DJYB04g==}
 
@@ -866,32 +827,17 @@ packages:
   '@pcd/pcd-collection@0.11.6':
     resolution: {integrity: sha512-wp/biqV6q1cBuyOnNJXKS2f3CtKB0l5kEvi4B7Aqjrpv54PFBepOVepejLzG9AKt25NmfMpGfUPAsMOHmSkMxQ==}
 
-  '@pcd/pcd-types@0.11.2':
-    resolution: {integrity: sha512-x6Gm1wTiR/ly7aW5ScY33e3pG+GBtPzBVUp98ntcIMd4uADKeKUlNMBmprddq378ATG4FaB9aXwCJp3nEKSSHQ==}
-
   '@pcd/pcd-types@0.11.4':
     resolution: {integrity: sha512-IxPzs5dFc9O7mtcusbEMNln3lWtoyMkxPLbcJTbmlR+HGURNxDR5ZumXlXTOv8LL1OwkY1TaU1EkrhXVnVWdNA==}
-
-  '@pcd/pod-pcd@0.1.5':
-    resolution: {integrity: sha512-vIfqEDDUEtae1swMwAvLFjTzrJw3TS4fGz6NZV8U0t60BPscPx9wEV9phzG2op2MWzaLdT1OVCH7wG/uZMQ+cg==}
 
   '@pcd/pod-pcd@0.1.7':
     resolution: {integrity: sha512-bzRPrhCRp7L1oAO6GmP5S58snxGOtU7aEsfcl7zLm1iz4I6pKcYTMVVaFXKGFuSZbur18IEkaOHMAzT3mZJ4IA==}
 
-  '@pcd/pod@0.1.5':
-    resolution: {integrity: sha512-3xdpPlyABFJn9/iag4jBBvTNU1kdXD2d1EQWz3lOvqcxpWK+ov/0eU1qPcsHk2yKAbftZ33lrP+4CA6k3M4BdA==}
-
   '@pcd/pod@0.1.7':
     resolution: {integrity: sha512-y8wPXLw36VPsTBYR05TkURyb5v1S40kQmDwL26sEDxX90ZwAv6vTIjRpC4pmxk5gIFGtxTgxMembfrH2vZDOkA==}
 
-  '@pcd/podspec@0.0.2':
-    resolution: {integrity: sha512-OtVz/rQDCVZgWLQMBUHOc+069IULd2qcJZH0PRxAgJO64myXXKqwn1Sopt9epSNSwyshbJrtBClrQcllyItZFw==}
-
   '@pcd/semaphore-group-pcd@0.11.6':
     resolution: {integrity: sha512-bpjyLuFpvlmpSXQYjj5+pSTvJzpJFygd9vWbll+0SE+0wPRx8Pxo8yFH2klYoUeekZtYwTWfwhyDTPZzD/jsmg==}
-
-  '@pcd/semaphore-identity-pcd@0.11.4':
-    resolution: {integrity: sha512-/N6oEGE7cSRyW6EPgNYmt0G+EaGpXn6mdDmJBtGFRCgnqhcOVdvn/ukHniXkcmQBN18pnP4CqD/cVH0dt7bi2Q==}
 
   '@pcd/semaphore-identity-pcd@0.11.6':
     resolution: {integrity: sha512-lhzC6YZhPXyf7QxHrwbSjo27E7mGWrjnFuEyhheyURNfMw2TzENVNBXoqnvRKnD9TLQxVv+/3SEMXknKRlZqvg==}
@@ -903,23 +849,17 @@ packages:
     resolution: {integrity: sha512-rgopRGA29cyvNFAkxwtEpo8sOQPFTsckl2kR74CKvlVgKHveZVArmA0vnSrb3jiyrCVQ98lAroTUQB6dpnuYKQ==}
     hasBin: true
 
-  '@pcd/util@0.5.3':
-    resolution: {integrity: sha512-mAfbpQrl2CYJJwNDHJKwkUD0JYuEAtD3Tli87hb7jZ3vvHmtT/mXlivbpnNZ5uyoowiArnhPMwng/2JmyuU3Cw==}
-
   '@pcd/util@0.5.4':
     resolution: {integrity: sha512-BkG3PxujAOE3K9odBJqMUzhvK97tzJwVrMTbqSqhGqHnKLVQNuzhURkbdjoNfVRSp8BwaxP516ocjyY1KrxpuA==}
 
   '@pcd/zk-eddsa-event-ticket-pcd@0.6.6':
     resolution: {integrity: sha512-Gm6LBGZjuL8ZzTkhP/M6Z/vB4X2kZwmz8lvpqYeg11TWuiiEwnF6BEYcOSF5dEwgzhVKCFe5K/RIlK0kEnSL0w==}
 
-  '@pcd/zuauth@1.4.2':
-    resolution: {integrity: sha512-DSdcr0vxdpx6BdOJ4+KXD2ibxichChfq0iKl0pROW/G6HWYoV57zP+nv0gShOHZNveZc/EGcnNxIeSgqJaNcOw==}
+  '@pcd/zuauth@1.4.5':
+    resolution: {integrity: sha512-KgT69HOyD86KD5UR0z885BM73f/4bkmeHU61gfnI8mdkYhVPg1rUtZ5Yppo90avl3S8yO/W3WNvP+jXJCPlzqQ==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
-
-  '@pcd/zupass-client@0.0.4':
-    resolution: {integrity: sha512-xx6nB76of8wkLNsFQvaW3fB3ZsP3dR0eolP1ZhOG5Orh5YECdcSOapfYmq15OhRvZW/2l+pp+EN+firHXEDp5w==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -1857,9 +1797,6 @@ packages:
   ajv@6.12.6:
     resolution: {integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==}
 
-  alchemy-sdk@3.4.1:
-    resolution: {integrity: sha512-GeL8J6VIiE7tIgXevkcm0VqdZnhO0EpOXQQCzUMsoMrj92hBKj9ZmUjyPxXF8tUdsHYixQApng2eJXoRWmv5lw==}
-
   an-array@1.0.0:
     resolution: {integrity: sha512-M175GYI7RmsYu24Ok383yZQa3eveDfNnmhTe3OQ3bm70bEovz2gWenH+ST/n32M8lrwLWk74hcPds5CDRPe2wg==}
 
@@ -1966,9 +1903,6 @@ packages:
   async@3.2.6:
     resolution: {integrity: sha512-htCUDlxyyCLMgaM3xXg0C0LW2xqfuQ6p05pCEIsXuyQ+a1koYKTuBMzRNwmybfLgvJDMd0r1LTn4+E0Ti6C2AA==}
 
-  asynckit@0.4.0:
-    resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
-
   atomic-sleep@1.0.0:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==}
     engines: {node: '>=8.0.0'}
@@ -1980,9 +1914,6 @@ packages:
   axe-core@4.10.0:
     resolution: {integrity: sha512-Mr2ZakwQ7XUAjp7pAwQWRhhK8mQQ6JAaNWSjmjxil0R8BPioMtQsTLOolGYkji1rcL++3dCqZA3zWqpT+9Ew6g==}
     engines: {node: '>=4'}
-
-  axios@1.7.7:
-    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -2248,10 +2179,6 @@ packages:
 
   colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
-
-  combined-stream@1.0.8:
-    resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
-    engines: {node: '>= 0.8'}
 
   command-exists@1.2.9:
     resolution: {integrity: sha512-LTQ/SGc+s0Xc0Fu5WaKnR0YiygZkm9eKFvyS+fRsU7/ZWFF8ykFM6Pc9aCVf1+xasOOZpO3BAVgVrKvsqKHV7w==}
@@ -2569,10 +2496,6 @@ packages:
 
   delaunator@5.0.1:
     resolution: {integrity: sha512-8nvh+XBe96aCESrGOqMp/84b13H9cdKbG5P2ejQCh4d4sK9RL4371qou9drQjMhvnPmhWl5hnmqbEE0fXr9Xnw==}
-
-  delayed-stream@1.0.0:
-    resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
-    engines: {node: '>=0.4.0'}
 
   depd@2.0.0:
     resolution: {integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==}
@@ -3040,10 +2963,6 @@ packages:
   foreground-child@3.3.0:
     resolution: {integrity: sha512-Ld2g8rrAyMYFXBhEqMz8ZAHBi4J4uS1i/CxGMDnjyFWddMXLVcDp051DZfu+t7+ab7Wv6SMqpWmyFIj5UbfFvg==}
     engines: {node: '>=14'}
-
-  form-data@4.0.0:
-    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
-    engines: {node: '>= 6'}
 
   fp-ts@1.19.3:
     resolution: {integrity: sha512-H5KQDspykdHuztLTg+ajGN0Z2qUjcEf3Ybxc6hLt0k7/zPkn29XnKnxlBPyW2XIddWrGaJBzBl4VLYOtk39yZg==}
@@ -3773,14 +3692,6 @@ packages:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
     engines: {node: '>=8.6'}
 
-  mime-db@1.52.0:
-    resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
-    engines: {node: '>= 0.6'}
-
-  mime-types@2.1.35:
-    resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
-    engines: {node: '>= 0.6'}
-
   mime@1.6.0:
     resolution: {integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==}
     engines: {node: '>=4'}
@@ -4293,9 +4204,6 @@ packages:
   proxy-compare@2.5.1:
     resolution: {integrity: sha512-oyfc0Tx87Cpwva5ZXezSp5V9vht1c7dZBhvuV/y3ctkgMVUmiAGDVeeB0dKhGSyT0v1ZTEQYpe/RXlBVBNuCLA==}
 
-  proxy-from-env@1.1.0:
-    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
-
   pump@3.0.0:
     resolution: {integrity: sha512-LwZy+p3SFs1Pytd/jYct4wpv49HiYCqd9Rlc5ZVdk0V+8Yzv6jR5Blk3TRmPL1ft69TxP0IMZGJ+WPFU2BFhww==}
 
@@ -4721,9 +4629,6 @@ packages:
   strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
-
-  sturdy-websocket@0.2.1:
-    resolution: {integrity: sha512-NnzSOEKyv4I83qbuKw9ROtJrrT6Z/Xt7I0HiP/e6H6GnpeTDvzwGIGeJ8slai+VwODSHQDooW2CAilJwT9SpRg==}
 
   styled-components@5.3.11:
     resolution: {integrity: sha512-uuzIIfnVkagcVHv9nE0VPlHPSCmXIUGKfJ42LNjxCCTDTL5sgnJ8Z7GZBq0EnLYGln77tPpEpExt2+qa+cZqSw==}
@@ -6389,36 +6294,6 @@ snapshots:
     dependencies:
       chai: 4.5.0
 
-  '@pcd/gpc-pcd@0.0.6':
-    dependencies:
-      '@pcd/gpc': 0.0.6
-      '@pcd/pcd-types': 0.11.4
-      '@pcd/pod-pcd': 0.1.5
-      '@pcd/semaphore-identity-pcd': 0.11.4
-      '@pcd/util': 0.5.3
-      '@types/lodash': 4.17.7
-      json-bigint: 1.0.0
-      snarkjs: 0.7.4
-      uuid: 9.0.1
-
-  '@pcd/gpc@0.0.6':
-    dependencies:
-      '@pcd/gpcircuits': 0.1.5
-      '@pcd/pod': 0.1.5
-      '@pcd/util': 0.5.3
-      '@semaphore-protocol/identity': 3.15.2
-      '@types/lodash': 4.17.7
-      json-bigint: 1.0.0
-      snarkjs: 0.7.4
-      url-join: 4.0.1
-
-  '@pcd/gpcircuits@0.1.5':
-    dependencies:
-      '@pcd/pod': 0.1.5
-      fastfile: 0.0.20
-      snarkjs: 0.7.4
-      url-join: 4.0.1
-
   '@pcd/passport-crypto@0.11.4':
     dependencies:
       buffer: 6.0.3
@@ -6467,17 +6342,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@pcd/pcd-types@0.11.2': {}
-
   '@pcd/pcd-types@0.11.4': {}
-
-  '@pcd/pod-pcd@0.1.5':
-    dependencies:
-      '@pcd/pcd-types': 0.11.4
-      '@pcd/pod': 0.1.5
-      '@pcd/util': 0.5.3
-      json-bigint: 1.0.0
-      uuid: 9.0.1
 
   '@pcd/pod-pcd@0.1.7':
     dependencies:
@@ -6486,17 +6351,6 @@ snapshots:
       '@pcd/util': 0.5.4
       json-bigint: 1.0.0
       uuid: 9.0.1
-
-  '@pcd/pod@0.1.5':
-    dependencies:
-      '@pcd/util': 0.5.3
-      '@zk-kit/baby-jubjub': 1.0.1
-      '@zk-kit/eddsa-poseidon': 1.0.2
-      '@zk-kit/lean-imt': 2.0.1
-      '@zk-kit/utils': 1.2.0
-      js-sha256: 0.10.1
-      json-bigint: 1.0.0
-      poseidon-lite: 0.2.1
 
   '@pcd/pod@0.1.7':
     dependencies:
@@ -6508,10 +6362,6 @@ snapshots:
       js-sha256: 0.10.1
       json-bigint: 1.0.0
       poseidon-lite: 0.2.1
-
-  '@pcd/podspec@0.0.2':
-    dependencies:
-      '@pcd/pod': 0.1.5
 
   '@pcd/semaphore-group-pcd@0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
     dependencies:
@@ -6528,14 +6378,6 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-
-  '@pcd/semaphore-identity-pcd@0.11.4':
-    dependencies:
-      '@pcd/pcd-types': 0.11.4
-      '@pcd/util': 0.5.3
-      '@semaphore-protocol/identity': 3.15.2
-      json-bigint: 1.0.0
-      uuid: 9.0.1
 
   '@pcd/semaphore-identity-pcd@0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
     dependencies:
@@ -6582,14 +6424,6 @@ snapshots:
       logplease: 1.2.15
       r1csfile: 0.0.48
 
-  '@pcd/util@0.5.3':
-    dependencies:
-      buffer: 6.0.3
-      email-validator: 2.0.4
-      js-sha256: 0.10.1
-      secure-random: 1.1.2
-      uuid: 9.0.1
-
   '@pcd/util@0.5.4':
     dependencies:
       buffer: 6.0.3
@@ -6616,12 +6450,12 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@pcd/zuauth@1.4.2(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@5.0.10)':
+  '@pcd/zuauth@1.4.5(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@5.0.10)':
     dependencies:
       '@pcd/eddsa-pcd': 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@pcd/eddsa-ticket-pcd': 0.6.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@pcd/passport-interface': 0.11.9(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(utf-8-validate@5.0.10)
-      '@pcd/pcd-types': 0.11.2
+      '@pcd/pcd-types': 0.11.4
       '@pcd/semaphore-identity-pcd': 0.11.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@pcd/zk-eddsa-event-ticket-pcd': 0.6.6(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       react: 18.3.1
@@ -6629,14 +6463,6 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-
-  '@pcd/zupass-client@0.0.4':
-    dependencies:
-      '@pcd/gpc-pcd': 0.0.6
-      '@pcd/pcd-types': 0.11.4
-      '@pcd/pod': 0.1.5
-      '@pcd/podspec': 0.0.2
-      zod: 3.23.8
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -8053,28 +7879,6 @@ snapshots:
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
 
-  alchemy-sdk@3.4.1(bufferutil@4.0.8)(utf-8-validate@5.0.10):
-    dependencies:
-      '@ethersproject/abi': 5.7.0
-      '@ethersproject/abstract-provider': 5.7.0
-      '@ethersproject/bignumber': 5.7.0
-      '@ethersproject/bytes': 5.7.0
-      '@ethersproject/contracts': 5.7.0
-      '@ethersproject/hash': 5.7.0
-      '@ethersproject/networks': 5.7.1
-      '@ethersproject/providers': 5.7.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      '@ethersproject/units': 5.7.0
-      '@ethersproject/wallet': 5.7.0
-      '@ethersproject/web': 5.7.1
-      axios: 1.7.7
-      sturdy-websocket: 0.2.1
-      websocket: 1.0.35
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - supports-color
-      - utf-8-validate
-
   an-array@1.0.0: {}
 
   ansi-align@3.0.1:
@@ -8197,8 +8001,6 @@ snapshots:
 
   async@3.2.6: {}
 
-  asynckit@0.4.0: {}
-
   atomic-sleep@1.0.0: {}
 
   available-typed-arrays@1.0.7:
@@ -8206,14 +8008,6 @@ snapshots:
       possible-typed-array-names: 1.0.0
 
   axe-core@4.10.0: {}
-
-  axios@1.7.7:
-    dependencies:
-      follow-redirects: 1.15.9(debug@4.3.7)
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
 
   axobject-query@4.1.0: {}
 
@@ -8525,10 +8319,6 @@ snapshots:
   color-name@1.1.4: {}
 
   colorette@2.0.20: {}
-
-  combined-stream@1.0.8:
-    dependencies:
-      delayed-stream: 1.0.0
 
   command-exists@1.2.9: {}
 
@@ -8878,8 +8668,6 @@ snapshots:
   delaunator@5.0.1:
     dependencies:
       robust-predicates: 3.0.2
-
-  delayed-stream@1.0.0: {}
 
   depd@2.0.0: {}
 
@@ -9608,12 +9396,6 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.3
       signal-exit: 4.1.0
-
-  form-data@4.0.0:
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      mime-types: 2.1.35
 
   fp-ts@1.19.3: {}
 
@@ -10417,12 +10199,6 @@ snapshots:
       braces: 3.0.3
       picomatch: 2.3.1
 
-  mime-db@1.52.0: {}
-
-  mime-types@2.1.35:
-    dependencies:
-      mime-db: 1.52.0
-
   mime@1.6.0: {}
 
   mime@3.0.0: {}
@@ -10934,8 +10710,6 @@ snapshots:
 
   proxy-compare@2.5.1: {}
 
-  proxy-from-env@1.1.0: {}
-
   pump@3.0.0:
     dependencies:
       end-of-stream: 1.4.4
@@ -11408,8 +11182,6 @@ snapshots:
       is-hex-prefixed: 1.0.0
 
   strip-json-comments@3.1.1: {}
-
-  sturdy-websocket@0.2.1: {}
 
   styled-components@5.3.11(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react-is@16.13.1)(react@18.3.1):
     dependencies:
