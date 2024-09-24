@@ -10,7 +10,7 @@ import { matchTicketToType, whitelistedTickets } from './zupass-config';
 import useAttestationCheck from '../utils/hooks/useAttestationCheck';
 
 export function ZuAuthButton({ user, wallets }: { user: any, wallets: any }) {
-    const { handleZuAuth, isLoading, result, handleSign } = useZuAuth(user);
+    const { handleZuAuth, isLoading, result, handleSign } = useZuAuth();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [signingStates, setSigningStates] = useState<{ [key: string]: boolean }>({});
 

@@ -34,7 +34,7 @@ const config = Object.entries(whitelistedTickets).flatMap(
             )
 );
 
-export const useZuAuth = (user: any) => {
+export const useZuAuth = () => {
     const { getAccessToken } = usePrivy(); // Add this line
     const [result, setResult] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
