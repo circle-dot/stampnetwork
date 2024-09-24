@@ -5,10 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { useState } from 'react';
 import Image from 'next/image';
-import { Loader2 } from 'lucide-react'; // Import the spinner icon
+import { Loader2 } from 'lucide-react';
 import { matchTicketToType, whitelistedTickets } from './zupass-config';
+import useAttestationCheck from '../utils/hooks/useAttestationCheck';
 
-export function ZuAuthButton({ user }: { user: any }) {
+export function ZuAuthButton({ user, wallets }: { user: any, wallets: any }) {
     const { handleZuAuth, isLoading, result, handleSign } = useZuAuth(user);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [signingStates, setSigningStates] = useState<{ [key: string]: boolean }>({});
@@ -21,18 +22,28 @@ export function ZuAuthButton({ user }: { user: any }) {
     const handleSignWithLoading = async (pcdData: any, index: number) => {
         setSigningStates(prev => ({ ...prev, [index]: true }));
         try {
-            await handleSign(pcdData);
+            console.log("pcdData", pcdData);
+            console.log("wallets", wallets);
+            console.log("user", user);
+            await handleSign(pcdData, wallets, user);
         } finally {
             setSigningStates(prev => ({ ...prev, [index]: false }));
         }
     };
 
-    const renderPcdInfo = (pcdWrapper: any, index: number) => {
-        console.log("PCD wrapper:", pcdWrapper);
+    const semaphoreIds = result?.pcds?.map((pcd: any) => {
+        const pcdData = JSON.parse(pcd.pcd);
+        return pcdData.claim?.partialTicket?.attendeeSemaphoreId;
+    }) || [];
 
+    const { data: attestationData, isLoading: isAttestationLoading, error: attestationError } = useAttestationCheck(semaphoreIds);
+
+    const renderPcdInfo = (pcdWrapper: any, index: number) => {
         try {
             const pcdData = JSON.parse(pcdWrapper.pcd);
-            console.log("Parsed PCD data:", pcdData);
+            const semaphoreId = pcdData.claim?.partialTicket?.attendeeSemaphoreId;
+
+            const attestation = attestationData?.find((att: any) => att.decodedDataJson.includes(semaphoreId));
 
             const eventId = pcdData.claim?.partialTicket?.eventId || "Not specified";
             const productId = pcdData.claim?.partialTicket?.productId || "Not specified";
@@ -47,6 +58,13 @@ export function ZuAuthButton({ user }: { user: any }) {
                 <div key={index} className="mb-4 p-4 border rounded">
                     <p>Ticket Type: {displayTicketType}</p>
                     <p>Event Name: {displayEventName}</p>
+                    {isAttestationLoading ? (
+                        <p>Loading attestation...</p>
+                    ) : attestationError ? (
+                        <p>Error loading attestation: {attestationError.message}</p>
+                    ) : (
+                        <p>Attestation: {attestation ? 'Valid' : 'Invalid'}</p>
+                    )}
                     <Button 
                         onClick={() => handleSignWithLoading(pcdData, index)} 
                         disabled={signingStates[index]}

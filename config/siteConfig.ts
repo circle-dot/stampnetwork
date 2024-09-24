@@ -19,7 +19,9 @@ export const EAS_CONFIG = {
     PRETRUST_SCHEMA: process.env.PRETRUST_SCHEMA || "0xe6428e26d2e2c1a92ac3f5b30014a228940017aa3e621e9f16f02f0ecb748de9",
     VOUCH_SCHEMA: process.env.VOUCH_SCHEMA || "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
     GRAPHQL_URL: process.env.GRAPHQL_URL || "https://base-sepolia.easscan.org/graphql",
-    CATEGORY: "Stamp",
+    ISSUER: "Stamp",
+    CATEGORY: "Community",
     PLATFORM: "Zupass",
-    CREDENTIAL_TYPE: "Ticket"
+    CREDENTIAL_TYPE: "Ticket",
+    CHAIN_ID: 84532 
 }

@@ -2,10 +2,9 @@
 
 import { usePrivy } from '@privy-io/react-auth'
 import { Button } from "@/components/ui/button"
-import { Menu, LogOut, Twitter, Hash } from "lucide-react"
+import {LogOut, Twitter, Hash } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
-import { navSections } from '../../config/siteConfig'
 import {
   Dialog,
   DialogContent,
@@ -15,10 +14,11 @@ import {
 import { useEnsName } from '../utils/hooks/useEnsName';
 import { ZuAuthButton } from '../zupass/ZupassButton';
 import Image from 'next/image'
+import { useWallets } from '@privy-io/react-auth'
 
 export default function Navbar() {
   const { ready, authenticated, login, user, logout, linkFarcaster, linkTwitter } = usePrivy()
-  const [isOpen, setIsOpen] = useState(false)
+  const { wallets } = useWallets();
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const truncateAddress = (address: string) => {
@@ -48,15 +48,16 @@ export default function Navbar() {
 
   return (
     <nav className="flex items-center justify-between p-4 bg-background text-foreground shadow-sm">
-      <div className="hidden md:flex items-center space-x-4">
-        <Link href="/explorer" className="text-xl font-bold text-primary">
+      <div className="flex items-center space-x-4">
+        <Link href="/explorer" className="text-xl font-bold text-primary flex items-center flex-row">
           <Image src="/stamp.svg" alt="Stamp" width={32} height={32} />
+          <sup className="text-xs text-red-500">beta</sup>
         </Link>
       </div>
       <div className="flex items-center space-x-4 flex-1 justify-end">
         {ready && authenticated && user ? (
           <>
-            <ZuAuthButton user={user} />
+            <ZuAuthButton user={user} wallets={wallets} />
             <Button 
               variant="outline" 
               className="border-secondary text-secondary rounded-xl"
@@ -138,24 +139,8 @@ export default function Navbar() {
             Sign In
           </Button>
         )}
-        <Button variant="outline" className="md:hidden border-secondary text-secondary" onClick={() => setIsOpen(!isOpen)}>
-          <Menu className="h-6 w-6" />
-        </Button>
+
       </div>
-      {isOpen && (
-        <div className="absolute top-16 left-0 right-0 bg-card text-card-foreground shadow-md md:hidden">
-          {navSections.map((section) => (
-            <Link
-              key={section.label}
-              href={section.href}
-              className={`block px-4 py-2 text-sm hover:bg-muted w-full ${section.className}`}
-              onClick={() => setIsOpen(false)}
-            >
-              {section.label}
-            </Link>
-          ))}
-        </div>
-      )}
     </nav>
   )
 }
