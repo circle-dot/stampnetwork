@@ -8,6 +8,8 @@ import { SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 import { EAS_CONFIG } from '../../config/siteConfig';
 import fetchNonce from '@/utils/fetchNonce';
 import { ethers } from 'ethers';
+import { calculateNullifier } from '@/utils/calculateNullifier';
+
 const watermark = "0";
 
 // Ensure the tickets are formatted correctly
@@ -94,15 +96,8 @@ export const useZuAuth = () => {
                 console.log('Failed to match ticket type');
                 throw new Error("Unable to determine ticket type.");
               }
-              // Calculate the nullifier
-              const nullifier = ethers.hexlify(
-                  ethers.keccak256(
-                      ethers.concat([
-                          ethers.toUtf8Bytes(attendeeSemaphoreId),
-                          ethers.keccak256(ethers.toUtf8Bytes(productId))
-                      ])
-                  ).slice(0, 66)
-              );
+              // Calculate the nullifier using the new utility function
+              const nullifier = calculateNullifier(attendeeSemaphoreId, productId);
               console.log('attendeeSemaphoreId', attendeeSemaphoreId)
               console.log('productId', productId)
               console.log('nullifier', nullifier)

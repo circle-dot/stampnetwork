@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { Loader2 } from 'lucide-react';
 import { matchTicketToType, whitelistedTickets } from './zupass-config';
 import useAttestationCheck from '../utils/hooks/useAttestationCheck';
+import { calculateNullifier } from '@/utils/calculateNullifier';
 
 export function ZuAuthButton({ user, wallets }: { user: any, wallets: any }) {
     const { handleZuAuth, isLoading, result, handleSign } = useZuAuth();
@@ -31,26 +32,28 @@ export function ZuAuthButton({ user, wallets }: { user: any, wallets: any }) {
         }
     };
 
-    const semaphoreIds = result?.pcds?.map((pcd: any) => {
+    const nullifiers = result?.pcds?.map((pcd: any) => {
         const pcdData = JSON.parse(pcd.pcd);
-        return pcdData.claim?.partialTicket?.attendeeSemaphoreId;
+        const semaphoreId = pcdData.claim?.partialTicket?.attendeeSemaphoreId;
+        const productId = pcdData.claim?.partialTicket?.productId;
+        return calculateNullifier(semaphoreId, productId);
     }) || [];
 
-    const { data: attestationData, isLoading: isAttestationLoading, error: attestationError } = useAttestationCheck(semaphoreIds);
+    const { data: attestationData, isLoading: isAttestationLoading, error: attestationError } = useAttestationCheck(nullifiers);
 
     const renderPcdInfo = (pcdWrapper: any, index: number) => {
         try {
             const pcdData = JSON.parse(pcdWrapper.pcd);
             const semaphoreId = pcdData.claim?.partialTicket?.attendeeSemaphoreId;
 
-            const attestation = attestationData?.find((att: any) => att.decodedDataJson.includes(semaphoreId));
-
+            
             const eventId = pcdData.claim?.partialTicket?.eventId || "Not specified";
             const productId = pcdData.claim?.partialTicket?.productId || "Not specified";
-
+            
             const ticketType = matchTicketToType(eventId, productId);
             const ticketInfo = ticketType ? whitelistedTickets[ticketType].find(t => t.eventId === eventId && t.productId === productId) : null;
-
+            const attestation = attestationData?.find((att: any) => att.decodedDataJson.includes(calculateNullifier(semaphoreId, productId)));
+            
             const displayTicketType = ticketInfo ? ticketInfo.productName : "Unknown";
             const displayEventName = ticketInfo ? ticketInfo.eventName : "Unknown Event";
 
@@ -62,23 +65,24 @@ export function ZuAuthButton({ user, wallets }: { user: any, wallets: any }) {
                         <p>Loading attestation...</p>
                     ) : attestationError ? (
                         <p>Error loading attestation: {attestationError.message}</p>
+                    ) : attestation ? (
+                        <p>Status: Already connected</p>
                     ) : (
-                        <p>Attestation: {attestation ? 'Valid' : 'Invalid'}</p>
+                        <Button 
+                            onClick={() => handleSignWithLoading(pcdData, index)} 
+                            disabled={signingStates[index]}
+                            className="mt-2"
+                        >
+                            {signingStates[index] ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Signing...
+                                </>
+                            ) : (
+                                'Sign'
+                            )}
+                        </Button>
                     )}
-                    <Button 
-                        onClick={() => handleSignWithLoading(pcdData, index)} 
-                        disabled={signingStates[index]}
-                        className="mt-2"
-                    >
-                        {signingStates[index] ? (
-                            <>
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Signing...
-                            </>
-                        ) : (
-                            'Sign'
-                        )}
-                    </Button>
                 </div>
             );
         } catch (error) {
