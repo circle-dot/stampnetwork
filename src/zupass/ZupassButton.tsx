@@ -1,136 +1,85 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import { useZuAuth } from './zuauthLogic';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { useState } from 'react';
 import Image from 'next/image';
-import { Loader2 } from 'lucide-react';
-import { matchTicketToType, whitelistedTickets } from './zupass-config';
-import useAttestationCheck from '../utils/hooks/useAttestationCheck';
-import { calculateNullifier } from '@/utils/calculateNullifier';
+import { showSuccessAlert, showErrorAlertWithSpace } from '@/utils/alertUtils';
+import { matchTicketToType } from './zupass-config';
 
-export function ZuAuthButton({ user, wallets }: { user: any, wallets: any }) {
-    const { handleZuAuth, isLoading, result, handleSign } = useZuAuth();
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [signingStates, setSigningStates] = useState<{ [key: string]: boolean }>({});
+export default function ZuAuthButton({ user, text, wallets }: { user: any, text: string, wallets: any }) {
+    const { handleZuAuth, isLoading, result, handleSign, apiResponse } = useZuAuth();
+    const [isLoadingBackend, setIsLoadingBackend] = useState(false);
+
+    useEffect(() => {
+        if (result && result.pcds) {
+            sendPcdsToBackend(result.pcds);
+        }
+    }, [result]);
+
+    useEffect(() => {
+        if (apiResponse) {
+            handleApiResponse(apiResponse);
+        }
+    }, [apiResponse]);
 
     const onZuAuth = async () => {
         await handleZuAuth();
-        setIsDialogOpen(true);
     };
 
-    const handleSignWithLoading = async (pcdData: any, index: number) => {
-        setSigningStates(prev => ({ ...prev, [index]: true }));
+    const sendPcdsToBackend = async (pcds: any) => {
+        setIsLoadingBackend(true);
         try {
-            console.log("pcdData", pcdData);
-            console.log("wallets", wallets);
-            console.log("user", user);
-            await handleSign(pcdData, wallets, user);
+            await handleSign(pcds, wallets, user);
+        } catch (error) {
+            console.error("Error sending PCDs to backend:", error);
         } finally {
-            setSigningStates(prev => ({ ...prev, [index]: false }));
+            setIsLoadingBackend(false);
         }
     };
 
-    const nullifiers = result?.pcds?.map((pcd: any) => {
-        const pcdData = JSON.parse(pcd.pcd);
-        const semaphoreId = pcdData.claim?.partialTicket?.attendeeSemaphoreId;
-        const productId = pcdData.claim?.partialTicket?.productId;
-        return calculateNullifier(semaphoreId, productId);
-    }) || [];
+    const handleApiResponse = (response: any) => {
+        if (Array.isArray(response)) {
+            const failedTickets = response.filter(ticket => ticket.error);
+            const successfulTickets = response.filter(ticket => !ticket.error);
 
-    const { data: attestationData, isLoading: isAttestationLoading, error: attestationError } = useAttestationCheck(nullifiers);
+            if (successfulTickets.length > 0) {
+                const successMessage = successfulTickets.map(ticket => {
+                    const ticketType = matchTicketToType(ticket.eventId, ticket.productId) || ticket.productName || 'Unknown ticket';
+                    return `${ticketType} verified successfully`;
+                }).join('\n');
+                showSuccessAlert('PCD Verification Successful', successMessage, '/dashboard');
+            }
 
-    const renderPcdInfo = (pcdWrapper: any, index: number) => {
-        try {
-            const pcdData = JSON.parse(pcdWrapper.pcd);
-            const semaphoreId = pcdData.claim?.partialTicket?.attendeeSemaphoreId;
-
-            
-            const eventId = pcdData.claim?.partialTicket?.eventId || "Not specified";
-            const productId = pcdData.claim?.partialTicket?.productId || "Not specified";
-            
-            const ticketType = matchTicketToType(eventId, productId);
-            const ticketInfo = ticketType ? whitelistedTickets[ticketType].find(t => t.eventId === eventId && t.productId === productId) : null;
-            const attestation = attestationData?.find((att: any) => att.decodedDataJson.includes(calculateNullifier(semaphoreId, productId)));
-            
-            const displayTicketType = ticketInfo ? ticketInfo.productName : "Unknown";
-            const displayEventName = ticketInfo ? ticketInfo.eventName : "Unknown Event";
-
-            return (
-                <div key={index} className="mb-4 p-4 border rounded">
-                    <p>Ticket Type: {displayTicketType}</p>
-                    <p>Event Name: {displayEventName}</p>
-                    {isAttestationLoading ? (
-                        <p>Loading attestation...</p>
-                    ) : attestationError ? (
-                        <p>Error loading attestation: {attestationError.message}</p>
-                    ) : attestation ? (
-                        <p>Status: Already connected</p>
-                    ) : (
-                        <Button 
-                            onClick={() => handleSignWithLoading(pcdData, index)} 
-                            disabled={signingStates[index]}
-                            className="mt-2"
-                        >
-                            {signingStates[index] ? (
-                                <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Signing...
-                                </>
-                            ) : (
-                                'Sign'
-                            )}
-                        </Button>
-                    )}
-                </div>
-            );
-        } catch (error) {
-            console.error("Error processing PCD:", error);
-            return (
-                <div key={index} className="mb-4 p-4 border rounded bg-red-100">
-                    <p>Error: Unable to process ticket information</p>
-                </div>
-            );
+            if (failedTickets.length > 0) {
+                console.log(failedTickets);
+                const errorMessage = failedTickets.map(ticket => {
+                    const ticketType = matchTicketToType(ticket.eventId, ticket.productId) || ticket.productName || 'Unknown ticket';
+                    return `${ticketType}: ${ticket.error}`;
+                }).join('\n');
+                showErrorAlertWithSpace('PCD Verification Failed', errorMessage);
+            }
+        } else if (response.error) {
+            showErrorAlertWithSpace('Error', response.error);
         }
     };
 
     return (
-        <>
-            <Button 
-                onClick={onZuAuth} 
-                disabled={isLoading} 
-                className="bg-[#f0b90b] hover:bg-[#d9a60b] text-[#19473f] font-semibold font-[Tahoma] flex items-center justify-center px-3 py-2 text-sm sm:text-base"
-            >
-                <Image
-                    src="/zupass.webp"
-                    alt="Zupass"
-                    width={20}
-                    height={20}
-                    className="w-5 h-5 sm:w-6 sm:h-6 mr-2 rounded-full object-cover"
-                />
-                <span>
-                    {isLoading ? 'Auth...' : 'Link Zupass'}
-                </span>
-            </Button>
-
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Your Zupass Tickets</DialogTitle>
-                    </DialogHeader>
-                    {result && result.pcds ? (
-                        <div>
-                            {result.pcds.map((pcd: any, index: number) => renderPcdInfo(pcd, index))}
-                        </div>
-                    ) : (
-                        <p>No tickets found or there was an error processing the result.</p>
-                    )}
-                    <DialogFooter>
-                        <Button onClick={() => setIsDialogOpen(false)}>Close</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
-        </>
+        <Button 
+            onClick={onZuAuth} 
+            disabled={isLoading || isLoadingBackend} 
+            className="bg-[#f0b90b] hover:bg-[#d9a60b] text-[#19473f] font-semibold font-[Tahoma] flex items-center justify-center px-3 py-2 text-sm sm:text-base"
+        >
+            <Image
+                src="/zupass.webp"
+                alt="Zupass"
+                width={20}
+                height={20}
+                className="w-5 h-5 sm:w-6 sm:h-6 mr-2 rounded-full object-cover"
+            />
+            <span>
+                {isLoading || isLoadingBackend ? 'Loading...' : text}
+            </span>
+        </Button>
     );
 }

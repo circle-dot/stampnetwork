@@ -12,10 +12,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { useEnsName } from '../utils/hooks/useEnsName';
-import { ZuAuthButton } from '../zupass/ZupassButton';
 import Image from 'next/image'
 import { useWallets } from '@privy-io/react-auth'
-
+import ZuAuthButton from '@/zupass/ZupassButton'
 export default function Navbar() {
   const { ready, authenticated, login, user, logout, linkFarcaster, linkTwitter } = usePrivy()
   const { wallets } = useWallets();
@@ -57,7 +56,7 @@ export default function Navbar() {
       <div className="flex items-center space-x-4 flex-1 justify-end">
         {ready && authenticated && user ? (
           <>
-            <ZuAuthButton user={user} wallets={wallets} />
+            <ZuAuthButton user={user} wallets={wallets} text='Link Zupass' />
             <Button 
               variant="outline" 
               className="border-secondary text-secondary rounded-xl"

@@ -73,3 +73,11 @@ export const showCopySuccessAlert = () => {
         title: 'Address copied to clipboard'
     })
 }
+
+export const showErrorAlertWithSpace = (title: string, message: string) => {
+    MySwal.fire({
+        icon: 'error',
+        title: title,
+        html: message.replace(/\n/g, '<br>'),
+    });
+};
