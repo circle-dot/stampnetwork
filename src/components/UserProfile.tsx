@@ -9,6 +9,7 @@ import Avatar from 'boring-avatars';
 import { usePrivy } from '@privy-io/react-auth';
 import { useEnsName } from '@/utils/hooks/useEnsName';
 import { useAttestationCounts } from '@/utils/hooks/useAttestationCount';
+import Link from 'next/link';
 
 interface UserProfileProps {
   isOwnProfile: boolean;
@@ -88,7 +89,9 @@ export function UserProfile({
             ) : (
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-lg truncate">
-                  {ensName || truncateAddress(formattedAddress)}
+                  <Link href={`/${platform}/${formattedAddress}`} className="underline">
+                    {ensName || truncateAddress(formattedAddress)}
+                  </Link>
                 </span>
                 <Button
                   variant="ghost"
