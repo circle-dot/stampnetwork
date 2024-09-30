@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import GET_ATTESTATIONS from '@/graphql/queries/getAttestations';
 import { useRouter } from 'next/navigation';
 import * as d3 from 'd3';
-
+import { ethers } from 'ethers';
 // Dynamically import ForceGraph3D with ssr option set to false
 const ForceGraph3D = dynamic(() => import('react-force-graph').then(mod => mod.ForceGraph3D), {
     ssr: false,
@@ -78,7 +78,7 @@ const RankingsGraph: React.FC<RankingsGraphProps> = ({ graphqlEndpoint, schemaId
                     query: GET_ATTESTATIONS,
                     variables: { 
                         schemaId: schemaId, // Pass the schemaId
-                        jsonFilter: platform // Pass the platform as jsonFilter
+                        jsonFilter: ethers.encodeBytes32String(platform) // Pass the platform as jsonFilter
                     },
                 }),
             });
