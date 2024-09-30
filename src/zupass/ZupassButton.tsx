@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useZuAuth } from './zuauthLogic';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
@@ -11,11 +11,22 @@ export default function ZuAuthButton({ user, text, wallets }: { user: any, text:
     const { handleZuAuth, isLoading, result, handleSign, apiResponse } = useZuAuth();
     const [isLoadingBackend, setIsLoadingBackend] = useState(false);
 
+    const sendPcdsToBackend = useCallback(async (pcds: any) => {
+        setIsLoadingBackend(true);
+        try {
+            await handleSign(pcds, wallets, user);
+        } catch (error) {
+            console.error("Error sending PCDs to backend:", error);
+        } finally {
+            setIsLoadingBackend(false);
+        }
+    }, [handleSign, wallets, user]);
+
     useEffect(() => {
         if (result && result.pcds) {
             sendPcdsToBackend(result.pcds);
         }
-    }, [result]);
+    }, [result, sendPcdsToBackend]);
 
     useEffect(() => {
         if (apiResponse) {
@@ -25,17 +36,6 @@ export default function ZuAuthButton({ user, text, wallets }: { user: any, text:
 
     const onZuAuth = async () => {
         await handleZuAuth();
-    };
-
-    const sendPcdsToBackend = async (pcds: any) => {
-        setIsLoadingBackend(true);
-        try {
-            await handleSign(pcds, wallets, user);
-        } catch (error) {
-            console.error("Error sending PCDs to backend:", error);
-        } finally {
-            setIsLoadingBackend(false);
-        }
     };
 
     const handleApiResponse = (response: any) => {

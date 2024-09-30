@@ -1,14 +1,8 @@
 import { useState } from 'react';
 import { zuAuthPopup, ZuAuthArgs } from "@pcd/zuauth";
-import { whitelistedTickets, matchTicketToType } from "@/zupass/zupass-config"; 
+import { whitelistedTickets } from "@/zupass/zupass-config"; 
 import { TicketTypeName } from "@/zupass/types";
 import { usePrivy } from '@privy-io/react-auth';
-import { signTypedData } from '@/utils/signTypedData'; 
-import { SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
-import { EAS_CONFIG } from '../../config/siteConfig';
-import fetchNonce from '@/utils/fetchNonce';
-import { ethers } from 'ethers';
-import { calculateNullifier } from '@/utils/calculateNullifier';
 
 const watermark = "0";
 
