@@ -75,7 +75,8 @@ export function EnsNameSearch({ graphql, platform, schema, chain, verifyingContr
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      return response.json();
+      const result = await response.json();
+      return result.data?.findFirstEnsName || null;
     },
     enabled: !!debouncedSearchTerm
   });
