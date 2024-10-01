@@ -1,30 +1,18 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useZuAuth } from './zuauthLogic';
+import { useEffect } from 'react';
+import { useZuAuth } from '@/zupass/zuauthLogic'
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { showSuccessAlert, showErrorAlertWithSpace } from '@/utils/alertUtils';
-import { matchTicketToType } from './zupass-config';
+import { matchTicketToType } from '@/zupass/zupass-config';
 
 export default function ZupassButton({ user, text, wallets }: { user: any, text: string, wallets: any }) {
-    const { handleZuAuth, isLoading, result, handleSign, apiResponse } = useZuAuth();
-    const [isLoadingBackend, setIsLoadingBackend] = useState(false);
+    const { handleZuAuth, isLoading, result, handleSign, apiResponse, isLoadingBackend } = useZuAuth();
 
     useEffect(() => {
-        const sendPcdsToBackend = async (pcds: any) => {
-            setIsLoadingBackend(true);
-            try {
-                await handleSign(pcds, wallets, user);
-            } catch (error) {
-                console.error("Error sending PCDs to backend:", error);
-            } finally {
-                setIsLoadingBackend(false);
-            }
-        };
-
         if (result && result.pcds) {
-            sendPcdsToBackend(result.pcds);
+            handleSign(result.pcds, wallets, user);
         }
     }, [result, handleSign, wallets, user]);
 
@@ -40,12 +28,12 @@ export default function ZupassButton({ user, text, wallets }: { user: any, text:
 
     const handleApiResponse = (response: any) => {
         if (Array.isArray(response.message)) {
-            const failedTickets = response.message.filter((ticket: any) => ticket.error);
-            const successfulTickets = response.message.filter((ticket: any) => !ticket.error);
+            const failedTickets = response.message.filter((ticket: { error: any; }) => ticket.error);
+            const successfulTickets = response.message.filter((ticket: { error: any; }) => !ticket.error);
 
             if (successfulTickets.length > 0) {
-                const successMessage = successfulTickets.map((ticket: any) => {
-                    const ticketType = matchTicketToType(ticket.eventId, ticket.productId) || 'Unknown ticket';
+                const successMessage = successfulTickets.map((ticket: { eventId: string; productId: string; productName: any; }) => {
+                    const ticketType = matchTicketToType(ticket.eventId, ticket.productId) || ticket.productName || 'Unknown ticket';
                     return `${ticketType} verified successfully`;
                 }).join('\n');
                 showSuccessAlert('PCD Verification Successful', successMessage, '/dashboard');
@@ -53,8 +41,8 @@ export default function ZupassButton({ user, text, wallets }: { user: any, text:
 
             if (failedTickets.length > 0) {
                 console.log(failedTickets);
-                const errorMessage = failedTickets.map((ticket: any) => {
-                    const ticketType = matchTicketToType(ticket.eventId, ticket.productId) || 'Unknown ticket';
+                const errorMessage = failedTickets.map((ticket: { eventId: string; productId: string; productName: any; error: any; }) => {
+                    const ticketType = matchTicketToType(ticket.eventId, ticket.productId) || ticket.productName || 'Unknown ticket';
                     return `${ticketType}: ${ticket.error}`;
                 }).join('\n');
                 showErrorAlertWithSpace('PCD Verification Failed', errorMessage);

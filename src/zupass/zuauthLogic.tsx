@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { zuAuthPopup, ZuAuthArgs } from "@pcd/zuauth";
 import { usePrivy } from '@privy-io/react-auth';
 import { whitelistedTickets } from "./zupass-config"; 
@@ -34,6 +34,7 @@ export const useZuAuth = () => {
     const [result, setResult] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [apiResponse, setApiResponse] = useState<any>(null);
+    const [isLoadingBackend, setIsLoadingBackend] = useState(false);
 
     const handleZuAuth = async () => {
         setIsLoading(true);
@@ -66,7 +67,8 @@ export const useZuAuth = () => {
         }
     };
 
-    const handleSign = async (pcd: any, wallets: any, user: any) => {
+    const handleSign = useCallback(async (pcd: any, wallets: any, user: any) => {
+        setIsLoadingBackend(true);
         try {
             const token = await getAccessToken(); 
             const recipient = user.wallet.address;
@@ -102,8 +104,10 @@ export const useZuAuth = () => {
         } catch (error) {
             console.error("Sign error:", error);
             setApiResponse({ error: error instanceof Error ? error.message : String(error) });
+        } finally {
+            setIsLoadingBackend(false);
         }
-    };
+    }, [getAccessToken]);
 
-    return { handleZuAuth, isLoading, result, apiResponse, handleSign };
+    return { handleZuAuth, isLoading, result, apiResponse, handleSign, isLoadingBackend };
 };
