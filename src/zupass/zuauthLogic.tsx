@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { zuAuthPopup, ZuAuthArgs } from "@pcd/zuauth";
-import { whitelistedTickets } from "@/zupass/zupass-config"; 
-import { TicketTypeName } from "@/zupass/types";
 import { usePrivy } from '@privy-io/react-auth';
-
+import { whitelistedTickets } from "./zupass-config"; 
+import { TicketTypeName } from "./types";
 const watermark = "0";
 
 // Ensure the tickets are formatted correctly
@@ -52,7 +51,7 @@ export const useZuAuth = () => {
                 watermark,
                 config,
                 proofTitle: "Connect with Zupass",
-                proofDescription: "**Connect your Zupass to Agora Pass**",
+                proofDescription: "**Connect your Zupass to Stamp Pass**",
                 multi: true
             };
 
@@ -89,10 +88,15 @@ export const useZuAuth = () => {
                     user: user,
                 }),
             });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            
             const data = await response.json();
+            
+            if (!response.ok) {
+                setApiResponse(data); // Set the entire response object
+                console.error("API error:", data);
+                return; // Exit the function early
+            }
+            
             setApiResponse(data);
             console.log("API response:", data);
         } catch (error) {

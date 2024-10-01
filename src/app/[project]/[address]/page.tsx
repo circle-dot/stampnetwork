@@ -16,6 +16,8 @@ import VouchButton from '@/components/VouchButton';
 import Link from 'next/link';
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Loading from '@/app/loading';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Share2 } from 'lucide-react';
 
 export default function AddressPage({ params }: { params: { project: string, address: string } }) {
   const { project, address: rawAddress } = params;
@@ -102,6 +104,25 @@ export default function AddressPage({ params }: { params: { project: string, add
                   verifyingContract={community.verifyingContract}
                   buttonText='Vouch for this user'
                 />
+                
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="w-full flex items-center justify-center">
+                      <Share2 className="mr-2 h-4 w-4" />
+                      Share profile
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Share Profile</DialogTitle>
+                      <DialogDescription>
+                        Share this user profile with others.
+                      </DialogDescription>
+                    </DialogHeader>
+                    {/* Content for sharing will be added here later */}
+                  </DialogContent>
+                </Dialog>
+                
               </CardContent>
             </Card>
           </div>
