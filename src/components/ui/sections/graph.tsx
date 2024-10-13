@@ -159,7 +159,7 @@ const RankingsGraph: React.FC<RankingsGraphProps> = ({ graphqlEndpoint, schemaId
     const graphHeight = Math.floor(dimensions.height * 0.95); // 95% of container height
 
     return (
-        <div ref={containerRef} style={{ width: '100%', height: '100vh', overflow: 'hidden' }} className='flex items-center justify-center'>
+        <div ref={containerRef} style={{ width: '100%', height: '80vh', overflow: 'hidden' }} className='flex items-center justify-center'>
             {graphData && dimensions.width > 0 && dimensions.height > 0 && (
                 <ForceGraph3D
                     graphData={graphData}
@@ -167,20 +167,19 @@ const RankingsGraph: React.FC<RankingsGraphProps> = ({ graphqlEndpoint, schemaId
                     linkDirectionalParticles={2}
                     linkDirectionalParticleSpeed={0.005}
                     onNodeClick={(node: any) => {
-                        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3001';
-                        router.push(`${baseUrl}/address/${node.id}`);
+                        router.push(`/address/${node.id}`);
                     }}
                     width={graphWidth}
                     height={graphHeight}
                     d3AlphaDecay={0.01}
                     d3VelocityDecay={0.1}
-                    backgroundColor="#003f5c"
+                    backgroundColor="#19473f"
                     linkColor={() => '#54F7C5'}
                     nodeColor={(node) => nodeColorScale(String(node.id))}
                     nodeVal={(node) => node.score}
                     nodeLabel={(node) => `
                         <div style="
-                            background-color: rgba(0,0,0,0.8);
+                            
                             color: white;
                             border-radius: 20px;
                             font-weight: bold;
@@ -196,6 +195,7 @@ const RankingsGraph: React.FC<RankingsGraphProps> = ({ graphqlEndpoint, schemaId
         </div>
     );
 };
+
 
 interface GraphProps {
     graphqlEndpoint: string;

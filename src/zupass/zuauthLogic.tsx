@@ -1,10 +1,13 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { zuAuthPopup, ZuAuthArgs } from "@pcd/zuauth";
 import { usePrivy } from '@privy-io/react-auth';
 import { whitelistedTickets } from "./zupass-config"; 
 import { TicketTypeName } from "./types";
+
+
 const watermark = "0";
 
+// Ensure the tickets are formatted correctly
 // Ensure the tickets are formatted correctly
 const config = Object.entries(whitelistedTickets).flatMap(
     ([ticketType, tickets]) =>
@@ -28,13 +31,11 @@ const config = Object.entries(whitelistedTickets).flatMap(
                 (ticket): ticket is NonNullable<typeof ticket> => ticket !== null
             )
 );
-
 export const useZuAuth = () => {
     const { getAccessToken } = usePrivy(); // Add this line
     const [result, setResult] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [apiResponse, setApiResponse] = useState<any>(null);
-    const [isLoadingBackend, setIsLoadingBackend] = useState(false);
 
     const handleZuAuth = async () => {
         setIsLoading(true);
@@ -52,7 +53,7 @@ export const useZuAuth = () => {
                 watermark,
                 config,
                 proofTitle: "Connect with Zupass",
-                proofDescription: "**Connect your Zupass to Stamp Pass**",
+                proofDescription: "Connect your Zupass to Stamp",
                 multi: true
             };
 
@@ -67,8 +68,7 @@ export const useZuAuth = () => {
         }
     };
 
-    const handleSign = useCallback(async (pcd: any, wallets: any, user: any) => {
-        setIsLoadingBackend(true);
+    const handleSign = async (pcd: any, wallets: any, user: any) => {
         try {
             const token = await getAccessToken(); 
             const recipient = user.wallet.address;
@@ -90,9 +90,8 @@ export const useZuAuth = () => {
                     user: user,
                 }),
             });
-            
             const data = await response.json();
-            
+
             if (!response.ok) {
                 setApiResponse(data); // Set the entire response object
                 console.error("API error:", data);
@@ -104,10 +103,8 @@ export const useZuAuth = () => {
         } catch (error) {
             console.error("Sign error:", error);
             setApiResponse({ error: error instanceof Error ? error.message : String(error) });
-        } finally {
-            setIsLoadingBackend(false);
         }
-    }, [getAccessToken]);
+    };
 
-    return { handleZuAuth, isLoading, result, apiResponse, handleSign, isLoadingBackend };
+    return { handleZuAuth, isLoading, result, apiResponse, handleSign };
 };
