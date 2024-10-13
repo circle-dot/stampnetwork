@@ -82,9 +82,9 @@ export function EnsNameSearch({ graphql, platform, schema, chain, verifyingContr
   });
 
   const handleVouchConfirm = () => {
-    if (authStatus && data?.data?.findFirstEnsName) {
+    if (authStatus && data) {
       handleVouch(
-        data.data.findFirstEnsName.id,
+        data.id,
         user,
         wallets,
         getAccessToken,
@@ -136,20 +136,21 @@ export function EnsNameSearch({ graphql, platform, schema, chain, verifyingContr
       )}
       {(data || isEthAddress) && (
         <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg bg-background">
-          {data?.data?.findFirstEnsName ? (
+          {data ? (
             <div className="p-2">
               <p 
                 className="text-sm cursor-pointer text-primary hover:text-blue-500"
                 onClick={() => handleNameClick()}
               >
-                {data.data.findFirstEnsName.name}
+                {data.name}
               </p>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent>
+                <DialogTitle className="hidden">Vouch for user</DialogTitle>
                   {authStatus ? (
                     <UserProfile
                       isOwnProfile={false}
-                      recipient={data.data.findFirstEnsName.id}
+                      recipient={data.id}
                       onVouch={handleVouchConfirm}
                       onCancel={() => setIsDialogOpen(false)}
                       graphqlEndpoint={graphql}
@@ -185,6 +186,7 @@ export function EnsNameSearch({ graphql, platform, schema, chain, verifyingContr
               </p>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent>
+                <DialogTitle className="hidden">Vouch for user</DialogTitle>
                   {authStatus ? (
                     <UserProfile
                       isOwnProfile={false}
