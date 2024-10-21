@@ -1,8 +1,8 @@
 {
-    "AgoraPass": {
-      "id": "AgoraPass",
-      "name": "AgoraPass",
-      "schema": "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
+    "AgoraCity": {
+      "id": "AgoraCity",
+      "name": "AgoraCity",
+      "schema": "0xa142412d946732a5a336236267a625ab2bc5c51b9d6f0703317bc979432ced66",
       "chainId": 84532,
       "endorsementType": "Social",
       "power": "1",
@@ -10,7 +10,9 @@
       "verifyingContract": "0x4200000000000000000000000000000000000021",
       "description": "Join the solution to decentralize invitations into communities, such as Zuzalu and decrease the dependency on trust in centralized authorities in our community",
       "members": 42069,
-      "category": "Zuzalu",
+      "category":"Zuzalu",
+      "subcategory":"Agora",
+      "platform":"AgoraCity",
       "roles": [
         {
           "name": "Agora Citizen",
@@ -35,7 +37,7 @@
     "CreciStamp": {
       "id": "CreciStamp",
       "name": "CreciStamp",
-      "schema": "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
+      "schema": "0xa142412d946732a5a336236267a625ab2bc5c51b9d6f0703317bc979432ced66",
       "chainId": 84532,
       "endorsementType": "Social",
       "power": "1",
@@ -43,7 +45,9 @@
       "verifyingContract": "0x4200000000000000000000000000000000000021",
       "description": "Aleph is convening the worlds brightest minds in Buenos Aires this August to pioneer the first crypto nation.",
       "members": 35000,
-      "category": "Crecimiento",
+      "category":"CreciStamp",
+      "subcategory":"",
+      "platform":"Stamp",
       "roles": [
         {
           "name": "Aleph attendee",
@@ -68,7 +72,7 @@
     "EdgeCity": {
       "id": "EdgeCity",
       "name": "Edge City",
-      "schema": "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
+      "schema": "0xa142412d946732a5a336236267a625ab2bc5c51b9d6f0703317bc979432ced66",
       "chainId": 84532,
       "endorsementType": "Social",
       "power": "1",
@@ -76,7 +80,9 @@
       "verifyingContract": "0x4200000000000000000000000000000000000021",
       "description": "Edge City convenes people working at the frontiers of tech, science, and society in popup villages across the globe. We aspire to be a ‘society and culture incubator’— an IRL lab of experimentation for new ideas, tech, culture, and organizations, all dedicated to accelerating human flourishing.",
       "members": 42069,
-      "category": "Zuzalu",
+      "category":"EdgeCity",
+      "subcategory":"",
+      "platform":"Stamp",
       "roles": [
         {
           "name": "Citizen",
@@ -101,7 +107,7 @@
     "BuilderMonastery": {
       "id": "BuilderMonastery",
       "name": "Builder Monastery",
-      "schema": "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
+      "schema": "0xa142412d946732a5a336236267a625ab2bc5c51b9d6f0703317bc979432ced66",
       "chainId": 84532,
       "endorsementType": "Social",
       "power": "1",
@@ -109,7 +115,9 @@
       "verifyingContract": "0x4200000000000000000000000000000000000021",
       "description": "Builder Monastery offers a focused environment where individuals can work on difficult problems. This space fosters collaboration, curiosity, and craftsmanship. Builder Monastery is designed to ensure everyone can engage fully, without fear of missing out on key experiences. ",
       "members": 42069,
-      "category": "Zuzalu",
+      "category":"Devcon",
+      "subcategory":"",
+      "platform":"Stamp",
       "roles": [
         {
           "name": "Citizen",

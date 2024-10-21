@@ -53,17 +53,13 @@ export const handleVouch = async (
              console.log('communityInfo', communityInfo);
          }
          // Use default values if endorsementType or power are not defined
-         const endorsementType = 'endorsementType' in communityInfo ? communityInfo.endorsementType : "Default";
-         const category = 'power' in communityInfo ? communityInfo.category : "Community";
-         console.log('endorsementType', endorsementType)
-         console.log('category',category)
-         const schemaEncoder = new SchemaEncoder("bytes32 endorsement,bytes32 platform,bytes32 category");
-         console.log('schemaEncoder', schemaEncoder)
-         // !TO DO, we need to encode the category/endorsement/platform as bytes32
+         const category = 'category' in communityInfo ? communityInfo.category : "Community";
+         const subcategory = 'subcategory' in communityInfo ? communityInfo.subcategory : "Default";
+         const schemaEncoder = new SchemaEncoder("bytes32 platform,bytes32 category,bytes32 subCategory");
         const encodedData = schemaEncoder.encodeData([
-            { name: "endorsement", value: ethers.encodeBytes32String(endorsementType), type: "bytes32" },
             { name: "platform", value: ethers.encodeBytes32String(platform), type: "bytes32" },
-            { name: "category", value: ethers.encodeBytes32String(category), type: "bytes32" }
+            { name: "category", value: ethers.encodeBytes32String(category), type: "bytes32" },
+            { name: "subCategory", value: ethers.encodeBytes32String(subcategory), type: "bytes32" },
         ]);
         console.log('encodedData', encodedData);
         const domain = {
@@ -111,7 +107,7 @@ export const handleVouch = async (
 
 
         //TO CONSIDER, we can pass encoded data instead of doing it server side as well, but should we?
-        const resultAttestation = await generateAttestation(token, platform, recipient, attester, signature);
+        const resultAttestation = await generateAttestation(token, platform, recipient, attester, signature, category as string, subcategory as string);
         console.log('resultAttestation:', resultAttestation);
 
         // Construct the attestation view URL

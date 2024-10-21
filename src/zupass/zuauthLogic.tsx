@@ -8,7 +8,6 @@ import { TicketTypeName } from "./types";
 const watermark = "0";
 
 // Ensure the tickets are formatted correctly
-// Ensure the tickets are formatted correctly
 const config = Object.entries(whitelistedTickets).flatMap(
     ([ticketType, tickets]) =>
         tickets
