@@ -2,6 +2,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { UserCard } from './UserCard';
+import { ethers } from 'ethers';
 
 interface UserGridProps {
   communityData: any;
@@ -26,6 +27,7 @@ export function UserGrid({ communityData }: UserGridProps) {
           `,
           variables: {
             where: {
+              decodedDataJson: { contains: ethers.encodeBytes32String(communityData.id) },
               schema: {
                 is: {
                   id: {
