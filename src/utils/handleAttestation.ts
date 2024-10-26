@@ -46,7 +46,6 @@ export const handleVouch = async (
         const schemaUID = schema;
         const attester = user?.wallet.address;
         console.log('attester', attester);
-        console.log('platform', platform);
          // Fetch endorsementType and power from communityData
          const communityInfo = communityData[platform as keyof typeof communityData];
          if (!communityInfo) {
@@ -55,9 +54,10 @@ export const handleVouch = async (
          // Use default values if endorsementType or power are not defined
          const category = 'category' in communityInfo ? communityInfo.category : "Community";
          const subcategory = 'subcategory' in communityInfo ? communityInfo.subcategory : "Default";
+         const platformofCommunity = 'platform' in communityInfo ? communityInfo.platform : "Stamp";
          const schemaEncoder = new SchemaEncoder("bytes32 platform,bytes32 category,bytes32 subCategory");
         const encodedData = schemaEncoder.encodeData([
-            { name: "platform", value: ethers.encodeBytes32String(platform), type: "bytes32" },
+            { name: "platform", value: ethers.encodeBytes32String(platformofCommunity), type: "bytes32" },
             { name: "category", value: ethers.encodeBytes32String(category), type: "bytes32" },
             { name: "subCategory", value: ethers.encodeBytes32String(subcategory), type: "bytes32" },
         ]);
@@ -107,7 +107,7 @@ export const handleVouch = async (
 
 
         //TO CONSIDER, we can pass encoded data instead of doing it server side as well, but should we?
-        const resultAttestation = await generateAttestation(token, platform, recipient, attester, signature, category as string, subcategory as string);
+        const resultAttestation = await generateAttestation(token, platformofCommunity, recipient, attester, signature, category as string, subcategory as string);
         console.log('resultAttestation:', resultAttestation);
 
         // Construct the attestation view URL
