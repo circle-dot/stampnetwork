@@ -2,7 +2,9 @@
 ## Stamp Network
 
 [App](https://app.stamp.network/)
+
 [Docs](https://docs.stamp.network/)
+
 [Landing](https://stamp.network/)
 
 ## Getting Started
